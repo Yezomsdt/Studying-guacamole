@@ -24,7 +24,7 @@ body {
 
 .page-header .container,
 .page-footer .container {
-  max-width: 1408px;
+  max-width: 2000px;
   text-align: right;
 }
 
@@ -164,9 +164,11 @@ body {
   vertical-align: baseline;
   text-decoration: none;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 22px;
   background-color: #288be6;
   color: #ffffff;
+  margin-bottom: 40px;
+  
 }
 
 .page-footer {
