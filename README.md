@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @Yezomsdt
-- 👀 I’m interested in - computer games, makin money and learning all bout programming
+- 👀 I’m interested in - learning all bout programming
 - 🌱 I’m currently learning - Front-end Metalamps course on JS
 - 💞️ I’m looking to collaborate on - im actually dunnow right now
 - 📫 How to reach me - @Daaayum (Telegram)
