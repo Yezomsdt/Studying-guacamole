@@ -4,7 +4,7 @@ body {
   font-family: "Arial", sans-serif;
   font-size: 14px;
   line-height: 20px;
-  color: #444444;
+  color: #848262;
 }
 
 h1 {
@@ -19,6 +19,7 @@ h1 {
 
 h2 {
   border-bottom: 2px solid #cccccc;
+  font-family: "Georgia", serif;
   padding-bottom: 12px;
 }
 
@@ -31,9 +32,9 @@ h2 {
 .site-header {
   min-width: 550px;
   height: 186px;
-  margin-bottom: 70px;
+  margin-bottom: 120px;
   padding-top: 30px;
-  background: #847462 no-repeat center url("img/gloevk-bg.jpg");
+  background: #628482 no-repeat center url("img/housepic.jpg");
   background-size: cover;
   color: #ffffff;
 }
@@ -112,7 +113,7 @@ h2 {
 
 .site-footer {
   min-width: 550px;
-  background-color: #847462;
+  background-color: #848262;
   color: #ffffff;
 }
 
@@ -126,4 +127,10 @@ h2 {
   padding: 0 20px;
 }
 
+.intro-content {
+  margin: 10px 0;
+}
 
+.intro-text {
+  padding: 10px;
+}
