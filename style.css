@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  padding: 0;
   min-width: 960px;
   font-family: "Montserrat", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
@@ -89,7 +90,7 @@ body {
 
 .intro h3,
 .portfolio h3 {
-  margin: 0 0 12px;
+  margin: 0 0 40px;
   font-size: 28px;
   line-height: 40px;
   font-weight: 500;
@@ -136,7 +137,7 @@ body {
 }
 
 .portfolio {
-  margin: 0 0 120px;
+  margin: 0 0 10px;
 }
 
 .projects {
@@ -165,7 +166,7 @@ body {
   text-decoration: none;
   text-transform: uppercase;
   border-radius: 22px;
-  background-color: #288be6;
+  background-color: #848262;
   color: #ffffff;
   margin-bottom: 40px;
   
@@ -193,4 +194,58 @@ body {
 .footer-phone {
   padding-left: 25px;
   background-image: url("img/icon-phone-footer.svg");
+}
+
+.intro-content {
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.intro-content figure {
+  margin-right: 20px;
+}
+
+.intro-text {
+  flex: 1;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .intro-content {
+      flex-direction: column;
+  }
+
+  .intro-content figure {
+      margin-right: 0;
+      margin-bottom: 20px;
+  }
+}
+
+.my-achievements {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-top: 2px solid #ccc;
+}
+
+.achievements-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.achievements-gallery figure {
+  margin: 10px;
+  flex: 1 1 calc(30% - 20px);
+}
+
+.achievements-gallery img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.achievements-gallery figcaption {
+  text-align: center;
+  margin-top: 5px;
 }
