@@ -224,28 +224,28 @@ body {
 }
 
 .my-achievements {
-  padding: 20px; /* Отступы вокруг секции */
-  background-color: #f9f9f9; /* Цвет фона */
-  border-top: 2px solid #ccc; /* Визуальное разделение */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-top: 2px solid #ccc;
 }
 
 .achievements-gallery {
   display: flex;
-  flex-wrap: wrap; /* Позволяет элементам перенестись на следующую строку */
-  justify-content: space-between; /* Выравнивает элементы по ширине */
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .achievements-gallery figure {
   margin: 10px;
-  flex: 1 1 calc(30% - 20px); /* Каждое изображение занимает 30% ширины */
+  flex: 1 1 calc(30% - 20px);
 }
 
 .achievements-gallery img {
-  width: 100%; /* Заставляет изображение занимать всю ширину фигуры */
-  border-radius: 5px; /* Гладкие углы изображений */
+  width: 100%;
+  border-radius: 5px;
 }
 
 .achievements-gallery figcaption {
-  text-align: center; /* Выравнивание текста по центру под изображением */
-  margin-top: 5px; /* Отступ сверху */
+  text-align: center;
+  margin-top: 5px;
 }
