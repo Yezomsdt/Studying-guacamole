@@ -108,6 +108,7 @@ body {
   font-size: 28px;
   line-height: 40px;
   font-weight: 500;
+  padding: 0 20px;
 }
 
 .intro p {
@@ -152,6 +153,12 @@ body {
 
 .portfolio {
   margin: 0 0 10px;
+  padding: 0 20px;
+}
+
+.portfolio p {
+  margin: 0 0 10px;
+  padding: 0 20px;
 }
 
 .projects {
@@ -231,6 +238,12 @@ body {
 .intro-text {
   flex: 1;
   max-width: 100%;
+  padding: 0 30px;
+}
+
+.intro-text p {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 @media (max-width: 1024px) {
