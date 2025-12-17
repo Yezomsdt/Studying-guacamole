@@ -1,12 +1,26 @@
+:root {
+  --main-font: "Montserrat", "Helvetica", "Arial", sans-serif;
+  --heading-font: "Old Standard TT", "Times", "Times New Roman", serif;
+  --primary-color: #288be6;
+  --secondary-color: #00417d;
+  --background-color: #f2f4f6;
+  --button-bg: #848262;
+  --text-color: #222222;
+  --footer-bg: #00417d;
+  --white: #ffffff;
+  --chat-user-bg: #e3f2fd;
+  --chat-bot-bg: #f5f5f5;
+}
+
 body {
   margin: 0;
   padding: 0;
   min-width: 960px;
-  font-family: "Montserrat", "Helvetica", "Arial", sans-serif;
+  font-family: var(--main-font);
   font-size: 16px;
   line-height: 32px;
-  color: #222222;
-  background-color: #f2f4f6;
+  color: var(--text-color);
+  background-color: var(--background-color);
   background-image: url("img/hero-bg.jpg");
   background-repeat: no-repeat;
   background-position: top center;
@@ -166,16 +180,23 @@ body {
   text-decoration: none;
   text-transform: uppercase;
   border-radius: 22px;
-  background-color: #848262;
-  color: #ffffff;
+  background-color: var(--button-bg);
+  color: ar(--white);
   margin-bottom: 40px;
-  
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #6a694d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .page-footer {
   padding: 40px 0;
-  background-color: #00417d;
-  color: #ffffff;
+  background-color: var(--footer-bg);
+  color: var(--white);
 }
 
 .page-footer a {
@@ -212,6 +233,17 @@ body {
   max-width: 100%;
 }
 
+@media (max-width: 1024px) {
+  .hero-image {
+    margin-bottom: 300px;
+  }
+  
+  .heading {
+    font-size: 64px;
+    line-height: 70px;
+  }
+}
+
 @media (max-width: 768px) {
   .intro-content {
       flex-direction: column;
@@ -220,6 +252,41 @@ body {
   .intro-content figure {
       margin-right: 0;
       margin-bottom: 20px;
+  }
+
+    body {
+    min-width: unset;
+  }
+  
+  .heading {
+    font-size: 48px;
+    line-height: 52px;
+  }
+  
+  .hero-image p {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  
+  .chat-container {
+    padding: 20px;
+  }
+  
+  .chat-messages {
+    height: 300px;
+    padding: 15px;
+  }
+  
+  .message {
+    max-width: 85%;
+  }
+  
+  .chat-input-form {
+    flex-direction: column;
+  }
+  
+  .send-button {
+    width: 100%;
   }
 }
 
@@ -248,4 +315,111 @@ body {
 .achievements-gallery figcaption {
   text-align: center;
   margin-top: 5px;
+}
+
+.chat-section {
+  margin: 80px 0;
+  padding: 40px 0;
+  background-color: var(--background-color);
+  border-radius: 20px;
+}
+
+.chat-section .subheading {
+  color: var(--secondary-color);
+  margin-bottom: 40px;
+}
+
+.chat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 65, 125, 0.1);
+}
+
+.chat-messages {
+  height: 400px;
+  overflow-y: auto;
+  border: 2px solid #e0e0e0;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 12px 18px;
+  border-radius: 18px;
+  max-width: 70%;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.user-message {
+  background-color: var(--chat-user-bg);
+  margin-left: auto;
+  margin-right: 0;
+  border-bottom-right-radius: 5px;
+}
+
+.bot-message {
+  background-color: var(--chat-bot-bg);
+  margin-right: auto;
+  margin-left: 0;
+  border-bottom-left-radius: 5px;
+}
+
+.chat-input-form {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 15px;
+  font-size: 16px;
+  font-family: var(--main-font);
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  transition: border-color 0.3s;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.send-button {
+  padding: 15px 30px;
+  background-color: var(--button-bg);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-family: var(--main-font);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.send-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Дорожка скроллбара */
+.chat-messages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
 }
