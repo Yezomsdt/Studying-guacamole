@@ -3,21 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatForm = document.getElementById('chatForm');
   const messageInput = document.getElementById('messageInput');
   const chatMessages = document.getElementById('chatMessages');
+  const sendButton = document.querySelector('.send-button');
 
   console.log('chatForm:', chatForm);
   console.log('messageInput:', messageInput);
   console.log('chatMessages:', chatMessages);
-
-  if (!chatForm) {
-    console.error('❌ Не нашёл форму чата! Проверь ID в HTML');
-    return;
-  }
+  console.log('sendButton:', sendButton);
   
-  chatForm.addEventListener('submit', function(event) {
-    console.log('🔵 Форма пытается отправиться...');
-    event.preventDefault();
-    console.log('✅ Перезагрузка остановлена!');
+  const messageText = messageInput.value.trim();
 
+  function sendMessage() {
     const messageText = messageInput.value.trim();
 
     if (messageText === '') {
@@ -26,15 +21,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addMessage(messageText, 'user');
-
     messageInput.value = '';
 
     setTimeout(function() {
       const botResponse = getBotResponse(messageText);
       addMessage(botResponse, 'bo*');
     }, 1000);
+  }
+  
+  sendButton.addEventListener('click', sendMessage);
+  
+  messageInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendMessage();
+    }
   });
-
+  
+  chatForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    sendMessage();
+  });
+  
   function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message');
@@ -48,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     chatMessages.appendChild(messageDiv);
-
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
@@ -78,10 +85,4 @@ document.addEventListener('DOMContentLoaded', function() {
       return randomResponses[Math.floor(Math.random() * randomResponses.length)];
     }
   }
-
-  messageInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  });
 });
