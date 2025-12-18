@@ -23,11 +23,17 @@ document.addEventListener('DOMContentLoaded', function() {
     addMessage(messageText, 'user');
     messageInput.value = '';
 
+    document.dispatchEvent(new CustomEvent('messageSent', {
+      detail: { text: messageText }
+    }));
+    
     setTimeout(function() {
       const botResponse = getBotResponse(messageText);
       addMessage(botResponse, 'bo*');
     }, 1000);
   }
+
+  window.sendMessage = sendMessage;
   
   sendButton.addEventListener('click', sendMessage);
   
