@@ -102,6 +102,39 @@
         <a class="footer-phone" href="tel:+79117485036">+7 (911) 748 50-36</a>
       </div>
     </footer>
+    
     <script src="script.js"></script>
+
+    <section class="tree-section">
+      <div class="container">
+        <h2 class="subheading">Древо что ты взрастил</h2>
+        <div class="tree-container">
+      
+          <svg class="tree-svg" id="moodTree" width="800" height="500"></svg>
+      
+          <div class="tree-controls">
+            <button class="button" id="growTree">Отдай древу свои чувства</button>
+            <button class="button" id="resetTree">Сбросить</button>
+            <div class="tree-stats">
+              <span>Листьев: <span id="leafCount">0</span></span>
+              <span>Среднее настроение: <span id="moodScore">😐</span></span>
+            </div>
+          </div>
+      
+          <div class="message-popup" id="messagePopup">
+            <div class="popup-content">
+              <button class="close-popup">&times;</button>
+              <h3>Сообщение</h3>
+              <p id="popupMessageText">Текст сообщения...</p>
+              <div class="message-info">
+                <span id="popupMood">Настроение: нейтральное</span>
+                <span id="popupTime">Время: --:--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
   </body>
 </html>
