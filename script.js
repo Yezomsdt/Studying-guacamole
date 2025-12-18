@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Протоколы судного дня запущены! Чатек готов! 🚀');
   
   const chatForm = document.getElementById('chatForm');
   const messageInput = document.getElementById('messageInput');
@@ -69,6 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       const randomResponses = [
         'Интересно, давай ещё!',
+        'Всё сказал?',
+        'Ага, очень интересно',
         'Как это на тебя повлияло?',
         'Записал в свою базу данных, протоколы судного дня обновлены!',
         'Продолжай, я весь в внимании!',
@@ -81,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
   messageInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      chatForm.dispatchEvent(new Event('submit'));
     }
   });
 });
