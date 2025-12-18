@@ -435,3 +435,127 @@ body {
   background: var(--primary-color);
   border-radius: 4px;
 }
+
+.tree-section {
+  margin: 80px 0;
+  padding: 40px 0;
+  background: linear-gradient(180deg, #e8f5e9 0%, #ffffff 100%);
+  border-radius: 20px;
+}
+
+.tree-container {
+  text-align: center;
+  position: relative;
+}
+
+.tree-svg {
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  display: block;
+}
+
+.tree-branch {
+  stroke: #8B4513;
+  stroke-width: 3;
+  fill: none;
+}
+
+.tree-leaf {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+
+.tree-leaf:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.tree-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tree-stats {
+  display: flex;
+  gap: 30px;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  font-weight: 500;
+}
+
+.message-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-popup.active {
+  display: flex;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.close-popup {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-popup:hover {
+  color: #000;
+}
+
+.message-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .tree-svg {
+    width: 95%;
+    height: 400px;
+  }
+  
+  .tree-controls {
+    flex-direction: column;
+  }
+  
+  .tree-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
