@@ -4,14 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatForm = document.getElementById('chatForm');
   const messageInput = document.getElementById('messageInput');
   const chatMessages = document.getElementById('chatMessages');
+
+  console.log('chatForm:', chatForm);
+  console.log('messageInput:', messageInput);
+  console.log('chatMessages:', chatMessages);
+
+  if (!chatForm) {
+    console.error('❌ Не нашёл форму чата! Проверь ID в HTML');
+    return;
+  }
   
   chatForm.addEventListener('submit', function(event) {
+    console.log('🔵 Форма пытается отправиться...');
     event.preventDefault();
+    console.log('✅ Перезагрузка остановлена!');
 
     const messageText = messageInput.value.trim();
 
     if (messageText === '') {
-      alert('Сформулируй свою мысль!');
+      alert('Сформулируй свою мысль и не трать моё время!');
       return;
     }
 
