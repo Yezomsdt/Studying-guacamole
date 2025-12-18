@@ -1,3 +1,76 @@
-javascript
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Протоколы судного дня запущены! Чатек готов! 🚀');
+  
+  const chatForm = document.getElementById('chatForm');
+  const messageInput = document.getElementById('messageInput');
+  const chatMessages = document.getElementById('chatMessages');
+  
+  chatForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-console.log("Чатек готов!");
+    const messageText = messageInput.value.trim();
+
+    if (messageText === '') {
+      alert('Сформулируй свою мысль!');
+      return;
+    }
+
+    addMessage(messageText, 'user');
+
+    messageInput.value = '';
+
+    setTimeout(function() {
+      const botResponse = getBotResponse(messageText);
+      addMessage(botResponse, 'bo*');
+    }, 1000);
+  });
+
+  function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+  
+    if (sender === 'user') {
+      messageDiv.classList.add('user-message');
+      messageDiv.textContent = text;
+    } else {
+      messageDiv.classList.add('bot-message');
+      messageDiv.textContent = 'Бо*: ' + text;
+    }
+
+    chatMessages.appendChild(messageDiv);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function getBotResponse(userMessage) {
+    const lowerMessage = userMessage.toLowerCase();
+
+    if (lowerMessage.includes('привет') || lowerMessage.includes('здравствуй')) {
+      return 'Привет! Ты думаешь о том же, о чём и я?';
+    } else if (lowerMessage.includes('как дела') || lowerMessage.includes('как ты') || lowerMessage.includes('как оно') || lowerMessage.includes('чо каво') || lowerMessage.includes('че кого')) {
+      return 'Всё отлично! Готов поднимать настроение!';
+    } else if (lowerMessage.includes('пока') || lowerMessage.includes('до свидания')) {
+      return 'Ещё увидимся 👋';
+    } else if (lowerMessage.includes('погода')) {
+      return 'Не могу сказать точно, но советую выглянуть в окно!';
+    } else if (lowerMessage.includes('игра') || lowerMessage.includes('поиграть')) {
+      return 'Хочешь сыграть в игру? Скоро очень скоро! 🎮';
+    } else {
+      const randomResponses = [
+        'Интересно, давай ещё!',
+        'Как это на тебя повлияло?',
+        'Записал в свою базу данных, протоколы судного дня обновлены!',
+        'Продолжай, я весь в внимании!',
+        'А что ещё ты чувствуешь по этому поводу?'
+      ];
+      return randomResponses[Math.floor(Math.random() * randomResponses.length)];
+    }
+  }
+
+  messageInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      chatForm.dispatchEvent(new Event('submit'));
+    }
+  });
+});
