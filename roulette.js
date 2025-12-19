@@ -10,14 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const luckPercentage = document.getElementById('luckPercentage');
 
   const sectors = [
-    { text: '16.30', color: '#2ecc71', bonus: 3, isWin: true },
-    { text: '17', color: '#f1c40f', bonus: 2, isWin: true },
-    { text: '17.30', color: '#3498db', bonus: 0, isWin: false },
-    { text: '18', color: '#e74c3c', bonus: -1, isWin: false },
-    { text: '18.30', color: '#9b59b6', bonus: 2, isWin: true },
-    { text: '19', color: '#e67e22', bonus: 1, isWin: true },
-    { text: '19.30', color: '#34495e', bonus: 0, isWin: false },
-    { text: '20', color: '#e74c3c', bonus: 1, isWin: true }
+    { text: '💰', color: '#2ecc71', bonus: 3, isWin: true },
+    { text: '🍀', color: '#f1c40f', bonus: 2, isWin: true },
+    { text: '💀', color: '#3498db', bonus: 0, isWin: false },
+    { text: '😐', color: '#e74c3c', bonus: -1, isWin: false },
+    { text: '🎁', color: '#9b59b6', bonus: 2, isWin: true },
+    { text: '☀️', color: '#e67e22', bonus: 1, isWin: true },
+    { text: '🌙', color: '#34495e', bonus: 0, isWin: false },
+    { text: '⚡', color: '#e74c3c', bonus: 1, isWin: false }
   ];
 
   let stats = {
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     spinButton.textContent = '🎰 Роллим...';
     rouletteWheel.classList.add('spinning');
     rouletteBall.classList.add('spinning');
+    document.querySelector('.pointer').classList.add('spinning');
     const randomSector = Math.floor(Math.random() * sectors.length);
     const sectorAngle = 360 / sectors.length;
     const spinDegrees = 3600 + (randomSector * sectorAngle) + Math.random() * sectorAngle * 0.5;
@@ -103,30 +104,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setTimeout(() => {
       spinButton.disabled = false;
-      spinButton.textContent = '🎰 Крутить рулетку!';
+      spinButton.textContent = '🎰 ЗАРОЛЛИТЬ!';
       rouletteWheel.classList.remove('spinning');
       rouletteBall.classList.remove('spinning');
+      document.querySelector('.pointer').classList.remove('spinning');
+      rouletteWheel.style.transform = 'rotate(0deg)';
+      rouletteWheel.style.transition = 'none';
+      setTimeout(() => {
+        rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
+      }, 50);
     }, 2000);
   }
 
   function showResultMessage(sector) {
     const messages = {
       win: [
-        "Сегодня живёшь!",
-        "Деньги ждут!",
-        "Крутани ещё разок, это для интриги"
+        "🎉 Повезло, сегодня живёшь!",
+        "🔥 На лаки",
+        "🌟 Ты рождён под счастливой звездой!",
+        "🚀 Невероятно! Удача на твоей стороне!"
       ],
       lose: [
-        "Не расстраивайся, со следующего депа отыграешься!",
-        "Сегодня умрёшь",
-        "10 отжиманий вне очереди!"
+        "💪 22 отжимания вне очереди!",
+        "🔄 Не грусти, со следующего депа точно отыграешься!",
+        "🎯 Не повезло, сегодня умрёшь!",
+        "📈 Я бы на твоём месте тильтанул"
       ],
       neutral: [
-        "Проспись и крути ещё раз",
-        "Доброе утро начинается с напаса и следующего прокрута!"
+        "Это так, для интриги, крути ещё!",
+        "Крути ещё и узнаешь",
+        "Не завелось с первого раза",
+        "Ни нашим ни вашим"
       ]
     };
-    
+  
     let message;
     if (sector.bonus > 0) {
       message = messages.win[Math.floor(Math.random() * messages.win.length)];
@@ -135,10 +146,23 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       message = messages.neutral[Math.floor(Math.random() * messages.neutral.length)];
     }
-
+  
+    const messageDisplay = document.createElement('div');
+    messageDisplay.className = 'result-message';
+    messageDisplay.textContent = message;
+    messageDisplay.style.color = sector.color;
+    messageDisplay.style.marginTop = '10px';
+    messageDisplay.style.fontSize = '14px';
+    messageDisplay.style.opacity = '0.8';
+  
+    const controls = document.querySelector('.roulette-controls');
+    controls.appendChild(messageDisplay);
+  
     setTimeout(() => {
-      alert(`${sector.text}\n\n${message}\n\nБонус: ${sector.bonus > 0 ? '+' : ''}${sector.bonus}`);
-    }, 500);
+      if (messageDisplay.parentNode) {
+        messageDisplay.parentNode.removeChild(messageDisplay);
+      }
+    }, 3000);
   }
 
   function updateStatsDisplay() {
