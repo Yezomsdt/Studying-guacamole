@@ -71,9 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinDegrees = 3600 + (randomSector * sectorAngle) + Math.random() * sectorAngle * 0.5;
     rouletteWheel.style.transform = `rotate(${spinDegrees}deg)`;
     rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
-    const ballDegrees = -spinDegrees * 1.5;
-    rouletteBall.style.transform = `rotate(${ballDegrees}deg)`;
-    rouletteBall.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
 
     setTimeout(() => {
       showResult(randomSector);
@@ -89,18 +86,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     saveStats();
 
-    resultDisplay.textContent = sector.text;
-    resultDisplay.style.color = sector.color;
+    resultDisplay.innerHTML = `${sector.text} <span class="result-description">${getResultDescription(sector.text)}</span>`;
+  resultDisplay.style.color = sector.color;
 
-    resultDisplay.style.transform = 'scale(1.3)';
-    resultDisplay.style.transition = 'transform 0.3s';
-    setTimeout(() => {
-      resultDisplay.style.transform = 'scale(1)';
-    }, 300);
+  resultDisplay.style.transform = 'scale(1.3)';
+  resultDisplay.style.transition = 'transform 0.3s';
+  setTimeout(() => {
+    resultDisplay.style.transform = 'scale(1)';
+  }, 300);
 
     updateStatsDisplay();
-
-    showResultMessage(sector);
 
     setTimeout(() => {
       spinButton.disabled = false;
@@ -108,13 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
       rouletteWheel.classList.remove('spinning');
       rouletteBall.classList.remove('spinning');
       document.querySelector('.pointer').classList.remove('spinning');
-      rouletteWheel.style.transform = 'rotate(0deg)';
-      rouletteWheel.style.transition = 'none';
-      setTimeout(() => {
-        rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
-      }, 50);
-    }, 2000);
-  }
+      rouletteBall.style.animation = 'none';
+    setTimeout(() => {
+      rouletteBall.style.animation = '';
+    }, 10);
+    
+    rouletteWheel.style.transform = 'rotate(0deg)';
+    rouletteWheel.style.transition = 'none';
+    setTimeout(() => {
+      rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
+    }, 50);
+  }, 2000);
+}
 
   function showResultMessage(sector) {
     const messages = {
@@ -165,6 +165,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
   }
 
+function getResultDescription(emoji) {
+  const descriptions = {
+    '💰': ' - Кэшбэк 100%!',
+    '🍀': ' - Удача на твоей стороне!',
+    '💀': ' - Поражение... но в следующий раз повезёт!',
+    '😐': ' - Ничего особенного',
+    '🎁': ' - Призовой выигрыш!',
+    '☀️': ' - Солнечный день!',
+    '🌙': ' - Ночная смена',
+    '⚡': ' - Энергия!'
+  };
+  return descriptions[emoji] || '';
+}
+  
   function updateStatsDisplay() {
     attemptsCount.textContent = stats.attempts;
     winsCount.textContent = stats.wins;
