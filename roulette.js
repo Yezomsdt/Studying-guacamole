@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-  
+
+  const resetStatsButton = document.getElementById('resetStatsButton');
   const rouletteWheel = document.getElementById('rouletteWheel');
   const rouletteBall = document.getElementById('rouletteBall');
   const spinButton = document.getElementById('spinButton');
@@ -9,14 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const luckPercentage = document.getElementById('luckPercentage');
 
   const sectors = [
-    { text: '🍀 Удача!', color: '#2ecc71', bonus: 3, isWin: true },
-    { text: '💰 Выигрыш!', color: '#f1c40f', bonus: 2, isWin: true },
-    { text: '😐 Нейтрально', color: '#3498db', bonus: 0, isWin: false },
-    { text: '💀 Поражение', color: '#e74c3c', bonus: -1, isWin: false },
-    { text: '🎁 Приз!', color: '#9b59b6', bonus: 2, isWin: true },
-    { text: '⚡ Шанс!', color: '#e67e22', bonus: 1, isWin: true },
-    { text: '🌙 Ночь', color: '#34495e', bonus: 0, isWin: false },
-    { text: '☀️ Утро', color: '#e74c3c', bonus: 1, isWin: true }
+    { text: '🍀 Сегодня живёшь!', color: '#2ecc71', bonus: 3, isWin: true },
+    { text: '💰 Деньги ждут!', color: '#f1c40f', bonus: 2, isWin: true },
+    { text: '😐 Крутани ещё разок, это для интриги', color: '#3498db', bonus: 0, isWin: false },
+    { text: '💀 Сегодня умрёшь', color: '#e74c3c', bonus: -1, isWin: false },
+    { text: '🎁 На новый год получишь подарочек', color: '#9b59b6', bonus: 2, isWin: true },
+    { text: '⚡ 10 отжиманий вне очереди!', color: '#e67e22', bonus: 1, isWin: true },
+    { text: '🌙 Проспись и крути ещё раз', color: '#34495e', bonus: 0, isWin: false },
+    { text: '☀️ Доброе утро начинается с напаса и следующего прокрута!', color: '#e74c3c', bonus: 1, isWin: true }
   ];
 
   let stats = {
@@ -35,41 +36,43 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStatsDisplay();
 
     spinButton.addEventListener('click', spinRoulette);
+    resetStatsButton.addEventListener('click', resetStats);
     
-    console.log('✅ Рулетка инициализирована!');
   }
 
   function createSectors() {
     const sectorAngle = 360 / sectors.length;
+
+    rouletteWheel.innerHTML = '';
     
     sectors.forEach((sector, index) => {
       const sectorEl = document.createElement('div');
       sectorEl.className = 'wheel-sector';
-      sectorEl.style.transform = `rotate(${index * sectorAngle}deg)`;
-      sectorEl.style.color = sector.color;
-      sectorEl.innerHTML = `<span style="transform: rotate(${sectorAngle/2}deg)">${sector.text}</span>`;
+      const rotateAngle = index * sectorAngle;
+      sectorEl.style.transform = `rotate(${rotateAngle}deg)`;
+      const textSpan = document.createElement('span');
+      textSpan.textContent = sector.text;
+      textSpan.style.color = sector.color;
+      textSpan.style.transform = `rotate(${sectorAngle/2 - 90}deg)`;
+      sectorEl.appendChild(textSpan);
       rouletteWheel.appendChild(sectorEl);
     });
   }
 
   function spinRoulette() {
     if (spinButton.disabled) return;
-
     spinButton.disabled = true;
-    spinButton.textContent = '🎰 Вращается...';
-
+    spinButton.textContent = '🎰 Роллим...';
     rouletteWheel.classList.add('spinning');
     rouletteBall.classList.add('spinning');
-
     const randomSector = Math.floor(Math.random() * sectors.length);
     const sectorAngle = 360 / sectors.length;
-
-    const spinDegrees = 3600 + (randomSector * sectorAngle) + Math.random() * sectorAngle;
-
+    const spinDegrees = 3600 + (randomSector * sectorAngle) + Math.random() * sectorAngle * 0.5;
     rouletteWheel.style.transform = `rotate(${spinDegrees}deg)`;
-
-    const ballDegrees = -spinDegrees + Math.random() * 180;
+    rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
+    const ballDegrees = -spinDegrees * 1.5;
     rouletteBall.style.transform = `rotate(${ballDegrees}deg)`;
+    rouletteBall.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
 
     setTimeout(() => {
       showResult(randomSector);
@@ -89,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
     resultDisplay.style.color = sector.color;
 
     resultDisplay.style.transform = 'scale(1.3)';
+    resultDisplay.style.transition = 'transform 0.3s';
     setTimeout(() => {
       resultDisplay.style.transform = 'scale(1)';
     }, 300);
@@ -108,19 +112,18 @@ document.addEventListener('DOMContentLoaded', function() {
   function showResultMessage(sector) {
     const messages = {
       win: [
-        "🎉 Поздравляем! Тебе сегодня везёт!",
-        "🔥 Отличный результат! Продолжай в том же духе!",
-        "🌟 Ты рождён под счастливой звездой!"
+        "Сегодня живёшь!",
+        "Деньги ждут!",
+        "Крутани ещё разок, это для интриги"
       ],
       lose: [
-        "💪 Не расстраивайся! В следующий раз повезёт!",
-        "🔄 Удача переменчива, попробуй ещё раз!",
-        "🎯 Практика ведёт к совершенству!"
+        "Не расстраивайся, со следующего депа отыграешься!",
+        "Сегодня умрёшь",
+        "10 отжиманий вне очереди!"
       ],
       neutral: [
-        "🤔 Интересно... что будет в следующий раз?",
-        "🌀 Судьба пока не определилась",
-        "📊 Статистика нейтральна сегодня"
+        "Проспись и крути ещё раз",
+        "Доброе утро начинается с напаса и следующего прокрута!"
       ]
     };
     
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     setTimeout(() => {
-      alert(message);
+      alert(`${sector.text}\n\n${message}\n\nБонус: ${sector.bonus > 0 ? '+' : ''}${sector.bonus}`);
     }, 500);
   }
 
@@ -147,8 +150,15 @@ document.addEventListener('DOMContentLoaded', function() {
       : 0;
     
     luckPercentage.textContent = `${percentage}%`;
-    luckPercentage.style.color = percentage > 50 ? '#2ecc71' : 
-                                 percentage > 30 ? '#f1c40f' : '#e74c3c';
+    if (percentage >= 70) {
+      luckPercentage.style.color = '#2ecc71';
+    } else if (percentage >= 50) {
+      luckPercentage.style.color = '#f1c40f';
+    } else if (percentage >= 30) {
+      luckPercentage.style.color = '#e67e22';
+    } else {
+      luckPercentage.style.color = '#e74c3c';
+    }
   }
 
   function saveStats() {
@@ -171,12 +181,20 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function resetStats() {
-    if (confirm('Сбросить всю статистику рулетки?')) {
-      stats = { attempts: 0, wins: 0, totalBonus: 0 };
-      saveStats();
-      updateStatsDisplay();
-    }
+  if (confirm('Точно? Сделанного не вернёшь')) {
+    stats = { attempts: 0, wins: 0, totalBonus: 0 };
+    saveStats();
+    updateStatsDisplay();
+
+    resultDisplay.textContent = 'Статистика сброшена!';
+    resultDisplay.style.color = '#2ecc71';
+    
+    setTimeout(() => {
+      resultDisplay.textContent = '-';
+      resultDisplay.style.color = 'gold';
+    }, 2000);
   }
+}
 
   window.resetRouletteStats = resetStats;
   
