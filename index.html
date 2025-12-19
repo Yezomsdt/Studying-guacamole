@@ -69,6 +69,46 @@
       </div>
     </section>
 
+    <section class="roulette-section">
+      <div class="container">
+        <h2 class="subheading">Рулетка судьбы</h2>
+    
+        <div class="roulette-container">
+          <div class="wheel-container">
+            <div class="wheel" id="rouletteWheel">
+            </div>
+            <div class="ball" id="rouletteBall"></div>
+            <div class="pointer"></div>
+          </div>
+
+          <div class="roulette-controls">
+            <button class="button spin-button" id="spinButton">
+          🎰 Крутить колесо!
+            </button>
+            <div class="result-display" id="resultDisplay">
+              <div class="result-label">Последний результат:</div>
+              <div class="result-value">-</div>
+            </div>
+          </div>
+
+          <div class="roulette-stats">
+            <div class="stat-item">
+              <span class="stat-label">Попыток:</span>
+              <span class="stat-value" id="attemptsCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Побед:</span>
+              <span class="stat-value" id="winsCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Удача:</span>
+              <span class="stat-value" id="luckPercentage">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="portfolio">
       <h2 class="subheading">Мои работы</h2>
         <figure class="project-image">
@@ -104,38 +144,7 @@
     </footer>
     
     <script src="script.js"></script>
-    <script src="tree.js"></script>
-
-    <section class="tree-section">
-      <div class="container">
-        <h2 class="subheading">Древо что ты взрастил</h2>
-        <div class="tree-container">
-      
-          <svg class="tree-svg" id="moodTree" width="800" height="500"></svg>
-      
-          <div class="tree-controls">
-            <button class="button" id="growTree">Отдай древу свои чувства</button>
-            <button class="button" id="resetTree">Сбросить</button>
-            <div class="tree-stats">
-              <span>Листьев: <span id="leafCount">0</span></span>
-              <span>Среднее настроение: <span id="moodScore">😐</span></span>
-            </div>
-          </div>
-      
-          <div class="message-popup" id="messagePopup">
-            <div class="popup-content">
-              <button class="close-popup">&times;</button>
-              <h3>Сообщение</h3>
-              <p id="popupMessageText">Текст сообщения...</p>
-              <div class="message-info">
-                <span id="popupMood">Настроение: нейтральное</span>
-                <span id="popupTime">Время: --:--</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <script src="roulette.js"></script>
     
   </body>
 </html>
