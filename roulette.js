@@ -10,14 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const luckPercentage = document.getElementById('luckPercentage');
 
   const sectors = [
-    { text: '🍀 Сегодня живёшь!', color: '#2ecc71', bonus: 3, isWin: true },
-    { text: '💰 Деньги ждут!', color: '#f1c40f', bonus: 2, isWin: true },
-    { text: '😐 Крутани ещё разок, это для интриги', color: '#3498db', bonus: 0, isWin: false },
-    { text: '💀 Сегодня умрёшь', color: '#e74c3c', bonus: -1, isWin: false },
-    { text: '🎁 На новый год получишь подарочек', color: '#9b59b6', bonus: 2, isWin: true },
-    { text: '⚡ 10 отжиманий вне очереди!', color: '#e67e22', bonus: 1, isWin: true },
-    { text: '🌙 Проспись и крути ещё раз', color: '#34495e', bonus: 0, isWin: false },
-    { text: '☀️ Доброе утро начинается с напаса и следующего прокрута!', color: '#e74c3c', bonus: 1, isWin: true }
+    { text: '16.30', color: '#2ecc71', bonus: 3, isWin: true },
+    { text: '17', color: '#f1c40f', bonus: 2, isWin: true },
+    { text: '17.30', color: '#3498db', bonus: 0, isWin: false },
+    { text: '18', color: '#e74c3c', bonus: -1, isWin: false },
+    { text: '18.30', color: '#9b59b6', bonus: 2, isWin: true },
+    { text: '19', color: '#e67e22', bonus: 1, isWin: true },
+    { text: '19.30', color: '#34495e', bonus: 0, isWin: false },
+    { text: '20', color: '#e74c3c', bonus: 1, isWin: true }
   ];
 
   let stats = {
