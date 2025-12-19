@@ -116,65 +116,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 2000);
 }
 
-  function showResultMessage(sector) {
-    const messages = {
-      win: [
-        "🎉 Повезло, сегодня живёшь!",
-        "🔥 На лаки",
-        "🌟 Ты рождён под счастливой звездой!",
-        "🚀 Невероятно! Удача на твоей стороне!"
-      ],
-      lose: [
-        "💪 22 отжимания вне очереди!",
-        "🔄 Не грусти, со следующего депа точно отыграешься!",
-        "🎯 Не повезло, сегодня умрёшь!",
-        "📈 Я бы на твоём месте тильтанул"
-      ],
-      neutral: [
-        "Это так, для интриги, крути ещё!",
-        "Крути ещё и узнаешь",
-        "Не завелось с первого раза",
-        "Ни нашим ни вашим"
-      ]
-    };
-  
-    let message;
-    if (sector.bonus > 0) {
-      message = messages.win[Math.floor(Math.random() * messages.win.length)];
-    } else if (sector.bonus < 0) {
-      message = messages.lose[Math.floor(Math.random() * messages.lose.length)];
-    } else {
-      message = messages.neutral[Math.floor(Math.random() * messages.neutral.length)];
-    }
-  
-    const messageDisplay = document.createElement('div');
-    messageDisplay.className = 'result-message';
-    messageDisplay.textContent = message;
-    messageDisplay.style.color = sector.color;
-    messageDisplay.style.marginTop = '10px';
-    messageDisplay.style.fontSize = '14px';
-    messageDisplay.style.opacity = '0.8';
-  
-    const controls = document.querySelector('.roulette-controls');
-    controls.appendChild(messageDisplay);
-  
-    setTimeout(() => {
-      if (messageDisplay.parentNode) {
-        messageDisplay.parentNode.removeChild(messageDisplay);
-      }
-    }, 3000);
-  }
-
 function getResultDescription(emoji) {
   const descriptions = {
-    '💰': ' - Кэшбэк 100%!',
-    '🍀': ' - Удача на твоей стороне!',
-    '💀': ' - Поражение... но в следующий раз повезёт!',
-    '😐': ' - Ничего особенного',
-    '🎁': ' - Призовой выигрыш!',
-    '☀️': ' - Солнечный день!',
+    '💰': ' - Ты пидор!',
+    '🍀': ' - Первый на кого ты посмотришь пидор!',
+    '💀': ' - Сегодня умрёшь!',
+    '😐': ' - Ничего особенного, крути ещё раз',
+    '🎁': ' - Тебе сюрприз, чекай штаны!',
+    '☀️': ' - Смотри под ноги',
     '🌙': ' - Ночная смена',
-    '⚡': ' - Энергия!'
+    '⚡': ' - Десять отжиманий вне очереди!!'
   };
   return descriptions[emoji] || '';
 }
