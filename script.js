@@ -23,10 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     addMessage(messageText, 'user');
     messageInput.value = '';
 
-    document.dispatchEvent(new CustomEvent('messageSent', {
-      detail: { text: messageText }
-    }));
-    
     setTimeout(function() {
       const botResponse = getBotResponse(messageText);
       addMessage(botResponse, 'bo*');
@@ -34,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   window.sendMessage = sendMessage;
-  
+
   sendButton.addEventListener('click', sendMessage);
   
   messageInput.addEventListener('keypress', function(event) {
