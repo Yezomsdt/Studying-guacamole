@@ -495,12 +495,25 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 60px;
+  justify-content: center;
   box-sizing: border-box;
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+.wheel-sector span {
+  position: absolute;
+  transform-origin: center;
+  text-align: center;
+  width: 80px;
+  margin-left: -40px;
+  left: 50%;
+  top: 30px;
+  transform: rotate(90deg);
+  font-size: 14px;
+  line-height: 1.2;
 }
 
 .ball {
@@ -637,7 +650,16 @@ body {
   }
   
   .wheel {
-    border-width: 8px;
+    background: conic-gradient(
+      #e74c3c 0deg 45deg,
+      #2ecc71 45deg 90deg,
+      #3498db 90deg 135deg,
+      #f1c40f 135deg 180deg,
+      #9b59b6 180deg 225deg,
+      #e67e22 225deg 270deg,
+      #1abc9c 270deg 315deg,
+      #f39c12 315deg 360deg
+    );
   }
   
   .ball {
@@ -654,4 +676,31 @@ body {
   .roulette-controls {
     flex-direction: column;
   }
+}
+
+.control-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.small-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.small-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(127, 140, 141, 0.3);
+  background: linear-gradient(45deg, #bdc3c7, #95a5a6);
+}
+
+.small-button:active {
+  transform: translateY(0);
 }
