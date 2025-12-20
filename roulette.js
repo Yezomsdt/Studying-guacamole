@@ -8,16 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const attemptsCount = document.getElementById('attemptsCount');
   const winsCount = document.getElementById('winsCount');
   const luckPercentage = document.getElementById('luckPercentage');
+  const openRouletteBtn = document.getElementById('openRouletteBtn');
+  const rouletteSection = document.getElementById('rouletteSection');
 
   const sectors = [
-    { text: '💰', color: '#2ecc71', bonus: 3, isWin: true },
-    { text: '🍀', color: '#f1c40f', bonus: 2, isWin: true },
-    { text: '💀', color: '#3498db', bonus: 0, isWin: false },
-    { text: '😐', color: '#e74c3c', bonus: -1, isWin: false },
+    { text: '💰', color: '#e74c3c', bonus: 3, isWin: true },
+    { text: '🍀', color: '#2ecc71', bonus: 2, isWin: true },
+    { text: '💀', color: '#34495e', bonus: -2, isWin: false },
+    { text: '😐', color: '#3498db', bonus: 0, isWin: false },
     { text: '🎁', color: '#9b59b6', bonus: 2, isWin: true },
-    { text: '☀️', color: '#e67e22', bonus: 1, isWin: true },
-    { text: '🌙', color: '#34495e', bonus: 0, isWin: false },
-    { text: '⚡', color: '#e74c3c', bonus: 1, isWin: false }
+    { text: '☀️', color: '#f1c40f', bonus: 1, isWin: true },
+    { text: '🌙', color: '#e67e22', bonus: 0, isWin: false },
+    { text: '⚡', color: '#1abc9c', bonus: 1, isWin: true }
   ];
 
   let stats = {
@@ -37,7 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     spinButton.addEventListener('click', spinRoulette);
     resetStatsButton.addEventListener('click', resetStats);
-    
+    openRouletteBtn.addEventListener('click', function() {
+    rouletteSection.classList.remove('hidden');
+    openRouletteBtn.classList.add('hidden');
+   });
   }
 
   function createSectors() {
