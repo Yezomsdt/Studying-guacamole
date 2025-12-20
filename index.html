@@ -8,6 +8,20 @@
   </head>
 
   <body>
+
+  <div class="theme-switcher">
+    <div class="theme-options">
+      <input type="radio" id="theme-light" name="theme" value="light" checked>
+      <label for="theme-light" title="Стандартная">🔆</label>
+    
+      <input type="radio" id="theme-dark" name="theme" value="dark">
+      <label for="theme-dark" title="Тёмная">🌙</label>
+    
+      <input type="radio" id="theme-contrast" name="theme" value="contrast">
+      <label for="theme-contrast" title="Контрастная">🖤</label>
+    </div>
+  </div>
+
     <header class="page-header">
       <div class="container">
       <div id="upstairs">Any questions:</div>
@@ -69,49 +83,57 @@
       </div>
     </section>
 
-    <section class="roulette-section">
-      <div class="container">
-        <h2 class="subheading">Рулетка судьбы</h2>
-    
-        <div class="roulette-container">
-          <div class="wheel-container">
-            <div class="wheel" id="rouletteWheel">
-            </div>
-            <div class="ball" id="rouletteBall"></div>
-            <div class="pointer"></div>
-          </div>
+    <div class="roulette-opener">
+      <button class="button open-roulette-btn" id="openRouletteBtn">
+        🎪 Открыть рулетку судьбы
+      </button>
+    </div>
 
-          <div class="roulette-controls">
-            <button class="button spin-button" id="spinButton">
-              🎰 Крутить колесо!
-            </button>
-            <div class="control-buttons">
-              <button class="button small-button" id="resetStatsButton">
-                🔄 Обнулить стату
+    <section class="roulette-section hidden" id="rouletteSection">
+      <section class="roulette-section">
+        <div class="container">
+          <h2 class="subheading">Рулетка судьбы</h2>
+      
+          <div class="roulette-container">
+            <div class="wheel-container">
+              <div class="wheel" id="rouletteWheel">
+              </div>
+              <div class="ball" id="rouletteBall"></div>
+              <div class="pointer"></div>
+            </div>
+
+            <div class="roulette-controls">
+              <button class="button spin-button" id="spinButton">
+                🎰 Крутить колесо!
               </button>
+              <div class="control-buttons">
+                <button class="button small-button" id="resetStatsButton">
+                  🔄 Обнулить стату
+                </button>
+              </div>
+              <div class="result-display" id="resultDisplay">
+                <div class="result-label">Последний результат:</div>
+                <div class="result-value">-</div>
+              </div>
             </div>
-            <div class="result-display" id="resultDisplay">
-              <div class="result-label">Последний результат:</div>
-              <div class="result-value">-</div>
-            </div>
-          </div>
 
-          <div class="roulette-stats">
-            <div class="stat-item">
-              <span class="stat-label">Попыток:</span>
-              <span class="stat-value" id="attemptsCount">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Побед:</span>
-              <span class="stat-value" id="winsCount">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Удача:</span>
-              <span class="stat-value" id="luckPercentage">0%</span>
+            <div class="roulette-stats">
+              <div class="stat-item">
+                <span class="stat-label">Попыток:</span>
+                <span class="stat-value" id="attemptsCount">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Побед:</span>
+                <span class="stat-value" id="winsCount">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Удача:</span>
+                <span class="stat-value" id="luckPercentage">0%</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </section>
 
     <section class="portfolio">
@@ -149,6 +171,7 @@
     </footer>
     
     <script src="script.js"></script>
+    <script src="theme-switcher.js"></script>
     <script src="roulette.js"></script>
     
   </body>
