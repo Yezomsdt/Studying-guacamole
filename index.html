@@ -90,50 +90,48 @@
     </div>
 
     <section class="roulette-section hidden" id="rouletteSection">
-      <section class="roulette-section">
-        <div class="container">
-          <h2 class="subheading">Рулетка судьбы</h2>
+      <div class="container">
+        <h2 class="subheading">Рулетка судьбы</h2>
       
-          <div class="roulette-container">
-            <div class="wheel-container">
-              <div class="wheel" id="rouletteWheel">
-              </div>
-              <div class="ball" id="rouletteBall"></div>
-              <div class="pointer"></div>
+        <div class="roulette-container">
+          <div class="wheel-container">
+            <div class="wheel" id="rouletteWheel">
             </div>
+            <div class="ball" id="rouletteBall"></div>
+            <div class="pointer"></div>
+          </div>
 
-            <div class="roulette-controls">
-              <button class="button spin-button" id="spinButton">
-                🎰 Крутить колесо!
+          <div class="roulette-controls">
+            <button class="button spin-button" id="spinButton">
+              🎰 Крутить колесо!
+            </button>
+            <div class="control-buttons">
+              <button class="button small-button" id="resetStatsButton">
+                🔄 Обнулить стату
               </button>
-              <div class="control-buttons">
-                <button class="button small-button" id="resetStatsButton">
-                  🔄 Обнулить стату
-                </button>
-              </div>
-              <div class="result-display" id="resultDisplay">
-                <div class="result-label">Последний результат:</div>
-                <div class="result-value">-</div>
-              </div>
             </div>
+            <div class="result-display" id="resultDisplay">
+              <div class="result-label">Последний результат:</div>
+              <div class="result-value">-</div>
+            </div>
+          </div>
 
-            <div class="roulette-stats">
-              <div class="stat-item">
-                <span class="stat-label">Попыток:</span>
-                <span class="stat-value" id="attemptsCount">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Побед:</span>
-                <span class="stat-value" id="winsCount">0</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-label">Удача:</span>
-                <span class="stat-value" id="luckPercentage">0%</span>
-              </div>
+          <div class="roulette-stats">
+            <div class="stat-item">
+              <span class="stat-label">Попыток:</span>
+              <span class="stat-value" id="attemptsCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Побед:</span>
+              <span class="stat-value" id="winsCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Удача:</span>
+              <span class="stat-value" id="luckPercentage">0%</span>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </section>
 
     <section class="portfolio">
