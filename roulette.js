@@ -40,9 +40,18 @@ document.addEventListener('DOMContentLoaded', function() {
     spinButton.addEventListener('click', spinRoulette);
     resetStatsButton.addEventListener('click', resetStats);
     openRouletteBtn.addEventListener('click', function() {
-    rouletteSection.classList.remove('hidden');
-    openRouletteBtn.classList.add('hidden');
-   });
+      if (isRouletteVisible) {
+        rouletteSection.classList.add('hidden');
+        openRouletteBtn.innerHTML = '🎪 Открыть рулетку судьбы';
+        openRouletteBtn.classList.remove('active');
+      } else {
+          rouletteSection.classList.remove('hidden');
+          openRouletteBtn.innerHTML = '🎪 Скрыть рулетку судьбы';
+          openRouletteBtn.classList.add('active');
+        }
+      isRouletteVisible = !isRouletteVisible;
+    });
+    let isRouletteVisible = false;
   }
 
   function createSectors() {
