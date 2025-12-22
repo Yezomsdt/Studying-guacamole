@@ -1040,4 +1040,187 @@ body.contrast-theme .button:hover {
   transform: translateY(-5px);
 }
 
-body.contrast-theme .
+body.contrast-theme .button:hover::before {
+  opacity: 1;
+  background: rgba(0, 255, 0, 0.7);
+  filter: blur(10px);
+}
+
+body.contrast-theme .open-roulette-btn {
+  background: #003300;
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 15px #00ff00;
+  border-radius: 0;
+}
+
+body.contrast-theme .open-roulette-btn:hover {
+  background: #003300;
+  box-shadow: 0 0 25px #00ff00;
+}
+
+body.contrast-theme .open-roulette-btn.active {
+  background: #006600;
+  box-shadow: 0 0 20px #00ff00;
+}
+
+body.contrast-theme .page-footer {
+  background: #000000;
+  color: #00ff00;
+  border-top: 3px solid #00ff00;
+  box-shadow: 0 0 15px #00ff00;
+}
+
+body.contrast-theme .page-footer a {
+  color: #00ff00;
+  text-decoration: underline;
+}
+
+body.contrast-theme .page-footer a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+body.contrast-theme .roulette-section {
+  background: #000000;
+  border: 2px solid #00ff00;
+  box-shadow: 0 0 30px #00ff00;
+}
+
+body.contrast-theme .roulette-section .subheading {
+  color: #00ff00 !important;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+body.contrast-theme .wheel {
+  border-color: #00ff00;
+  box-shadow: 
+    inset 0 0 50px #003300,
+    0 20px 50px rgba(0, 255, 0, 0.3),
+    0 0 30px #00ff00;
+}
+
+body.contrast-theme .pointer {
+  background: #00ff00;
+  box-shadow: 0 0 20px #00ff00;
+}
+
+body.contrast-theme .ball {
+  background: radial-gradient(circle at 30% 30%, #00ff00, #003300);
+  box-shadow: 0 0 20px #00ff00;
+}
+
+body.contrast-theme .spin-button {
+  background: #003300;
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 15px #00ff00;
+  border-radius: 0;
+}
+
+body.contrast-theme .spin-button:hover:not(:disabled) {
+  background: #003300;
+  box-shadow: 0 0 25px #00ff00;
+}
+
+body.contrast-theme .small-button {
+  background: #002200;
+  border: 1px solid #00ff00;
+}
+
+body.contrast-theme .result-value {
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+@media (max-width: 1024px) {
+  .hero-image {
+    margin-bottom: 300px;
+  }
+  
+  .heading {
+    font-size: 64px;
+    line-height: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-content {
+    flex-direction: column;
+  }
+
+  .intro-content figure {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  body {
+    min-width: unset;
+  }
+  
+  .heading {
+    font-size: 48px;
+    line-height: 52px;
+  }
+  
+  .hero-image p {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  
+  .chat-container {
+    padding: 20px;
+  }
+  
+  .chat-messages {
+    height: 300px;
+    padding: 15px;
+  }
+  
+  .message {
+    max-width: 85%;
+  }
+  
+  .chat-input-form {
+    flex-direction: column;
+  }
+  
+  .send-button {
+    width: 100%;
+  }
+  
+  .wheel-container {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .wheel {
+    border-width: 8px;
+  }
+  
+  .ball {
+    width: 25px;
+    height: 25px;
+    top: -12px;
+    transform-origin: 50% 162px;
+  }
+  
+  .roulette-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .result-display {
+    min-width: 250px;
+  }
+
+  .theme-switcher {
+    top: 10px;
+    left: 10px;
+    padding: 6px;
+  }
+  
+  .theme-options label {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
