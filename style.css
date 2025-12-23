@@ -781,7 +781,7 @@ body {
 
 body.dark-theme {
   background-image: url("img/Darker.jpg");
-  background-size: cover;
+  background-size: auto;
   background-position: top center;
   background-repeat: no-repeat;
   --primary-color: #91bbe8;
