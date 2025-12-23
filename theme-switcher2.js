@@ -69,15 +69,42 @@
     }
 
     function applyTheme(theme) {
-      body.classList.remove('light-theme', 'dark-theme', 'contrast-theme');
-
-      setTimeout(() => {
+      body.classList.remove('dark-theme', 'contrast-theme');
+  
+      if (theme !== 'light') {
         body.classList.add(theme + '-theme');
+      }
 
-        updateMetaColorScheme(theme);
-      }, 10);
+      updateWidgetBackgrounds(theme);
+  
+      updateMetaColorScheme(theme);
     }
 
+    function updateWidgetBackgrounds(theme) {
+      const themeSwitcher = document.querySelector('.theme-switcher');
+      const chatContainer = document.querySelector('.chat-container');
+      const chatSection = document.querySelector('.chat-section');
+      const rouletteSection = document.querySelector('.roulette-section');
+      
+      if (theme === 'dark') {
+        if (themeSwitcher) themeSwitcher.style.backgroundColor = '#3a2b5b';
+        if (chatContainer) chatContainer.style.backgroundColor = '#3a2b5b';
+        if (chatSection) chatSection.style.backgroundColor = '#3a2b5b';
+        if (rouletteSection) rouletteSection.style.backgroundColor = '#3a2b5b';
+      } else if (theme === 'contrast') {
+        if (themeSwitcher) themeSwitcher.style.backgroundColor = '#003300';
+        if (chatContainer) chatContainer.style.backgroundColor = '#001a00';
+        if (chatSection) chatSection.style.backgroundColor = '#001a00';
+        if (rouletteSection) rouletteSection.style.backgroundColor = '#001a00';
+      } else {
+        if (themeSwitcher) themeSwitcher.style.backgroundColor = '';
+        if (chatContainer) chatContainer.style.backgroundColor = '';
+        if (chatSection) chatSection.style.backgroundColor = '';
+        if (rouletteSection) rouletteSection.style.backgroundColor = '';
+      }
+    }
+
+    
     function changeTheme(theme) {
       if (!availableThemes.includes(theme)) {
         console.error('❌ Попытка установить недопустимую тему:', theme);
