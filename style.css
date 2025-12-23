@@ -34,6 +34,7 @@ body {
 }
 
 .page-header {
+  position: relative;
   margin: 0 0 160px;
   padding: 32px 0 32px;
 }
@@ -640,7 +641,7 @@ body {
 }
 
 .theme-switcher {
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 20px;
   z-index: 1000;
@@ -650,6 +651,7 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .theme-switcher:hover {
@@ -676,41 +678,43 @@ body {
   cursor: pointer;
   font-size: 20px;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
   border: 3px solid transparent;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.theme-options label[for="theme-light"] {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.theme-options label[for="theme-dark"] {
+  background-color: #2a1b3d;
+  color: #91bbe8;
+}
+
+.theme-options label[for="theme-contrast"] {
+  background-color: #000000;
+  color: #00ff00;
+}
+
+.theme-options input[type="radio"]:checked + label[for="theme-light"] {
+  border-color: #288be6;
+  box-shadow: 0 0 10px rgba(40, 139, 230, 0.5);
+}
+
+.theme-options input[type="radio"]:checked + label[for="theme-dark"] {
+  border-color: #a8d0ff;
+  box-shadow: 0 0 15px rgba(168, 208, 255, 0.6);
+}
+
+.theme-options input[type="radio"]:checked + label[for="theme-contrast"] {
+  border-color: #00ff00;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
 }
 
 .theme-options label:hover {
   transform: scale(1.15);
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
-}
-
-.theme-options input[type="radio"]:checked + label[for="theme-light"] {
-  background: linear-gradient(135deg, #288be6, #1a6fc1);
-  color: white;
-  border-color: #00417d;
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.2),
-    0 0 15px rgba(40, 139, 230, 0.5);
-}
-
-.theme-options input[type="radio"]:checked + label[for="theme-dark"] {
-  background: linear-gradient(135deg, #3b2358, #2a1b3d);
-  color: #91bbe8;
-  border-color: #a8d0ff;
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.3),
-    0 0 15px rgba(168, 208, 255, 0.4);
-}
-
-.theme-options input[type="radio"]:checked + label[for="theme-contrast"] {
-  background: linear-gradient(135deg, #000000, #111111);
-  color: #00ff00;
-  border-color: #00ff00;
-  box-shadow: 
-    inset 0 2px 4px rgba(0,255,0,0.3),
-    0 0 15px rgba(0, 255, 0, 0.5);
 }
 
 .roulette-opener {
@@ -769,15 +773,15 @@ body {
 
 body.dark-theme {
   --primary-color: #91bbe8;
-  --secondary-color: #2a1b3d;
-  --background-color: #3b2358;
+  --secondary-color: #1a1128;
+  --background-color: #261635;
   --button-bg: #2a1b3d;
-  --text-color: #91bbe8;
-  --footer-bg: #2a1b3d;
-  --white: #91bbe8;
-  --chat-user-bg: #4a3b6b;
-  --chat-bot-bg: #5a4b7b;
-  --glow-color: rgba(145, 187, 232, 0.5);
+  --text-color: #a8d0ff;
+  --footer-bg: #1a1128;
+  --white: #a8d0ff;
+  --chat-user-bg: #3a2b5b;
+  --chat-bot-bg: #4a3b6b;
+  --glow-color: rgba(168, 208, 255, 0.5);
 }
 
 body.dark-theme {
@@ -787,63 +791,65 @@ body.dark-theme {
 }
 
 body.dark-theme .page-header {
-  background-color: #2a1b3d;
+  background-color: var(--secondary-color);
   color: var(--text-color);
 }
 
 body.dark-theme .hero-image {
-  background-color: #2a1b3d;
+  background-color: var(--secondary-color);
 }
 
 body.dark-theme .intro {
-  background-color: #4a3b6b;
+  background-color: var(--chat-user-bg);
   border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
 }
 
 body.dark-theme .portfolio {
-  background-color: #4a3b6b;
+  background-color: var(--chat-user-bg);
   border-radius: 15px;
   padding: 20px;
   margin: 20px 0;
 }
 
 body.dark-theme .my-achievements {
-  background-color: #4a3b6b;
-  border-top: 2px solid #5a4b7b;
+  background-color: var(--chat-user-bg);
+  border-top: 2px solid var(--chat-bot-bg);
   padding: 20px;
 }
 
 body.dark-theme .achievements-gallery img {
-  border: 2px solid #5a4b7b;
+  border: 2px solid var(--chat-bot-bg);
 }
 
 body.dark-theme .chat-section .subheading {
-  color: #91bbe8 !important;
-  text-shadow: 0 0 10px rgba(145, 187, 232, 0.5);
+  color: var(--white) !important;
+  text-shadow: 0 0 10px var(--glow-color);
 }
 
 body.dark-theme .chat-section {
-  background-color: #4a3b6b;
-  border: 2px solid #5a4b7b;
+  background-color: var(--chat-user-bg);
+  border: 2px solid var(--chat-bot-bg);
 }
 
+body.dark-theme .theme-switcher,
 body.dark-theme .chat-container {
-  background: #3b2358;
+  background: var(--background-color);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  border: 1px solid var(--chat-bot-bg);
 }
 
 body.dark-theme .chat-input {
-  background: #2a1b3d;
+  background: var(--secondary-color);
   color: var(--text-color);
-  border-color: #5a4b7b;
+  border-color: var(--chat-bot-bg);
 }
 
 body.dark-theme .button {
   background: var(--button-bg);
   color: var(--text-color);
-  border: 1px solid #5a4b7b;
+  border: 1px solid var(--chat-bot-bg);
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -873,7 +879,7 @@ body.dark-theme .button:hover {
 
 body.dark-theme .button:hover::before {
   opacity: 1;
-  background: rgba(145, 187, 232, 0.7);
+  background: rgba(168, 208, 255, 0.7);
   filter: blur(10px);
 }
 
@@ -921,6 +927,7 @@ body.dark-theme .page-footer a:hover {
 }
 
 body.dark-theme .roulette-section {
+  background-color: #3a2b5b !important;
   background: linear-gradient(135deg, #2a1b3d 0%, #3b2358 100%);
   border: 2px solid #5a4b7b;
 }
@@ -973,9 +980,14 @@ body.contrast-theme {
   --text-color: #00ff00;
   --footer-bg: #000000;
   --white: #00ff00;
-  --chat-user-bg: #003300;
-  --chat-bot-bg: #005500;
+  --chat-user-bg: #002200;
+  --chat-bot-bg: #004400;
   --glow-color: rgba(0, 255, 0, 0.5);
+}
+
+body.contrast-theme .theme-switcher {
+  background-color: #003300 !important;
+  border: 1px solid #00ff00;
 }
 
 body.contrast-theme {
@@ -1080,9 +1092,12 @@ body.contrast-theme .page-footer a:hover {
   text-shadow: 0 0 10px #00ff00;
 }
 
+body.contrast-theme .chat-container,
+body.contrast-theme .chat-section,
 body.contrast-theme .roulette-section {
   background: #000000;
-  border: 2px solid #00ff00;
+  background-color: #001a00 !important;
+  border: 1px solid #00ff00;
   box-shadow: 0 0 30px #00ff00;
 }
 
