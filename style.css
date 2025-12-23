@@ -799,7 +799,6 @@ body.dark-theme {
 body.dark-theme {
   background-color: var(--background-color);
   color: var(--text-color);
-  background-image: none;
 }
 
 body.dark-theme .page-header {
