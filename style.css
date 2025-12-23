@@ -808,6 +808,18 @@ body.dark-theme .page-header {
 
 body.dark-theme .hero-image {
   background-color: var(--secondary-color);
+  margin-bottom: 620px;
+}
+
+body.dark-theme .hero-image .container {
+  max-width: 1408px;
+  text-align: center;
+}
+
+body.dark-theme .hero-image p {
+  margin: 0;
+  font-size: 32px;
+  line-height: 48px;
 }
 
 body.dark-theme .intro {
