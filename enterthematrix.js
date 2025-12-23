@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!matrixOverlay || !isContrastTheme) return;
 
   function createMatrixEffect() {
-    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+    const chars = "01234567890-!@#$%^&*_+qwertyuiopasdfghjkl'zxcvbnm";
     const fontSize = 14;
     const columns = Math.floor(window.innerWidth / fontSize);
 
