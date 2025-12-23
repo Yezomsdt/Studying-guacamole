@@ -1023,7 +1023,6 @@ body.contrast-theme .chat-section .subheading {
 }
 
 body.contrast-theme .page-header,
-body.contrast-theme .hero-image,
 body.contrast-theme .intro,
 body.contrast-theme .portfolio,
 body.contrast-theme .my-achievements {
@@ -1031,6 +1030,13 @@ body.contrast-theme .my-achievements {
   color: #00ff00;
   border: 1px solid #00ff00;
   box-shadow: 0 0 15px #00ff00;
+}
+
+body.contrast-theme .hero-image {
+  position: relative;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
 }
 
 body.contrast-theme .matrix-overlay::before {
