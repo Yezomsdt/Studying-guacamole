@@ -776,6 +776,10 @@ body {
 }
 
 body.dark-theme {
+  background-image: url("img/Darker.jpg");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
   --primary-color: #91bbe8;
   --secondary-color: #0d0915;
   --background-color: #100a1c;
@@ -981,6 +985,11 @@ body.dark-theme .small-button:hover {
   box-shadow: 0 0 15px rgba(168, 208, 255, 0.6);
 }
 
+body.dark-theme .bot-message {
+  background-color: #4a3d62 !important;
+  color: #ffffff !important;
+}
+
 body.contrast-theme {
   --primary-color: #00ff00;
   --secondary-color: #000000;
@@ -1172,6 +1181,11 @@ body.contrast-theme .small-button {
 body.contrast-theme .result-value {
   color: #00ff00;
   text-shadow: 0 0 10px #00ff00;
+}
+
+body.contrast-theme .bot-message {
+  background-color: #006600 !important;
+  color: #ccffcc !important;
 }
 
 @media (max-width: 1024px) {
