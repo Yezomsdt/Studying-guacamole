@@ -210,7 +210,7 @@ body {
 .button:hover {
   background-color: #6a694d;
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(0,255,0,0.6);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .page-footer {
@@ -780,7 +780,6 @@ body {
 }
 
 body.dark-theme {
-  background-image: url("img/Darker.jpg");
   background-size: auto;
   background-position: top center;
   background-repeat: no-repeat;
@@ -799,27 +798,38 @@ body.dark-theme {
 body.dark-theme {
   background-color: var(--background-color);
   color: var(--text-color);
+  background-image: none;
 }
 
 body.dark-theme .page-header {
-  background-color: var(--secondary-color);
+  background-color: transparent !important;
   color: var(--text-color);
 }
 
 body.dark-theme .hero-image {
-  background-color: var(--secondary-color);
+  background-color: transparent !important;
   margin-bottom: 620px;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  background-image: url("img/Darker.jpg");
 }
 
 body.dark-theme .hero-image .container {
+  background-color: transparent;
   max-width: 1408px;
   text-align: center;
+}
+
+body.dark-theme .heading {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 body.dark-theme .hero-image p {
   margin: 0;
   font-size: 32px;
   line-height: 48px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 body.dark-theme .intro {
@@ -1247,6 +1257,7 @@ body.contrast-theme .small-button:hover {
 
 body.contrast-theme .send-button:hover {
   transform: none !important;
+  box-shadow: 0 0 15px #00ff00;
 }
 
 body.contrast-theme .small-button {
@@ -1262,6 +1273,88 @@ body.contrast-theme .result-value {
 body.contrast-theme .bot-message {
   background-color: #006600 !important;
   color: #ccffcc !important;
+}
+
+body.contrast-theme .matrix-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+body.contrast-theme .matrix-overlay::before,
+body.contrast-theme .matrix-overlay::after,
+body.contrast-theme .matrix-overlay span {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+body.contrast-theme .matrix-overlay::before {
+  background-image: 
+    linear-gradient(90deg, transparent 5%, rgba(0, 255, 0, 0.03) 5%, transparent 10%),
+    linear-gradient(0deg, transparent 95%, rgba(0, 255, 0, 0.1) 100%);
+  background-size: 20px 30px, 100% 100%;
+  animation: matrixRain 15s linear infinite;
+}
+
+body.contrast-theme .matrix-overlay::after {
+  background-image: 
+    linear-gradient(90deg, transparent 10%, rgba(0, 255, 0, 0.02) 10%, transparent 15%),
+    linear-gradient(0deg, transparent 90%, rgba(0, 255, 0, 0.08) 100%);
+  background-size: 25px 35px, 100% 100%;
+  animation: matrixRain 20s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes matrixRain {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 20px 600px, 0 0;
+  }
+}
+
+body.contrast-theme .matrix-overlay {
+  counter-reset: matrix;
+}
+
+body.contrast-theme .matrix-overlay::before {
+  content: "01010101010101010101010101010101010101010101010101" 
+           "10101010101010101010101010101010101010101010101010"
+           "01010101010101010101010101010101010101010101010101"
+           "10101010101010101010101010101010101010101010101010";
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: rgba(0, 255, 0, 0.3);
+  line-height: 1.5;
+  white-space: pre;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  animation: matrixText 20s linear infinite;
+}
+
+@keyframes matrixText {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+body.contrast-theme .hero-image .container {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 1024px) {
