@@ -785,7 +785,7 @@ body.dark-theme {
   background-repeat: no-repeat;
   --primary-color: #91bbe8;
   --secondary-color: #0d0915;
-  --background-color: #100a1c;
+  --background-color: transparent !important;
   --button-bg: #1a1128;
   --text-color: #a8d0ff;
   --footer-bg: #0d0915;*/
