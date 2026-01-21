@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
   chatForm.addEventListener('submit', function(event) {
     event.preventDefault();
     sendMessage();
+    return false;
   });
   
   function addMessage(text, sender) {
@@ -93,12 +94,15 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   achievementFigures.forEach(figure => {
-    figure.addEventListener('click', function() {
-      const imageSrc = this.getAttribute('data-image');
-      modalImage.src = imageSrc;
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
+    const img = figure.querySelector('img');
+    if (img) {
+      img.addEventListener('click', function() {
+        const imageSrc = figure.getAttribute('data-image') || this.src;
+        modalImage.src = imageSrc;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    }
   });
 
   closeModal.addEventListener('click', function() {
@@ -119,6 +123,4 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = 'auto';
     }
   });
-});
-  
 });
