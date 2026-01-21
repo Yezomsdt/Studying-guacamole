@@ -50,7 +50,7 @@ body {
 
 .page-header {
   position: relative;
-  margin: 0 0 160px;
+  margin: 0 0 120px !important;
   padding: 32px 0;
 }
 
@@ -95,13 +95,13 @@ body {
   backdrop-filter: blur(10px);
   transition: all var(--transition);
   border: 2px solid transparent;
-  transform: scale(0.85);
+  transform: scale(0.80);
   transform-origin: left top;
 }
 
 .theme-switcher:hover {
   box-shadow: var(--shadow-hover);
-  transform: translateY(-2px) scale(0.85);
+  transform: translateY(-2px) scale(0.95);
 }
 
 .theme-options {
@@ -161,9 +161,8 @@ body {
   transform: scale(1.15);
 }
 
-/* 6. ГЕРОЙ СЕКЦИЯ */
 .hero-image {
-  margin-bottom: 620px;
+  margin-bottom: 400px !important;
   position: relative;
 }
 
@@ -187,7 +186,7 @@ body {
 }
 
 .intro {
-  margin: 0 0 120px;
+  margin: 0 0 80px;
 }
 
 .subheading {
@@ -252,7 +251,7 @@ body {
 }
 
 .chat-section {
-  margin: 80px 0;
+  margin: 60px 0 !important;
   padding: 40px 0;
   background-color: var(--color-bg);
   border-radius: 20px;
@@ -358,7 +357,7 @@ body {
 }
 
 .roulette-opener {
-  margin: 40px 0;
+  margin: 30px 0 !important;
   text-align: center;
 }
 
@@ -393,7 +392,7 @@ body {
 }
 
 .roulette-section {
-  margin: 80px 0;
+  margin: 60px 0 !important;
   padding: 60px 0;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: white;
@@ -601,35 +600,77 @@ body {
 .achievements-gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
 }
 
 .achievements-gallery figure {
+  flex: 0 0 calc(45% - 20px);
   margin: 0;
-  flex: 1 1 calc(50% - 20px);
-  min-width: 300px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .achievements-gallery img {
   width: 100%;
-  height: auto;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: 5px;
-  display: block;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.achievements-gallery figure:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 .achievements-gallery figcaption {
   text-align: center;
   margin-top: 10px;
   font-size: 14px;
+  line-height: 1.4;
+}
+
+.achievement-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.achievement-modal.active {
+  display: flex;
+}
+
+.achievement-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.achievement-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 2001;
 }
 
 .page-footer {
-  padding: 30px 0;
+  padding: 20px 0 !important;
   background-color: var(--color-primary-dark);
   color: var(--color-white);
+  margin-top: 40px;
 }
 
 .page-footer .container {
@@ -865,6 +906,55 @@ body.contrast-theme .open-roulette-btn.active {
 .roulette-section:not(.hidden) {
   animation: slideDown 0.8s ease-out forwards;
 }
+
+@media (max-width: 1200px) {
+  .intro-content {
+    flex-direction: column;
+  }
+  
+  .intro-content figure {
+    margin-right: 0;
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .intro-content img {
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  .intro-text {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .intro-text p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .works-achievements-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-bottom: 60px;
+  }
+  
+  .works-achievements-wrapper .portfolio {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .works-achievements-wrapper .my-achievements {
+    flex: 1;
+    margin: 0;
+    border-top: none;
+  }
 
 @media (max-width: 1024px) {
   .hero-image {
