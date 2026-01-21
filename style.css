@@ -785,6 +785,7 @@ body.dark-theme .chat-section {
   background-color: rgba(42, 29, 66, 0.8);
   border: 1px solid var(--color-chat-bot);
   border-radius: 15px;
+  border-top: 2px solid var(--color-chat-bot);
 }
 
 body.dark-theme .my-achievements {
@@ -919,6 +920,7 @@ body.contrast-theme .chat-section {
   background-color: var(--color-bg);
   border: 1px solid #00ff00;
   box-shadow: 0 0 15px #00ff00;
+  border-top: 2px solid #00ff00;
 }
 
 body.contrast-theme .button,
@@ -1047,6 +1049,21 @@ body.contrast-theme .open-roulette-btn.active {
     margin-bottom: 60px;
   }
 
+  .my-achievements {
+    background-color: transparent;
+    border-top: none;
+  }
+
+  body.dark-theme .my-achievements {
+    background-color: rgba(42, 29, 66, 0.8);
+    border: 1px solid var(--color-chat-bot);
+  }
+  
+  body.contrast-theme .my-achievements {
+    background-color: #000000;
+    border: 1px solid #00ff00;
+  }
+
   .works-achievements-wrapper .my-achievements,
   .works-achievements-wrapper .portfolio {
     flex: 1;
@@ -1058,6 +1075,8 @@ body.contrast-theme .open-roulette-btn.active {
     display: flex;
     flex-direction: column;
   }
+}
+  
   
 @media (max-width: 1024px) {
   .hero-image {
