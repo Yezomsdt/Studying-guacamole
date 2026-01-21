@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const messageInput = document.getElementById('messageInput');
   const chatMessages = document.getElementById('chatMessages');
   const sendButton = document.querySelector('.send-button');
+  const modal = document.getElementById('achievementModal');
+  const modalImage = document.getElementById('modalImage');
+  const closeModal = document.querySelector('.achievement-modal-close');
+  const achievementFigures = document.querySelectorAll('.achievements-gallery figure');
 
   console.log('chatForm:', chatForm);
   console.log('messageInput:', messageInput);
@@ -87,4 +91,34 @@ document.addEventListener('DOMContentLoaded', function() {
       return randomResponses[Math.floor(Math.random() * randomResponses.length)];
     }
   }
+
+  achievementFigures.forEach(figure => {
+    figure.addEventListener('click', function() {
+      const imageSrc = this.getAttribute('data-image');
+      modalImage.src = imageSrc;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  closeModal.addEventListener('click', function() {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  });
+
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+  });
+});
+  
 });
