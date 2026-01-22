@@ -88,8 +88,8 @@ body {
   top: 20px;
   left: 20px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 22px;
   padding: 6px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
@@ -97,7 +97,7 @@ body {
   border: 2px solid transparent;
   transform: scale(0.80);
   transform-origin: left top;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
 .theme-switcher:hover {
@@ -216,12 +216,21 @@ body {
   flex: 1;
 }
 
-.intro h3,
 .portfolio h3 {
-  margin: 0 0 40px;
+  margin: 0 0 20px !important;
   font-size: 28px;
   line-height: 40px;
   font-weight: 500;
+  text-align: center;
+}
+
+.intro h3 {
+  margin: 30px 0 20px;
+  font-size: 28px;
+  line-height: 40px;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 20px;
 }
 
 .intro p {
@@ -258,7 +267,7 @@ body {
   margin: 60px 0 !important;
   padding: 40px 0;
   background-color: var(--color-bg);
-  border-radius: 20px;
+  border-radius: 22px;
 }
 
 .chat-section .subheading {
@@ -302,7 +311,7 @@ body {
 .message {
   margin: 10px 0;
   padding: 12px 18px;
-  border-radius: 18px;
+  border-radius: 22px;
   max-width: 70%;
   word-wrap: break-word;
   line-height: 1.4;
@@ -332,7 +341,7 @@ body {
   background-color: var(--color-secondary);
   color: var(--color-white);
   border: none;
-  border-radius: 10px;
+  border-radius: 22px;
   font-family: var(--font-main);
   font-weight: 600;
   cursor: pointer;
@@ -365,7 +374,7 @@ body {
   background-color: var(--color-secondary);
   color: var(--color-white);
   border: none;
-  border-radius: 10px;
+  border-radius: 22px;
   font-family: var(--font-main);
   font-weight: 600;
   cursor: pointer;
@@ -623,19 +632,14 @@ body {
   min-width: 200px;
 }
 
-.project-image {
-  margin: 0 0 24px;
-  text-align: center;
-}
-
 .portfolio p {
   margin: 0 0 10px;
 }
 
 .my-achievements {
   padding: 20px;
-  background-color: #f9f9f9;
-  border-top: 2px solid #ccc;
+  background-color: transparent;
+  border-top: none;
 }
 
 .achievements-gallery {
@@ -800,8 +804,8 @@ body.dark-theme .achievements-gallery img {
 body.dark-theme .chat-container,
 body.dark-theme .theme-switcher {
   background-color: var(--color-chat-user);
-  border: 1px solid var(--color-chat-bot);
-  background: rgba(42, 27, 61, 0.6);
+  border: 2px solid transparent;
+  background: rgba(42, 27, 61, 0.4);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
@@ -810,7 +814,7 @@ body.dark-theme .theme-switcher:hover {
 }
 
 body.dark-theme .chat-messages {
-  background-color: var(--color-chat-user);
+  background-color: var(--color-secondary);
   border-color: var(--color-chat-bot);
 }
 
@@ -878,6 +882,8 @@ body.contrast-theme {
   --color-white: #00ff00;
   --color-chat-user: #002200;
   --color-chat-bot: #004400;
+  --neon-pink: #ff00ff;
+  --neon-purple: #9d00ff;
   
   font-family: 'Courier New', monospace;
   background-image: none;
@@ -892,20 +898,8 @@ body.contrast-theme .chat-section .subheading {
   color: #00ff00 !important;
 }
 
-body.contrast-theme .matrix-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
-}
-
 body.contrast-theme .theme-switcher {
-  background: rgba(0, 51, 0, 0.6);
+  background: rgba(0, 51, 0, 0.4);
   border: 1px solid #00ff00;
 }
 
@@ -931,9 +925,14 @@ body.contrast-theme .roulette-section {
   background-color: #000000;
   border: 1px solid #00ff00 !important;
   background: #000000;
-  border-color: #00ff00;
+  border-radius: 0 !important;
 }
 
+body.contrast-theme,
+body.contrast-theme .page-header,
+body.contrast-theme .page-header a,
+body.contrast-theme .page-footer,
+body.contrast-theme .page-footer a,
 body.contrast-theme .button,
 body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
@@ -941,7 +940,7 @@ body.contrast-theme .small-button {
   background: #003300;
   border: 1px solid #00ff00;
   border-radius: 0;
-  color: #00ff00;
+  color: #ff00ff !important;
   box-shadow: none;
 }
 
@@ -952,7 +951,7 @@ body.contrast-theme .chat-input::placeholder {
 body.contrast-theme .button:hover,
 body.contrast-theme .open-roulette-btn:hover,
 body.contrast-theme .spin-button:hover:not(:disabled) {
-  background: #003300;
+  background: #000000;
   transform: none;
   box-shadow: 0 0 25px #00ff00;
 }
@@ -1000,7 +999,8 @@ body.contrast-theme .open-roulette-btn.active {
 }
 
 .roulette-section:not(.hidden) {
-  animation: slideDown 0.8s ease-out forwards;
+  display: block !important;
+  animation: slideDown 0.5s ease-out forwards;
 }
 
 @media (max-width: 1200px) {
@@ -1017,9 +1017,10 @@ body.contrast-theme .open-roulette-btn.active {
   }
   
   .intro-content img {
-    max-width: 85%;
+    max-width: 95%;
     height: auto;
     margin: 0 auto;
+    display: block;
   }
   
   .intro-text {
@@ -1076,7 +1077,18 @@ body.contrast-theme .open-roulette-btn.active {
     flex-direction: column;
   }
 }
-  
+
+@media (min-width: 1200px) {
+  .intro h3 {
+    text-align: left;
+    padding-left: 0;
+    margin-top: 0;
+  }
+
+  .intro-text h3:last-of-type {
+    margin-top: 30px;
+  }
+}
   
 @media (max-width: 1024px) {
   .hero-image {
