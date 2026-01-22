@@ -2,13 +2,14 @@
   --font-main: "Montserrat", "Helvetica", "Arial", sans-serif;
   --font-heading: "Old Standard TT", "Times", "Times New Roman", serif;
 
-  --color-primary: #288be6;
-  --color-primary-dark: #00417d;
+  --color-blue-header: #085faf;
+  --color-primary-dark: #0069ca;
   --color-secondary: #848262;
   --color-secondary-dark: #6a694d;
   --color-bg: #f2f4f6;
   --color-text: #222222;
   --color-white: #ffffff;
+  --color-black: #000000;
 
   --color-chat-user: #e3f2fd;
   --color-chat-bot: #f5f5f5;
@@ -16,6 +17,8 @@
   --transition: 0.3s ease;
   --shadow: 0 4px 12px rgba(0,0,0,0.15);
   --shadow-hover: 0 6px 20px rgba(0,0,0,0.2);
+  --border-radius: 22px;
+  --border-radius-small: 10px;
 }
 
 * {
@@ -50,7 +53,7 @@ body {
 
 .page-header {
   position: relative;
-  margin: 0 0 120px !important;
+  margin: 0 0 120px;
   padding: 32px 0;
 }
 
@@ -62,7 +65,7 @@ body {
 
 .page-header a {
   margin-left: 56px;
-  color: var(--color-primary);
+  color: var(--color-blue-header);
   text-decoration: none;
   background-repeat: no-repeat;
   background-position: left center;
@@ -146,7 +149,7 @@ body {
 }
 
 .theme-options input[type="radio"]:checked + label[for="theme-light"] {
-  border-color: var(--color-primary);
+  border-color: var(--color-blue-header);
   box-shadow: 0 0 10px rgba(40, 139, 230, 0.5);
 }
 
@@ -304,7 +307,7 @@ body {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: var(--color-blue-header);
   border-radius: 4px;
 }
 
@@ -366,7 +369,7 @@ body {
 
 .chat-input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: var(--color-blue-header);
 }
 
 .send-button {
@@ -758,7 +761,7 @@ body {
 }
 
 body.dark-theme {
-  --color-primary: #91bbe8;
+  --color-blue-header: #91bbe8;
   --color-primary-dark: #0d0915;
   --color-secondary: #1a1128;
   --color-secondary-dark: #2a1d42;
@@ -768,14 +771,12 @@ body.dark-theme {
   --color-chat-user: #2a1d42;
   --color-chat-bot: #3a2d52;
   
-  background-image: none;
-  background-color: var(--color-bg);
-}
-
-body.dark-theme .hero-image {
   background-image: url("img/Darker.jpg");
-  background-size: cover;
+  background-color: var(--color-bg);
+  background-repeat: no-repeat;
   background-position: top center;
+  background-size: auto;
+  transition: background-color var(--transition), color var(--transition);
 }
 
 body.dark-theme .chat-section .subheading {
@@ -873,7 +874,7 @@ body.dark-theme .bot-message {
 }
 
 body.contrast-theme {
-  --color-primary: #00ff00;
+  --color-blue-header: #00ff00;
   --color-primary-dark: #000000;
   --color-secondary: #003300;
   --color-secondary-dark: #006600;
