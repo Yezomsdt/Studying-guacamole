@@ -775,7 +775,7 @@ body.dark-theme {
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: auto;
+  background-size: contain;
   transition: background-color var(--transition), color var(--transition);
 }
 
