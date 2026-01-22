@@ -91,8 +91,8 @@ body {
   top: 20px;
   left: 20px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: var(--border-radius);
   padding: 6px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
@@ -100,14 +100,12 @@ body {
   border: 2px solid transparent;
   transform: scale(0.80);
   transform-origin: left top;
-  opacity: 0.6;
 }
 
 .theme-switcher:hover {
   box-shadow: var(--shadow-hover);
   transform: translateY(-2px) scale(0.95);
   background: rgba(255, 255, 255, 0.95);
-  opacity: 1;
 }
 
 .theme-options {
@@ -726,7 +724,7 @@ body {
 
 .page-footer {
   padding: 20px 0 !important;
-  background-color: var(--color-primary-dark);
+  background-color: #c1c6ca;
   color: var(--color-white);
   margin-top: 40px;
 }
@@ -775,7 +773,7 @@ body.dark-theme {
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: 150%;
+  background-size: cover;
   transition: background-color var(--transition), color var(--transition);
 }
 
@@ -800,6 +798,11 @@ body.dark-theme .my-achievements {
 
 body.dark-theme .achievements-gallery img {
   border: 2px solid var(--color-chat-bot);
+}
+
+body.dark-theme .achievements-gallery figure:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,255,0,0.3);
 }
 
 body.dark-theme .chat-container,
@@ -891,10 +894,6 @@ body.contrast-theme {
   background-color: var(--color-bg);
 }
 
-body.contrast-theme .hero-image {
-  position: relative;
-}
-
 body.contrast-theme .chat-section .subheading {
   color: #00ff00 !important;
 }
@@ -938,10 +937,8 @@ body.contrast-theme .button,
 body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
 body.contrast-theme .small-button {
-  background: #003300;
-  border: 1px solid #00ff00;
-  border-radius: 0;
-  color: #ff00ff !important;
+  background: #000000;
+  color: #00ff00 !important;
   box-shadow: none;
 }
 
