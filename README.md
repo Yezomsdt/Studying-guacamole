@@ -1,5 +1,1 @@
-- 👋 Hi, I’m @Yezomsdt
-- 👀 I’m interested in - learning all bout programming
-- 🌱 I’m currently learning - PYTEST PYCHARM ALSO WEB TESTING JAVA SELENIUM
-- 📫 How to reach me - @Daaayum (Telegram)
-- HERE'S MY WEBSITE - https://yezomsdt.github.io/Studying-guacamole/
+Tryin my portfolio-website, hope ull find it funny and nice
