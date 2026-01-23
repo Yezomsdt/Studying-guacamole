@@ -769,11 +769,11 @@ body.dark-theme {
   --color-chat-user: #2a1d42;
   --color-chat-bot: #3a2d52;
   
-  background-image: url("img/Darker.jpg");
+  background-image: url("img/DarkThemePic.jpg");
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: cover;
+  background-size: auto;
   transition: background-color var(--transition), color var(--transition);
 }
 
@@ -890,8 +890,11 @@ body.contrast-theme {
   --neon-purple: #9d00ff;
   
   font-family: 'Courier New', monospace;
-  background-image: none;
+  background-image: url("img/ContrastThemePic2.jpg");
   background-color: var(--color-bg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: auto;
 }
 
 body.contrast-theme .chat-section .subheading {
