@@ -895,6 +895,7 @@ body.contrast-theme {
   background-repeat: no-repeat;
   background-position: top center;
   background-size: auto;
+  transition: background-color var(--transition), color var(--transition);
 }
 
 body.contrast-theme .chat-section .subheading {
