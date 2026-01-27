@@ -891,7 +891,7 @@ body.contrast-theme {
   
   font-family: 'Courier New', monospace;
   background-image: url("img/ContrastThemePic2.jpg");
-  background-color: var(--color-bg);
+  background-color: transparent;
   background-repeat: no-repeat;
   background-position: top center;
   background-size: auto;
