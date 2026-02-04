@@ -888,10 +888,10 @@ body.contrast-theme {
   
   font-family: 'Courier New', monospace;
   background-image: url("img/ContrastThemePic2.jpg");
-  background-color: #000000;
+  background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: cover;
+  background-size: auto;
   transition: background-color var(--transition), color var(--transition);
   color: var(--neon-green) !important;
 }
