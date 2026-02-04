@@ -879,50 +879,79 @@ body.dark-theme .bot-message {
 body.contrast-theme {
   --color-blue-header: #00ff00;
   --color-primary-dark: #000000;
-  --color-secondary: #003300;
-  --color-secondary-dark: #006600;
   --color-bg: #000000;
-  --color-text: #00ff00;
-  --color-white: #00ff00;
   --color-chat-user: #002200;
   --color-chat-bot: #004400;
   --neon-pink: #ff00ff;
   --neon-purple: #9d00ff;
+  --neon-green: #00ff00;
   
   font-family: 'Courier New', monospace;
   background-image: url("img/ContrastThemePic2.jpg");
-  background-color: transparent;
+  background-color: #000000;
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: auto;
+  background-size: cover;
   transition: background-color var(--transition), color var(--transition);
+  color: var(--neon-green) !important;
 }
 
-body.contrast-theme .chat-section .subheading {
-  color: #00ff00 !important;
+body.contrast-theme .heading,
+body.contrast-theme .subheading,
+body.contrast-theme h1,
+body.contrast-theme h2,
+body.contrast-theme h3,
+body.contrast-theme h4,
+body.contrast-theme h5,
+body.contrast-theme h6 {
+  color: var(--neon-green) !important;
 }
 
 body.contrast-theme .page-header a {
+  color: var(--neon-green) !important;
+}
+
+body.contrast-theme .page-header a::after {
   color: #ff00ff !important;
 }
 
 body.contrast-theme .theme-switcher {
   background: rgba(0, 51, 0, 0.4);
-  border: 1px solid #ff00ff;
+  border: 2px solid var(--neon-green) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 body.contrast-theme .theme-switcher:hover {
   background: rgba(0, 51, 0, 0.95);
+  border-color: var(--neon-green) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
 }
 
 body.contrast-theme .intro,
 body.contrast-theme .portfolio,
-body.contrast-theme .my-achievements,
-body.contrast-theme .chat-section {
+body.contrast-theme .my-achievements {
   background-color: var(--color-bg);
   border: 1px solid #00ff00;
   box-shadow: 0 0 15px #00ff00;
   border-top: 2px solid #00ff00;
+}
+
+body.contrast-theme .chat-section {
+  background-color: var(--color-bg);
+  border: 2px solid var(--neon-green) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  border-radius: 0 !important;
+  border-top: 2px solid var(--neon-green);
+}
+
+body.contrast-theme .user-message {
+  background-color: #003300;
+  color: var(--neon-green) !important;
+}
+
+body.contrast-theme .bot-message {
+  background-color: #002200;
+  color: var(--neon-green) !important;
 }
 
 body.contrast-theme .button,
@@ -931,13 +960,16 @@ body.contrast-theme .chat-container,
 body.contrast-theme .chat-messages,
 body.contrast-theme .roulette-section {
   background-color: #000000;
-  border: 1px solid #ff00ff !important;
+  color: var(--neon-green) !important;
+  border: 2px solid var(--neon-green) !important;
   background: #000000;
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 
 body.contrast-theme .chat-container {
   box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+  border-radius: 15px !important;
+  box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2);
 }
 
 body.contrast-theme,
@@ -949,12 +981,14 @@ body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
 body.contrast-theme .small-button {
   background: #000000;
-  color: #ff00ff !important;
+  color: var(--neon-pink) !important;
   box-shadow: none;
 }
 
 body.contrast-theme .chat-input::placeholder {
   color: #00aa00;
+  opacity: 1 !important;
+  font-weight: bold !important;
 }
 
 body.contrast-theme .button:hover,
