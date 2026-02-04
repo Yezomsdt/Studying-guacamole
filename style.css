@@ -902,9 +902,13 @@ body.contrast-theme .chat-section .subheading {
   color: #00ff00 !important;
 }
 
+body.contrast-theme .page-header a {
+  color: #ff00ff !important;
+}
+
 body.contrast-theme .theme-switcher {
   background: rgba(0, 51, 0, 0.4);
-  border: 1px solid #00ff00;
+  border: 1px solid #ff00ff;
 }
 
 body.contrast-theme .theme-switcher:hover {
@@ -927,14 +931,17 @@ body.contrast-theme .chat-container,
 body.contrast-theme .chat-messages,
 body.contrast-theme .roulette-section {
   background-color: #000000;
-  border: 1px solid #00ff00 !important;
+  border: 1px solid #ff00ff !important;
   background: #000000;
   border-radius: 0 !important;
 }
 
+body.contrast-theme .chat-container {
+  box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+}
+
 body.contrast-theme,
 body.contrast-theme .page-header,
-body.contrast-theme .page-header a,
 body.contrast-theme .page-footer,
 body.contrast-theme .page-footer a,
 body.contrast-theme .button,
@@ -942,7 +949,7 @@ body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
 body.contrast-theme .small-button {
   background: #000000;
-  color: #00ff00 !important;
+  color: #ff00ff !important;
   box-shadow: none;
 }
 
@@ -955,11 +962,11 @@ body.contrast-theme .open-roulette-btn:hover,
 body.contrast-theme .spin-button:hover:not(:disabled) {
   background: #000000;
   transform: none;
-  box-shadow: 0 0 25px #00ff00;
+  box-shadow: 0 0 25px #ff00ff;
 }
 
 body.contrast-theme .open-roulette-btn.active {
-  background: #006600;
+  background: #660066;
 }
 
 @keyframes spin {
