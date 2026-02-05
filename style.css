@@ -989,7 +989,7 @@ body.contrast-theme .button,
 body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
 body.contrast-theme .small-button {
-  background-color: #000000;
+  background-color: var(--transition);
   color: var(--neon-green) !important;
   box-shadow: none;
 }
