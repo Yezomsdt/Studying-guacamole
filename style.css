@@ -46,6 +46,7 @@ body {
   background-image: url("img/hero-bg.jpg");
   background-repeat: no-repeat;
   background-position: top center;
+  background-attachment: fixed;
   background-size: auto;
   transition: background-color var(--transition), color var(--transition);
 }
@@ -782,7 +783,7 @@ body.dark-theme {
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: auto;
+  background-size: contain;
   transition: background-color var(--transition), color var(--transition);
 }
 
@@ -896,11 +897,11 @@ body.contrast-theme {
   --neon-green: #00ff00;
   
   font-family: 'Courier New', monospace;
-  background-image: url("img/CTP4.png");
+  background-image: url("img/CTP3.png");
   background-color: var(--color-bg);
   background-repeat: no-repeat;
-  background-position: left top;
-  background-size: contain;
+  background-position: top center;
+  background-size: auto;
   transition: background-color var(--transition), color var(--transition);
   color: var(--neon-green) !important;
 }
