@@ -899,8 +899,8 @@ body.contrast-theme {
   background-image: url("img/CTP3.png");
   background-color: var(--color-bg);
   background-repeat: no-repeat;
-  background-position: top center;
-  background-size: auto;
+  background-position: left top;
+  background-size: contain;
   transition: background-color var(--transition), color var(--transition);
   color: var(--neon-green) !important;
 }
