@@ -778,7 +778,7 @@ body.dark-theme {
   --color-chat-user: #2a1d42;
   --color-chat-bot: #3a2d52;
   
-  background-image: url("img/DarkThemePic.jpg");
+  background-image: url("img/DTP.png");
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
@@ -896,7 +896,7 @@ body.contrast-theme {
   --neon-green: #00ff00;
   
   font-family: 'Courier New', monospace;
-  background-image: url("img/CTP3.png");
+  background-image: url("img/CTP4.png");
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: left top;
