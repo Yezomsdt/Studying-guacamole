@@ -201,6 +201,8 @@ body {
 
 .intro {
   margin: 0 0 80px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
 .subheading {
