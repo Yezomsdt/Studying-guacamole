@@ -795,7 +795,9 @@ body.dark-theme .intro,
 body.dark-theme .portfolio,
 body.dark-theme .my-achievements,
 body.dark-theme .chat-section {
-  background-color: rgba(42, 29, 66, 0.8);
+  background-color: rgba(42, 29, 66, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--color-chat-bot);
   border-radius: 15px;
   border-top: 2px solid var(--color-chat-bot);
