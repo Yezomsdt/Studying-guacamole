@@ -737,7 +737,7 @@ body {
 
 .page-footer {
   padding: 20px 0 !important;
-  background-color: #c1c6ca;
+  background-color: #599dc2;
   color: var(--color-white);
   margin-top: 40px;
 }
@@ -786,7 +786,7 @@ body.dark-theme {
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: contain;
+  background-size: cover;
   transition: background-color var(--transition), color var(--transition);
 }
 
@@ -806,18 +806,13 @@ body.dark-theme .chat-section {
   border-top: 2px solid var(--color-chat-bot);
 }
 
-body.dark-theme .my-achievements {
-  background-color: var(--color-chat-user);
-  border-top: 2px solid var(--color-chat-bot);
-}
-
 body.dark-theme .achievements-gallery img {
   border: 2px solid var(--color-chat-bot);
 }
 
 body.dark-theme .achievements-gallery figure:hover img {
   transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0,255,0,0.3);
+  box-shadow: 0 10px 25px rgba(168, 208, 255, 0.6);
 }
 
 body.dark-theme .chat-container,
@@ -856,6 +851,11 @@ body.dark-theme .open-roulette-btn {
   border: 1px solid #a8d0ff;
   box-shadow: none;
 }
+
+body.dark-theme .page-footer {
+  background-color: #2a1d42;
+}
+
 
 body.dark-theme .open-roulette-btn:hover {
   background: linear-gradient(45deg, #5a4b7b, #4a3b7b);
@@ -906,7 +906,7 @@ body.contrast-theme {
   background-color: var(--color-bg);
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: auto;
+  background-size: cover;
   transition: background-color var(--transition), color var(--transition);
   color: var(--neon-green) !important;
 }
@@ -941,6 +941,8 @@ body.contrast-theme .theme-switcher:hover {
   border-color: var(--neon-green) !important;
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
 }
+
+
 
 body.contrast-theme .intro,
 body.contrast-theme .portfolio,
@@ -989,7 +991,6 @@ body.contrast-theme .chat-container {
 
 body.contrast-theme,
 body.contrast-theme .page-header,
-body.contrast-theme .page-footer,
 body.contrast-theme .page-footer a,
 body.contrast-theme .button,
 body.contrast-theme .open-roulette-btn,
@@ -998,6 +999,11 @@ body.contrast-theme .small-button {
   background-color: var(--transition);
   color: var(--neon-green) !important;
   box-shadow: none;
+}
+
+body.contrast-theme .page-footer {
+  background-color: #000000;
+  border-top: 2px solid #00ff00;
 }
 
 body.contrast-theme .chat-input::placeholder {
@@ -1016,6 +1022,16 @@ body.contrast-theme .spin-button:hover:not(:disabled) {
 
 body.contrast-theme .open-roulette-btn.active {
   background: #660066;
+}
+
+
+body.contrast-theme .achievements-gallery img {
+  border: 2px solid var(--neon-green);
+}
+
+body.contrast-theme .achievements-gallery figure:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px var(--neon-green);;
 }
 
 @keyframes spin {
@@ -1111,11 +1127,6 @@ body.contrast-theme .open-roulette-btn.active {
   .my-achievements {
     background-color: transparent;
     border-top: none;
-  }
-
-  body.dark-theme .my-achievements {
-    background-color: rgba(42, 29, 66, 0.8);
-    border: 1px solid var(--color-chat-bot);
   }
   
   body.contrast-theme .my-achievements {
