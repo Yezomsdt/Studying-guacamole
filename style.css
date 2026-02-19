@@ -973,7 +973,6 @@ body.contrast-theme .bot-message {
 
 body.contrast-theme .button,
 body.contrast-theme .chat-input,
-body.contrast-theme .chat-container,
 body.contrast-theme .chat-messages,
 body.contrast-theme .roulette-section {
   background-color: #000000;
@@ -984,7 +983,10 @@ body.contrast-theme .roulette-section {
 }
 
 body.contrast-theme .chat-container {
-  box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+  background-color: #000000;
+  color: var(--neon-green) !important;
+  border: 2px solid var(--neon-green) !important;
+  background: #000000;
   border-radius: 15px !important;
   box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2);
 }
@@ -996,7 +998,6 @@ body.contrast-theme .button,
 body.contrast-theme .open-roulette-btn,
 body.contrast-theme .spin-button,
 body.contrast-theme .small-button {
-  background-color: var(--transition);
   color: var(--neon-green) !important;
   box-shadow: none;
 }
