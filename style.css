@@ -277,6 +277,25 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
+.wheel-sector {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 0;
+  left: 50%;
+  transform-origin: 0% 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel-sector span {
+  display: block;
+  transform: rotate(90deg); /* корректировка под вашу геометрию */
+  font-size: 24px;
+}
+
 .chat-section {
   margin: 60px 0 !important;
   padding: 40px 0;
