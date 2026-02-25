@@ -107,7 +107,6 @@
         const textSpan = document.createElement('span');
         textSpan.textContent = sector.text;
         textSpan.style.color = sector.color;
-        textSpan.style.transform = `rotate(${sectorAngle/2 - 90}deg)`;
         
         sectorEl.appendChild(textSpan);
         elements.rouletteWheel.appendChild(sectorEl);
@@ -142,7 +141,7 @@
       
       state.isSpinning = true;
       elements.spinButton.disabled = true;
-      elements.spinButton.textContent = '🎰 Вращается...';
+      elements.spinButton.textContent = '🎰 keep on rollin...';
 
       elements.rouletteWheel.classList.add('spinning');
       elements.rouletteBall.classList.add('spinning');
@@ -175,7 +174,7 @@
 
       updateStatsDisplay();
 
-      setTimeout(resetRouletteState, 2000);
+      setTimeout(resetRouletteState, 1500);
     }
     
     function displayResult(sector) {
@@ -203,13 +202,10 @@
         elements.pointer.classList.remove('spinning');
       }
 
-      elements.rouletteWheel.style.transform = 'rotate(0deg)';
-      elements.rouletteWheel.style.transition = 'none';
-
-      setTimeout(() => {
-        elements.rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99)';
-      }, 50);
-      
+      requestAnimationFrame(() => {
+        elements.rouletteWheel.style.transform = 'rotate(0deg)';
+      });
+  
       console.log('🔄 Состояние рулетки сброшено');
     }
     
