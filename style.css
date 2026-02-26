@@ -826,7 +826,7 @@ body.dark-theme .chat-section {
 }
 
 body.dark-theme .achievements-gallery img {
-  border: 2px solid var(--color-chat-bot);
+  border: none;
 }
 
 body.dark-theme .achievements-gallery figure:hover img {
@@ -885,6 +885,11 @@ body.dark-theme .open-roulette-btn:hover {
 body.dark-theme .roulette-section {
   background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-bg) 100%);
   border: 2px solid var(--color-chat-bot);
+}
+
+body.dark-theme .ball {
+  background: radial-gradient(circle at 30% 30%, #a8d0ff, #5a4b7b);
+  box-shadow: 0 0 15px rgba(168, 208, 255, 0.8);
 }
 
 body.dark-theme .wheel {
@@ -990,7 +995,6 @@ body.contrast-theme .bot-message {
   color: var(--neon-green) !important;
 }
 
-body.contrast-theme .button,
 body.contrast-theme .chat-input,
 body.contrast-theme .chat-messages,
 body.contrast-theme .roulette-section {
@@ -999,6 +1003,18 @@ body.contrast-theme .roulette-section {
   border: 2px solid var(--neon-green) !important;
   background: #000000;
   border-radius: 0;
+}
+
+body.contrast-theme .button,
+body.contrast-theme .open-roulette-btn,
+body.contrast-theme .spin-button,
+body.contrast-theme .small-button,
+body.contrast-theme .send-button,
+body.contrast-theme .chat-input-form button {
+  color: #ff00ff;
+  border: 2px solid #ff00ff;
+  background: #000000;
+  box-shadow: none;
 }
 
 body.contrast-theme .chat-container {
@@ -1012,11 +1028,7 @@ body.contrast-theme .chat-container {
 
 body.contrast-theme,
 body.contrast-theme .page-header,
-body.contrast-theme .page-footer a,
-body.contrast-theme .button,
-body.contrast-theme .open-roulette-btn,
-body.contrast-theme .spin-button,
-body.contrast-theme .small-button {
+body.contrast-theme .page-footer a {
   color: var(--neon-green) !important;
   box-shadow: none;
 }
@@ -1044,9 +1056,18 @@ body.contrast-theme .open-roulette-btn.active {
   background: #660066;
 }
 
+body.contrast-theme .ball {
+  background: radial-gradient(circle at 30% 30%, #ff69b4, #ff00ff);
+  box-shadow: 0 0 20px #ff00ff;
+}
+
+body.contrast-theme .wheel {
+  border-color: #00ff00;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 20px 50px rgba(0,255,0,0.3);
+}
 
 body.contrast-theme .achievements-gallery img {
-  border: 2px solid var(--neon-green);
+  border: none;
 }
 
 body.contrast-theme .achievements-gallery figure:hover img {
@@ -1064,9 +1085,18 @@ body.contrast-theme .achievements-gallery figure:hover img {
   100% { transform: rotate(-720deg); }
 }
 
-@keyframes pointerBounce {
-  0%, 100% { transform: rotate(180deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.1); }
+@keyframes pointerHit {
+  0% { transform: rotate(180deg) skewX(0deg); }
+  10% { transform: rotate(180deg) skewX(5deg) translateX(3px); }
+  20% { transform: rotate(180deg) skewX(0deg) translateX(0); }
+  30% { transform: rotate(180deg) skewX(3deg) translateX(2px); }
+  40% { transform: rotate(180deg) skewX(0deg) translateX(0); }
+  50% { transform: rotate(180deg) skewX(2deg) translateX(1px); }
+  60% { transform: rotate(180deg) skewX(0deg) translateX(0); }
+  70% { transform: rotate(180deg) skewX(1deg) translateX(0.5px); }
+  80% { transform: rotate(180deg) skewX(0deg) translateX(0); }
+  90% { transform: rotate(180deg) skewX(0.5deg) translateX(0.2px); }
+  100% { transform: rotate(180deg) skewX(0deg) translateX(0); }
 }
 
 @keyframes slideDown {
@@ -1089,7 +1119,8 @@ body.contrast-theme .achievements-gallery figure:hover img {
 }
 
 .pointer.spinning {
-  animation: pointerBounce 0.1s infinite alternate;
+  animation: pointerHit 0.8s infinite ease-in-out;
+  transform-origin: top center;
 }
 
 .roulette-section:not(.hidden) {
