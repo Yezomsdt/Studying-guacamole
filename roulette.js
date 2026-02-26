@@ -157,7 +157,7 @@
 
       state.currentTimeout = setTimeout(() => {
         showResult(randomSector);
-      }, 4000);
+      }, 3000);
     }
     
     function showResult(sectorIndex) {
@@ -174,7 +174,7 @@
 
       updateStatsDisplay();
 
-      setTimeout(resetRouletteState, 1500);
+      setTimeout(resetRouletteState, 1000);
     }
     
     function displayResult(sector) {
