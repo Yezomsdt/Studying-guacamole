@@ -946,14 +946,6 @@ body.contrast-theme h6 {
   color: var(--neon-green) !important;
 }
 
-body.contrast-theme .page-header a {
-  color: var(--neon-green) !important;
-}
-
-body.contrast-theme .page-header a::after {
-  color: #ff00ff !important;
-}
-
 body.contrast-theme .theme-switcher {
   background: rgba(0, 51, 0, 0.4);
   border: 2px solid var(--neon-green) !important;
@@ -1012,7 +1004,7 @@ body.contrast-theme .small-button,
 body.contrast-theme .send-button,
 body.contrast-theme .chat-input-form button {
   color: #ff00ff;
-  border: 2px solid #ff00ff;
+  border: 0px solid #ff00ff;
   background: #000000;
   box-shadow: none;
 }
@@ -1027,7 +1019,6 @@ body.contrast-theme .chat-container {
 }
 
 body.contrast-theme,
-body.contrast-theme .page-header,
 body.contrast-theme .page-footer a {
   color: var(--neon-green) !important;
   box-shadow: none;
