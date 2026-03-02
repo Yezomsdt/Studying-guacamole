@@ -1004,9 +1004,10 @@ body.contrast-theme .small-button,
 body.contrast-theme .send-button,
 body.contrast-theme .chat-input-form button {
   color: #ff00ff;
-  border: 0px solid #ff00ff;
+  border: 3px solid #ff00ff;
   background: #000000;
   box-shadow: none;
+  border-radius: 0px;
 }
 
 body.contrast-theme .chat-container {
