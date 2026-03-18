@@ -1151,7 +1151,7 @@ body.contrast-theme .achievements-gallery figure:hover img {
 #gameCanvas {
   border: 2px solid #333;
   background: #f0f0f0;
-  cursor: crosshair;
+  cursor: default;
   max-width: 100%;
   height: auto;
   image-rendering: crisp-edges;
