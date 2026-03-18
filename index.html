@@ -87,14 +87,38 @@
     </button>
   </div>
 
-  
   <div class="roulette-opener">
     <button class="button open-roulette-btn" id="openRouletteBtn">
       🎪 Открыть рулетку судьбы
     </button>
   </div>
 
+  <div class="game-opener">
+    <button class="button open-game-btn" id="openGameBtn">⚔️ Открыть битву маток</button>
+  </div>
   
+  <section class="game-section hidden" id="gameSection">
+    <div class="container">
+      <h2 class="subheading">Битва маток</h2>
+  
+      <div class="game-settings">
+        <label>Ширина: <input type="number" id="gameWidth" min="10" max="200" value="30"></label>
+        <label>Высота: <input type="number" id="gameHeight" min="10" max="200" value="30"></label>
+        <button class="button" id="newGameBtn">🔄 Новая игра</button>
+      </div>
+  
+      <div class="game-info">
+        <span>Ход: <span id="currentPlayerDisplay">1</span> (<span id="playerColorSample" style="display:inline-block; width:16px; height:16px; border-radius:50%;"></span>)</span>
+        <span>Действий: <span id="actionsLeftDisplay">10</span></span>
+        <button class="button small-button" id="endTurnBtn">Завершить ход</button>
+      </div>
+  
+      <div class="game-board-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+      </div>
+    </div>
+  </section>
+
   <div class="roulette-opener">
     <button class="button open-roulette-btn" id="openRouletteBtn">
       🎪 Открыть рулетку судьбы
