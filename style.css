@@ -1067,6 +1067,109 @@ body.contrast-theme .achievements-gallery figure:hover img {
   box-shadow: 0 10px 25px var(--neon-green);;
 }
 
+.game-opener {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.open-game-btn {
+  padding: 15px 40px;
+  font-size: 18px;
+  background: linear-gradient(45deg, #e67e22, #d35400);
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all var(--transition);
+  box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
+}
+
+.open-game-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(230, 126, 34, 0.4);
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+}
+
+.game-section {
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(5px);
+}
+
+.game-settings {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.game-settings label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.game-settings input {
+  width: 70px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  text-align: center;
+}
+
+.game-info {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#playerColorSample {
+  border: 2px solid currentColor;
+  vertical-align: middle;
+}
+
+.game-board-container {
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: var(--shadow);
+}
+
+#gameCanvas {
+  border: 2px solid #333;
+  background: #f0f0f0;
+  cursor: crosshair;
+  max-width: 100%;
+  height: auto;
+  image-rendering: crisp-edges;
+}
+
+body.dark-theme .game-section {
+  background: rgba(42, 29, 66, 0.5);
+}
+
+body.contrast-theme .game-section {
+  background: #000;
+  border: 2px solid #00ff00;
+}
+
+body.contrast-theme #gameCanvas {
+  border-color: #00ff00;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(3600deg); }
