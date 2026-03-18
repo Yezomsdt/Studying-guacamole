@@ -8,7 +8,7 @@
   window.battleGameInitialized = true;
 
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎮 Загрузка КЛЕШНИ...');
+    console.log('🎮 Загрузка игры "Битва маток"...');
 
     const openBtn = document.getElementById('openGameBtn');
     const gameSection = document.getElementById('gameSection');
@@ -33,7 +33,9 @@
         this.width = 30;
         this.height = 30;
         this.cellSize = 20;
-        this.grid = []; // 2D массив: null - пусто, 'P1','P2' - крестики, 'P1Q','P2Q' - матки, 'C1','C2' - клешни
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.grid = [];
         this.currentPlayer = 1;
         this.actionsLeft = 10;
         this.gameOver = false;
@@ -63,34 +65,38 @@
 
         this.generateStartZones();
         this.draw();
-
         this.updateUI();
       }
 
       generateStartZones() {
         const zoneSize = 5;
         const margin = 2;
-        const availableW = this.width - 2 * zoneSize - 2 * margin;
-        const availableH = this.height - 2 * zoneSize - 2 * margin;
-
-        const centerX = Math.floor(this.width / 2);
-        const centerY = Math.floor(this.height / 2);
-
         let x1 = margin;
         let y1 = margin;
         let x2 = this.width - zoneSize - margin;
         let y2 = this.height - zoneSize - margin;
 
         if (x1 + zoneSize > x2 || y1 + zoneSize > y2) {
-          const halfZone = Math.floor(zoneSize / 2);
+          const centerX = Math.floor(this.width / 2);
+          const centerY = Math.floor(this.height / 2);
           x1 = Math.max(0, centerX - zoneSize - 2);
           y1 = Math.max(0, centerY - zoneSize - 2);
           x2 = Math.min(this.width - zoneSize, centerX + 2);
           y2 = Math.min(this.height - zoneSize, centerY + 2);
         }
 
-        this.startZoneP1 = { x1, y1, x2: x1 + zoneSize - 1, y2: y1 + zoneSize - 1 };
-        this.startZoneP2 = { x2, y2, x2: x2 + zoneSize - 1, y2: y2 + zoneSize - 1 };
+        this.startZoneP1 = {
+          x1: x1,
+          y1: y1,
+          x2: x1 + zoneSize - 1,
+          y2: y1 + zoneSize - 1
+        };
+        this.startZoneP2 = {
+          x1: x2,
+          y1: y2,
+          x2: x2 + zoneSize - 1,
+          y2: y2 + zoneSize - 1
+        };
 
         console.log('Зона P1:', this.startZoneP1);
         console.log('Зона P2:', this.startZoneP2);
@@ -128,14 +134,8 @@
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
 
             const cell = this.grid[nr][nc];
-            if (cell === playerUnit || cell === playerQueen) {
-              return true;
-            }
-            if (cell === playerClaw) {
-              if (this.isClawActive(nr, nc, this.currentPlayer)) {
-                return true;
-              }
-            }
+            if (cell === playerUnit || cell === playerQueen) return true;
+            if (cell === playerClaw && this.isClawActive(nr, nc, this.currentPlayer)) return true;
           }
         }
         return false;
@@ -151,9 +151,7 @@
             const nc = col + dc;
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
             const cell = this.grid[nr][nc];
-            if (cell === playerUnit || cell === playerQueen) {
-              return true;
-            }
+            if (cell === playerUnit || cell === playerQueen) return true;
           }
         }
         return false;
@@ -176,14 +174,9 @@
             const nr = row + dr;
             const nc = col + dc;
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
-
             const neighbor = this.grid[nr][nc];
-            if (neighbor === playerUnit || neighbor === playerQueen) {
-              return true;
-            }
-            if (neighbor === playerClaw && this.isClawActive(nr, nc, this.currentPlayer)) {
-              return true;
-            }
+            if (neighbor === playerUnit || neighbor === playerQueen) return true;
+            if (neighbor === playerClaw && this.isClawActive(nr, nc, this.currentPlayer)) return true;
           }
         }
         return false;
@@ -202,8 +195,8 @@
         const mouseX = (e.clientX - rect.left) * scaleX;
         const mouseY = (e.clientY - rect.top) * scaleY;
 
-        const col = Math.floor(mouseX / this.cellSize);
-        const row = Math.floor(mouseY / this.cellSize);
+        const col = Math.floor((mouseX - this.offsetX) / this.cellSize);
+        const row = Math.floor((mouseY - this.offsetY) / this.cellSize);
 
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
 
@@ -271,6 +264,11 @@
       endTurn() {
         if (this.gameOver) return;
 
+        if (this.actionsLeft > 0) {
+          alert('Сначала потратьте все очки действий!');
+          return;
+        }
+
         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
         this.actionsLeft = 10;
 
@@ -286,33 +284,39 @@
           playerColorSample.style.borderColor = this.currentPlayer === 1 ? '#cc0000' : '#0000cc';
         }
 
-        if ((this.currentPlayer === 1 && this.firstMoveP1) ||
-            (this.currentPlayer === 2 && this.firstMoveP2)) {
+        if (endTurnBtn) {
+          endTurnBtn.disabled = (this.actionsLeft > 0);
         }
       }
 
       draw() {
         const ctx = this.ctx;
-        const w = this.canvas.width;
-        const h = this.canvas.height;
-        const cellW = Math.floor(w / this.width);
-        const cellH = Math.floor(h / this.height);
-        this.cellSize = Math.min(cellW, cellH);
+        const canvas = this.canvas;
 
-        ctx.clearRect(0, 0, w, h);
+        this.cellSize = Math.floor(Math.min(
+          canvas.width / this.width,
+          canvas.height / this.height
+        ));
+
+        this.offsetX = (canvas.width - this.width * this.cellSize) / 2;
+        this.offsetY = (canvas.height - this.height * this.cellSize) / 2;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.strokeStyle = '#aaa';
         ctx.lineWidth = 0.5;
         for (let i = 0; i <= this.width; i++) {
+          const x = this.offsetX + i * this.cellSize;
           ctx.beginPath();
-          ctx.moveTo(i * cellW, 0);
-          ctx.lineTo(i * cellW, h);
+          ctx.moveTo(x, this.offsetY);
+          ctx.lineTo(x, this.offsetY + this.height * this.cellSize);
           ctx.stroke();
         }
         for (let i = 0; i <= this.height; i++) {
+          const y = this.offsetY + i * this.cellSize;
           ctx.beginPath();
-          ctx.moveTo(0, i * cellH);
-          ctx.lineTo(w, i * cellH);
+          ctx.moveTo(this.offsetX, y);
+          ctx.lineTo(this.offsetX + this.width * this.cellSize, y);
           ctx.stroke();
         }
 
@@ -321,24 +325,19 @@
             const cell = this.grid[row][col];
             if (!cell) continue;
 
-            const x = col * cellW;
-            const y = row * cellH;
+            const x = this.offsetX + col * this.cellSize;
+            const y = this.offsetY + row * this.cellSize;
 
-            let fillColor, textColor = '#fff';
-            if (cell === 'P1' || cell === 'P1Q') {
-              fillColor = '#ff4444';
-            } else if (cell === 'P2' || cell === 'P2Q') {
-              fillColor = '#4444ff';
-            } else if (cell === 'C1') {
-              fillColor = '#880000';
-            } else if (cell === 'C2') {
-              fillColor = '#000088';
-            }
+            let fillColor;
+            if (cell === 'P1' || cell === 'P1Q') fillColor = '#ff4444';
+            else if (cell === 'P2' || cell === 'P2Q') fillColor = '#4444ff';
+            else if (cell === 'C1') fillColor = '#880000';
+            else if (cell === 'C2') fillColor = '#000088';
 
             ctx.fillStyle = fillColor;
-            ctx.fillRect(x + 1, y + 1, cellW - 2, cellH - 2);
+            ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
 
-            ctx.font = `bold ${Math.min(cellW, cellH) * 0.6}px monospace`;
+            ctx.font = `bold ${Math.floor(this.cellSize * 0.6)}px monospace`;
             ctx.fillStyle = '#fff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -347,12 +346,12 @@
             else if (cell === 'P1Q' || cell === 'P2Q') symbol = '♕';
             else if (cell === 'C1' || cell === 'C2') symbol = '◆';
 
-            ctx.fillText(symbol, x + cellW / 2, y + cellH / 2);
+            ctx.fillText(symbol, x + this.cellSize / 2, y + this.cellSize / 2);
 
             if (cell === 'P1Q' || cell === 'P2Q') {
               ctx.strokeStyle = '#ffd700';
               ctx.lineWidth = 3;
-              ctx.strokeRect(x + 2, y + 2, cellW - 4, cellH - 4);
+              ctx.strokeRect(x + 2, y + 2, this.cellSize - 4, this.cellSize - 4);
             }
           }
         }
@@ -364,9 +363,12 @@
             ctx.strokeStyle = '#0f0';
             ctx.lineWidth = 4;
             ctx.setLineDash([8, 8]);
-            ctx.strokeRect(zone.x1 * cellW, zone.y1 * cellH,
-                          (zone.x2 - zone.x1 + 1) * cellW,
-                          (zone.y2 - zone.y1 + 1) * cellH);
+            ctx.strokeRect(
+              this.offsetX + zone.x1 * this.cellSize,
+              this.offsetY + zone.y1 * this.cellSize,
+              (zone.x2 - zone.x1 + 1) * this.cellSize,
+              (zone.y2 - zone.y1 + 1) * this.cellSize
+            );
             ctx.setLineDash([]);
           }
         }
@@ -400,6 +402,6 @@
 
     window.battleGame = game;
 
-    console.log('✅ Иницализация игры завершена');
+    console.log('✅ Игра готова');
   });
 })();
