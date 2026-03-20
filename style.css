@@ -1178,6 +1178,8 @@ body.contrast-theme #gameCanvas {
   display: flex;
   gap: 20px;
   margin-top: 20px;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .game-sidebar {
