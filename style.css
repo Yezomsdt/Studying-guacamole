@@ -1146,6 +1146,8 @@ body.contrast-theme .achievements-gallery figure:hover img {
   border-radius: 10px;
   padding: 10px;
   box-shadow: var(--shadow);
+  align-items: center;
+  width: 100%;
 }
 
 #gameCanvas {
@@ -1155,6 +1157,8 @@ body.contrast-theme .achievements-gallery figure:hover img {
   max-width: 100%;
   height: auto;
   image-rendering: crisp-edges;
+  display: block;
+  margin: 0 auto;
 }
 
 body.dark-theme .game-section {
@@ -1181,9 +1185,11 @@ body.contrast-theme #gameCanvas {
 }
 
 .game-main {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .game-header {
