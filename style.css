@@ -1170,6 +1170,152 @@ body.contrast-theme #gameCanvas {
   border-color: #00ff00;
 }
 
+.game-layout {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.game-sidebar {
+  flex: 0 0 180px;
+}
+
+.game-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.color-picker-panel {
+  background: rgba(255,255,255,0.8);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.color-picker-panel h4 {
+  margin: 0 0 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.color-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.color-picker-item label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.color-picker-item input[type="color"] {
+  width: 50px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.rules-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.rules-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-blue-header);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: help;
+}
+
+.rules-popup {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 350px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 100;
+  pointer-events: none;
+  text-align: left;
+}
+
+.rules-tooltip:hover .rules-popup {
+  visibility: visible;
+  opacity: 1;
+}
+
+.rules-popup h4 {
+  margin: 0 0 10px;
+  color: #ffd700;
+  font-size: 16px;
+}
+
+.rules-popup ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.rules-popup li {
+  margin-bottom: 8px;
+}
+
+.game-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+#undoBtn {
+  background: linear-gradient(45deg, #f39c12, #e67e22);
+  border: none;
+  color: white;
+}
+
+#undoBtn:hover {
+  background: linear-gradient(45deg, #f1c40f, #f39c12);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .game-layout {
+    flex-direction: column;
+  }
+  .game-sidebar {
+    flex: auto;
+  }
+  .rules-popup {
+    width: 280px;
+    right: -50px;
+  }
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(3600deg); }
