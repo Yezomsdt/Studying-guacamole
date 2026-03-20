@@ -99,25 +99,65 @@
   
   <section class="game-section hidden" id="gameSection">
     <div class="container">
-      <h2 class="subheading">КЛЕШНЯ</h2>
-  
+      <h2 class="subheading">Битва маток</h2>
+
       <div class="game-settings">
         <label>Ширина: <input type="number" id="gameWidth" min="10" max="200" value="30"></label>
         <label>Высота: <input type="number" id="gameHeight" min="10" max="200" value="30"></label>
         <button class="button" id="newGameBtn">🔄 Новая игра</button>
       </div>
-  
+
       <div class="game-info">
         <span>Ход: <span id="currentPlayerDisplay">1</span> (<span id="playerColorSample" style="display:inline-block; width:16px; height:16px; border-radius:50%;"></span>)</span>
         <span>Действий: <span id="actionsLeftDisplay">10</span></span>
-        <button class="button small-button" id="endTurnBtn">Завершить ход</button>
       </div>
+
+      <div class="game-layout">
+        <div class="game-sidebar">
+          <div class="color-picker-panel">
+            <h4>Выбери цвет</h4>
+            <div class="color-picker-item">
+              <label>Игрок 1:</label>
+              <input type="color" id="player1Color" value="#ff4444">
+            </div>
+            <div class="color-picker-item">
+              <label>Игрок 2:</label>
+              <input type="color" id="player2Color" value="#4444ff">
+            </div>
+          </div>
+        </div>
   
-      <div class="game-board-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="game-main">
+          <div class="game-header">
+            <div class="rules-tooltip">
+              <span class="rules-icon">?</span>
+              <div class="rules-popup">
+                  <h4>Правила КЛЕШНИ</h4>
+                  <ul>
+                    <li><strong>Цель:</strong> съесть вражескую матку (♕).</li>
+                    <li><strong>Ход:</strong> 10 действий (поставить крестик или съесть вражеский).</li>
+                    <li><strong>Первый ход:</strong> поставить матку в подсвеченной зоне.</li>
+                    <li><strong>Постановка крестика (✖):</strong> можно в любую пустую клетку, соседнюю (8 направлений) с любым своим крестиком или активной клешнёй.</li>
+                    <li><strong>Атака:</strong> съесть вражеский крестик можно, если он находится в соседней клетке (8 направлений) от своего крестика или активной клешни. Съеденный крестик превращается в вашу клешню (◆).</li>
+                    <li><strong>Клешня (◆):</strong> блокирует проход. Активна, если рядом есть ваш крестик. Используется для распространения (постановки новых крестиков) и для атаки.</li>
+                    <li><strong>Победа:</strong> немедленно при съедании вражеской матки.</li>
+                  </ul>
+                </div>
+            </div>
+          </div>
+
+        <div class="game-board-container">
+          <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+
+        <div class="game-controls">
+          <button class="button small-button" id="undoBtn" title="Отменить последнее действие">↩ Отмена</button>
+          <button class="button small-button" id="endTurnBtn">Завершить ход</button>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <div class="roulette-opener">
     <button class="button open-roulette-btn" id="openRouletteBtn">
