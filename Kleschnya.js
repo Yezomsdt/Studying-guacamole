@@ -63,6 +63,7 @@
         if (player1ColorInput) this.player1Color = player1ColorInput.value;
         if (player2ColorInput) this.player2Color = player2ColorInput.value;
         this.draw();
+        this.updateUI();
       }
 
       initGame(width, height) {
@@ -230,7 +231,11 @@
         if ((this.currentPlayer === 1 && this.firstMoveP1) ||
             (this.currentPlayer === 2 && this.firstMoveP2)) {
           if (this.isInStartZone(row, col) && cell === null) {
-            this.history.push({ row, col, previousState: null });
+            this.history.push({
+              row, col,
+              previousState: null,
+              wasQueen: true
+            });
             this.grid[row][col] = playerQueen;
             if (this.currentPlayer === 1) this.firstMoveP1 = false;
             else this.firstMoveP2 = false;
@@ -245,7 +250,11 @@
         }
 
         if (cell === null && this.canPlaceUnit(row, col)) {
-          this.history.push({ row, col, previousState: null });
+          this.history.push({
+            row, col,
+            previousState: null,
+            wasQueen: false
+          });
           this.grid[row][col] = playerUnit;
           this.actionsLeft--;
           this.draw();
@@ -255,7 +264,11 @@
 
         if (cell !== null && this.canAttack(row, col)) {
           const isQueen = (cell === 'P1Q' || cell === 'P2Q');
-          this.history.push({ row, col, previousState: cell });
+          this.history.push({
+            row, col,
+            previousState: cell,
+            wasQueen: false
+          });
           this.grid[row][col] = playerClaw;
           this.actionsLeft--;
 
@@ -273,6 +286,7 @@
           return;
         }
 
+        console.log('Невозможно: cell=', cell, 'canPlaceUnit=', this.canPlaceUnit(row,col), 'canAttack=', this.canAttack(row,col));
         alert('Так ходить нельзя');
       }
 
@@ -282,8 +296,22 @@
           return;
         }
         const last = this.history.pop();
-        this.grid[last.row][last.col] = last.previousState;
+        const row = last.row;
+        const col = last.col;
+        const previousCell = last.previousState;
+        const wasQueen = last.wasQueen;
+
+        this.grid[row][col] = previousCell;
         this.actionsLeft++;
+
+        if (wasQueen && previousCell === null) {
+          if (this.currentPlayer === 1) {
+            this.firstMoveP1 = true;
+          } else {
+            this.firstMoveP2 = true;
+          }
+        }
+
         this.draw();
         this.updateUI();
       }
