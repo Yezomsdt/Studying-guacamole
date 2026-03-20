@@ -8,18 +8,21 @@
   window.battleGameInitialized = true;
 
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎮 Загрузка игры "Битва маток"...');
+    console.log('🎮 Загрузка КЛЕШНИ...');
 
     const openBtn = document.getElementById('openGameBtn');
     const gameSection = document.getElementById('gameSection');
     const newGameBtn = document.getElementById('newGameBtn');
     const endTurnBtn = document.getElementById('endTurnBtn');
+    const undoBtn = document.getElementById('undoBtn');
     const canvas = document.getElementById('gameCanvas');
     const widthInput = document.getElementById('gameWidth');
     const heightInput = document.getElementById('gameHeight');
     const currentPlayerSpan = document.getElementById('currentPlayerDisplay');
     const actionsLeftSpan = document.getElementById('actionsLeftDisplay');
     const playerColorSample = document.getElementById('playerColorSample');
+    const player1ColorInput = document.getElementById('player1Color');
+    const player2ColorInput = document.getElementById('player2Color');
 
     if (!openBtn || !gameSection || !canvas) {
       console.error('❌ Не найдены необходимые элементы игры');
@@ -47,8 +50,19 @@
         this.startZoneP1 = null;
         this.startZoneP2 = null;
 
+        this.history = [];
+
+        this.player1Color = '#ff4444';
+        this.player2Color = '#4444ff';
+
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
         this.canvas.addEventListener('click', this.handleCanvasClick);
+      }
+
+      updateColors() {
+        if (player1ColorInput) this.player1Color = player1ColorInput.value;
+        if (player2ColorInput) this.player2Color = player2ColorInput.value;
+        this.draw();
       }
 
       initGame(width, height) {
@@ -62,8 +76,10 @@
         this.winner = null;
         this.firstMoveP1 = true;
         this.firstMoveP2 = true;
+        this.history = [];
 
         this.generateStartZones();
+        this.updateColors();
         this.draw();
         this.updateUI();
       }
@@ -97,9 +113,6 @@
           x2: x2 + zoneSize - 1,
           y2: y2 + zoneSize - 1
         };
-
-        console.log('Зона P1:', this.startZoneP1);
-        console.log('Зона P2:', this.startZoneP2);
       }
 
       isInStartZone(row, col) {
@@ -184,7 +197,7 @@
 
       handleCanvasClick(e) {
         if (this.gameOver) {
-          alert(`Игра окончена! Победил игрок ${this.winner}`);
+          alert(`Игра окончена! Победил ${this.winner}`);
           return;
         }
 
@@ -201,7 +214,7 @@
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
 
         if (this.actionsLeft <= 0) {
-          alert('У вас больше нет действий в этом ходу. Завершите ход.');
+          alert('Больше нет действий на этом ходу. Заверши ход.');
           return;
         }
 
@@ -213,11 +226,11 @@
         const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
         const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
         const playerClaw = this.currentPlayer === 1 ? 'C1' : 'C2';
-        const enemyQueen = this.currentPlayer === 1 ? 'P2Q' : 'P1Q';
 
         if ((this.currentPlayer === 1 && this.firstMoveP1) ||
             (this.currentPlayer === 2 && this.firstMoveP2)) {
           if (this.isInStartZone(row, col) && cell === null) {
+            this.history.push({ row, col, previousState: null });
             this.grid[row][col] = playerQueen;
             if (this.currentPlayer === 1) this.firstMoveP1 = false;
             else this.firstMoveP2 = false;
@@ -226,12 +239,13 @@
             this.updateUI();
             return;
           } else {
-            alert('Сначала поставьте матку в своей стартовой зоне!');
+            alert('Сначала поставь матку в своей стартовой зоне!');
             return;
           }
         }
 
         if (cell === null && this.canPlaceUnit(row, col)) {
+          this.history.push({ row, col, previousState: null });
           this.grid[row][col] = playerUnit;
           this.actionsLeft--;
           this.draw();
@@ -241,13 +255,14 @@
 
         if (cell !== null && this.canAttack(row, col)) {
           const isQueen = (cell === 'P1Q' || cell === 'P2Q');
+          this.history.push({ row, col, previousState: cell });
           this.grid[row][col] = playerClaw;
           this.actionsLeft--;
 
           if (isQueen) {
             this.gameOver = true;
             this.winner = this.currentPlayer;
-            alert(`🎉 Игрок ${this.currentPlayer} победил, съев вражескую матку!`);
+            alert(`🎉 ${this.currentPlayer} победил, съев вражескую матку!`);
             this.draw();
             this.updateUI();
             return;
@@ -258,19 +273,32 @@
           return;
         }
 
-        alert('Невозможное действие');
+        alert('Так ходить нельзя');
+      }
+
+      undoLastAction() {
+        if (this.history.length === 0) {
+          alert('Нет действий для отмены');
+          return;
+        }
+        const last = this.history.pop();
+        this.grid[last.row][last.col] = last.previousState;
+        this.actionsLeft++;
+        this.draw();
+        this.updateUI();
       }
 
       endTurn() {
         if (this.gameOver) return;
 
         if (this.actionsLeft > 0) {
-          alert('Сначала потратьте все очки действий!');
+          alert('Сначала потрать все очки действий!');
           return;
         }
 
         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
         this.actionsLeft = 10;
+        this.history = [];
 
         this.updateUI();
         this.draw();
@@ -280,12 +308,14 @@
         if (currentPlayerSpan) currentPlayerSpan.textContent = this.currentPlayer;
         if (actionsLeftSpan) actionsLeftSpan.textContent = this.actionsLeft;
         if (playerColorSample) {
-          playerColorSample.style.backgroundColor = this.currentPlayer === 1 ? '#ff4444' : '#4444ff';
-          playerColorSample.style.borderColor = this.currentPlayer === 1 ? '#cc0000' : '#0000cc';
+          playerColorSample.style.backgroundColor = this.currentPlayer === 1 ? this.player1Color : this.player2Color;
         }
 
         if (endTurnBtn) {
           endTurnBtn.disabled = (this.actionsLeft > 0);
+        }
+        if (undoBtn) {
+          undoBtn.disabled = (this.history.length === 0 || this.gameOver);
         }
       }
 
@@ -329,10 +359,10 @@
             const y = this.offsetY + row * this.cellSize;
 
             let fillColor;
-            if (cell === 'P1' || cell === 'P1Q') fillColor = '#ff4444';
-            else if (cell === 'P2' || cell === 'P2Q') fillColor = '#4444ff';
-            else if (cell === 'C1') fillColor = '#880000';
-            else if (cell === 'C2') fillColor = '#000088';
+            if (cell === 'P1' || cell === 'P1Q') fillColor = this.player1Color;
+            else if (cell === 'P2' || cell === 'P2Q') fillColor = this.player2Color;
+            else if (cell === 'C1') fillColor = this.darkenColor(this.player1Color, 0.7);
+            else if (cell === 'C2') fillColor = this.darkenColor(this.player2Color, 0.7);
 
             ctx.fillStyle = fillColor;
             ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
@@ -373,6 +403,16 @@
           }
         }
       }
+
+      darkenColor(hex, factor) {
+        let r = parseInt(hex.substring(1,3), 16);
+        let g = parseInt(hex.substring(3,5), 16);
+        let b = parseInt(hex.substring(5,7), 16);
+        r = Math.floor(r * factor);
+        g = Math.floor(g * factor);
+        b = Math.floor(b * factor);
+        return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+      }
     }
 
     const game = new BattleGame(canvas);
@@ -400,8 +440,24 @@
       game.endTurn();
     });
 
-    window.battleGame = game;
+    if (undoBtn) {
+      undoBtn.addEventListener('click', () => {
+        game.undoLastAction();
+      });
+    }
 
-    console.log('✅ Игра готова');
+    if (player1ColorInput) {
+      player1ColorInput.addEventListener('input', () => {
+        game.updateColors();
+      });
+    }
+    if (player2ColorInput) {
+      player2ColorInput.addEventListener('input', () => {
+        game.updateColors();
+      });
+    }
+
+    window.battleGame = game;
+    console.log('✅ КЛЕШНЯ готова');
   });
 })();
