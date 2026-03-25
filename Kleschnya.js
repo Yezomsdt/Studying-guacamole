@@ -2,7 +2,7 @@
   'use strict';
 
   if (window.battleGameInitialized) {
-    console.warn('⚠️ Клешня уже инициализирована!');
+    console.warn('⚠️ КЛЕШНЯ инициализирована!');
     return;
   }
   window.battleGameInitialized = true;
@@ -21,14 +21,14 @@
     const currentPlayerSpan = document.getElementById('currentPlayerDisplay');
     const actionsLeftSpan = document.getElementById('actionsLeftDisplay');
     const playerColorSample = document.getElementById('playerColorSample');
-    const player1ColorInput = document.getElementById('player1Color');
-    const player2ColorInput = document.getElementById('player2Color');
+    const colorPickersContainer = document.getElementById('colorPickersContainer');
+    const playerCountRadios = document.querySelectorAll('input[name="playerCount"]');
 
     if (!openBtn || !gameSection || !canvas) {
-      console.error('❌ Не найдены необходимые элементы клешни');
+      console.error('❌ Не найдены необходимые элементы');
       return;
     }
-    
+
     class BattleGame {
       constructor(canvas) {
         this.canvas = canvas;
@@ -38,52 +38,87 @@
         this.cellSize = 20;
         this.offsetX = 0;
         this.offsetY = 0;
+        this.zoom = 1.0;
         this.grid = [];
+        this.numPlayers = 2;
         this.currentPlayer = 1;
         this.actionsLeft = 10;
         this.gameOver = false;
         this.winner = null;
-
-        this.firstMoveP1 = true;
-        this.firstMoveP2 = true;
-
-        this.startZoneP1 = null;
-        this.startZoneP2 = null;
-
+        this.playersAlive = [];
+        this.firstMove = [];
+        this.startZones = [];
         this.history = [];
+        this.playerColors = ['', '#ff4444', '#4444ff', '#44ff44', '#ffaa44'];
 
-        this.player1Color = '#ff4444';
-        this.player2Color = '#4444ff';
+        this.clawComponents = {};
 
-        this.clawComponents = { 1: [], 2: [] };
+        this.isDragging = false;
+        this.dragStartX = 0;
+        this.dragStartY = 0;
+        this.dragStartOffsetX = 0;
+        this.dragStartOffsetY = 0;
 
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
         this.canvas.addEventListener('click', this.handleCanvasClick);
+        this.handleWheel = this.handleWheel.bind(this);
+        this.canvas.addEventListener('wheel', this.handleWheel, { passive: false });
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.canvas.addEventListener('mousedown', this.handleMouseDown);
+        window.addEventListener('mousemove', this.handleMouseMove);
+        window.addEventListener('mouseup', this.handleMouseUp);
       }
 
-      updateColors() {
-        if (player1ColorInput) this.player1Color = player1ColorInput.value;
-        if (player2ColorInput) this.player2Color = player2ColorInput.value;
-        this.draw();
-        this.updateUI();
+      updateColorPickersUI() {
+        if (!colorPickersContainer) return;
+        colorPickersContainer.innerHTML = '';
+        for (let i = 1; i <= this.numPlayers; i++) {
+          const div = document.createElement('div');
+          div.className = 'color-picker-item';
+          div.innerHTML = `
+            <label>Игрок ${i}:</label>
+            <input type="color" class="player-color-input" data-player="${i}" value="${this.playerColors[i]}">
+          `;
+          colorPickersContainer.appendChild(div);
+        }
+        document.querySelectorAll('.player-color-input').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const player = parseInt(e.target.dataset.player);
+            this.playerColors[player] = e.target.value;
+            this.draw();
+            this.updateUI();
+          });
+        });
       }
 
-      initGame(width, height) {
-        console.log(`🔄 Новая игра: ${width}x${height}`);
+      initGame(width, height, numPlayers = 2) {
+        console.log(`🔄 Новая игра: ${width}x${height}, игроков: ${numPlayers}`);
         this.width = Math.min(200, Math.max(10, width));
         this.height = Math.min(200, Math.max(10, height));
         this.grid = Array(this.height).fill().map(() => Array(this.width).fill(null));
+        this.numPlayers = Math.min(4, Math.max(2, numPlayers));
         this.currentPlayer = 1;
         this.actionsLeft = 10;
         this.gameOver = false;
         this.winner = null;
-        this.firstMoveP1 = true;
-        this.firstMoveP2 = true;
+        this.playersAlive = Array(this.numPlayers + 1).fill(true);
+        this.firstMove = Array(this.numPlayers + 1).fill(true);
         this.history = [];
+
+        this.zoom = 1.0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+
+        const defaultColors = ['', '#ff4444', '#4444ff', '#44ff44', '#ffaa44'];
+        for (let i = 1; i <= this.numPlayers; i++) {
+          if (!this.playerColors[i]) this.playerColors[i] = defaultColors[i];
+        }
+        this.updateColorPickersUI();
 
         this.generateStartZones();
         this.updateClawComponents();
-        this.updateColors();
         this.draw();
         this.updateUI();
       }
@@ -91,52 +126,43 @@
       generateStartZones() {
         const zoneSize = 5;
         const margin = 2;
-        let x1 = margin;
-        let y1 = margin;
-        let x2 = this.width - zoneSize - margin;
-        let y2 = this.height - zoneSize - margin;
+        const zones = {};
 
-        if (x1 + zoneSize > x2 || y1 + zoneSize > y2) {
-          const centerX = Math.floor(this.width / 2);
-          const centerY = Math.floor(this.height / 2);
-          x1 = Math.max(0, centerX - zoneSize - 2);
-          y1 = Math.max(0, centerY - zoneSize - 2);
-          x2 = Math.min(this.width - zoneSize, centerX + 2);
-          y2 = Math.min(this.height - zoneSize, centerY + 2);
+        if (this.numPlayers === 2) {
+          zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
+          zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
+        } else if (this.numPlayers === 3) {
+          zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
+          zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
+          zones[3] = { x1: this.width-zoneSize-margin, y1: margin, x2: this.width-margin-1, y2: margin+zoneSize-1 };
+        } else { // 4 игрока
+          zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
+          zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
+          zones[3] = { x1: this.width-zoneSize-margin, y1: margin, x2: this.width-margin-1, y2: margin+zoneSize-1 };
+          zones[4] = { x1: margin, y1: this.height-zoneSize-margin, x2: margin+zoneSize-1, y2: this.height-margin-1 };
         }
 
-        this.startZoneP1 = {
-          x1: x1,
-          y1: y1,
-          x2: x1 + zoneSize - 1,
-          y2: y1 + zoneSize - 1
-        };
-        this.startZoneP2 = {
-          x1: x2,
-          y1: y2,
-          x2: x2 + zoneSize - 1,
-          y2: y2 + zoneSize - 1
-        };
+        for (let i = 1; i <= this.numPlayers; i++) {
+          this.startZones[i] = zones[i];
+        }
       }
 
       isInStartZone(row, col) {
-        if (this.currentPlayer === 1 && this.firstMoveP1) {
-          return (row >= this.startZoneP1.y1 && row <= this.startZoneP1.y2 &&
-                  col >= this.startZoneP1.x1 && col <= this.startZoneP1.x2);
-        }
-        if (this.currentPlayer === 2 && this.firstMoveP2) {
-          return (row >= this.startZoneP2.y1 && row <= this.startZoneP2.y2 &&
-                  col >= this.startZoneP2.x1 && col <= this.startZoneP2.x2);
-        }
-        return false;
+        if (!this.firstMove[this.currentPlayer]) return false;
+        const zone = this.startZones[this.currentPlayer];
+        return (row >= zone.y1 && row <= zone.y2 && col >= zone.x1 && col <= zone.x2);
       }
 
       updateClawComponents() {
-        this.clawComponents = { 1: [], 2: [] };
+        this.clawComponents = {};
+        for (let p = 1; p <= this.numPlayers; p++) {
+          this.clawComponents[p] = [];
+        }
+
         const visited = Array(this.height).fill().map(() => Array(this.width).fill(false));
 
-        for (let player of [1, 2]) {
-          const clawType = player === 1 ? 'C1' : 'C2';
+        for (let player = 1; player <= this.numPlayers; player++) {
+          const clawType = `C${player}`;
           for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.width; j++) {
               if (this.grid[i][j] === clawType && !visited[i][j]) {
@@ -165,9 +191,9 @@
           }
         }
 
-        for (let player of [1, 2]) {
-          const playerUnit = player === 1 ? 'P1' : 'P2';
-          const playerQueen = player === 1 ? 'P1Q' : 'P2Q';
+        for (let player = 1; player <= this.numPlayers; player++) {
+          const playerUnit = `P${player}`;
+          const playerQueen = `P${player}Q`;
           for (let comp of this.clawComponents[player]) {
             let active = false;
             for (let [r, c] of comp) {
@@ -209,13 +235,12 @@
       canPlaceUnit(row, col) {
         if (this.grid[row][col] !== null) return false;
 
-        if ((this.currentPlayer === 1 && this.firstMoveP1) ||
-            (this.currentPlayer === 2 && this.firstMoveP2)) {
+        if (this.firstMove[this.currentPlayer]) {
           return this.isInStartZone(row, col);
         }
 
-        const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
-        const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
+        const playerUnit = `P${this.currentPlayer}`;
+        const playerQueen = `P${this.currentPlayer}Q`;
 
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
@@ -237,11 +262,11 @@
         const cell = this.grid[row][col];
         if (!cell) return false;
 
-        const enemyUnits = this.currentPlayer === 1 ? ['P2', 'P2Q'] : ['P1', 'P1Q'];
-        if (!enemyUnits.includes(cell)) return false;
+        const isEnemy = cell.startsWith('P') && parseInt(cell[1]) !== this.currentPlayer;
+        if (!isEnemy) return false;
 
-        const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
-        const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
+        const playerUnit = `P${this.currentPlayer}`;
+        const playerQueen = `P${this.currentPlayer}Q`;
 
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
@@ -261,7 +286,7 @@
 
       handleCanvasClick(e) {
         if (this.gameOver) {
-          alert(`Игра окончена! Победил ${this.winner}`);
+          alert(`Игра окончена! Победил игрок ${this.winner}`);
           return;
         }
 
@@ -278,7 +303,7 @@
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
 
         if (this.actionsLeft <= 0) {
-          alert('Закончились ОД, заверши ход.');
+          alert('Больше нет ОД, заверши ход.');
           return;
         }
 
@@ -287,21 +312,20 @@
 
       processAction(row, col) {
         const cell = this.grid[row][col];
-        const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
-        const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
-        const playerClaw = this.currentPlayer === 1 ? 'C1' : 'C2';
+        const playerUnit = `P${this.currentPlayer}`;
+        const playerQueen = `P${this.currentPlayer}Q`;
+        const playerClaw = `C${this.currentPlayer}`;
 
-        if ((this.currentPlayer === 1 && this.firstMoveP1) ||
-            (this.currentPlayer === 2 && this.firstMoveP2)) {
+        if (this.firstMove[this.currentPlayer]) {
           if (this.isInStartZone(row, col) && cell === null) {
             this.history.push({
               row, col,
               previousState: null,
-              wasQueen: true
+              wasQueen: true,
+              player: this.currentPlayer
             });
             this.grid[row][col] = playerQueen;
-            if (this.currentPlayer === 1) this.firstMoveP1 = false;
-            else this.firstMoveP2 = false;
+            this.firstMove[this.currentPlayer] = false;
             this.actionsLeft--;
             this.updateClawComponents();
             this.draw();
@@ -317,7 +341,8 @@
           this.history.push({
             row, col,
             previousState: null,
-            wasQueen: false
+            wasQueen: false,
+            player: this.currentPlayer
           });
           this.grid[row][col] = playerUnit;
           this.actionsLeft--;
@@ -328,23 +353,30 @@
         }
 
         if (cell !== null && this.canAttack(row, col)) {
-          const isQueen = (cell === 'P1Q' || cell === 'P2Q');
+          const isQueen = cell.endsWith('Q');
+          const enemyPlayer = parseInt(cell[1]);
           this.history.push({
             row, col,
             previousState: cell,
-            wasQueen: false
+            wasQueen: false,
+            player: this.currentPlayer
           });
           this.grid[row][col] = playerClaw;
           this.actionsLeft--;
 
           if (isQueen) {
-            this.gameOver = true;
-            this.winner = this.currentPlayer;
-            alert(`🎉 Игрок ${this.currentPlayer} победил, съев вражескую матку!`);
-            this.updateClawComponents();
-            this.draw();
-            this.updateUI();
-            return;
+            this.playersAlive[enemyPlayer] = false;
+            const alive = [];
+            for (let i = 1; i <= this.numPlayers; i++) {
+              if (this.playersAlive[i]) alive.push(i);
+            }
+            if (alive.length === 1) {
+              this.gameOver = true;
+              this.winner = alive[0];
+              alert(`🎉 Игрок ${this.winner} победил!`);
+            } else {
+              alert(`Игрок ${enemyPlayer} выбыл!`);
+            }
           }
 
           this.updateClawComponents();
@@ -353,7 +385,6 @@
           return;
         }
 
-        console.log('Невозможно: cell=', cell, 'canPlaceUnit=', this.canPlaceUnit(row,col), 'canAttack=', this.canAttack(row,col));
         alert('Так ходить нельзя');
       }
 
@@ -367,16 +398,13 @@
         const col = last.col;
         const previousCell = last.previousState;
         const wasQueen = last.wasQueen;
+        const player = last.player;
 
         this.grid[row][col] = previousCell;
         this.actionsLeft++;
 
         if (wasQueen && previousCell === null) {
-          if (this.currentPlayer === 1) {
-            this.firstMoveP1 = true;
-          } else {
-            this.firstMoveP2 = true;
-          }
+          this.firstMove[player] = true;
         }
 
         this.updateClawComponents();
@@ -392,7 +420,12 @@
           return;
         }
 
-        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+        let next = this.currentPlayer;
+        do {
+          next = next % this.numPlayers + 1;
+        } while (!this.playersAlive[next]);
+
+        this.currentPlayer = next;
         this.actionsLeft = 10;
         this.history = [];
 
@@ -404,7 +437,7 @@
         if (currentPlayerSpan) currentPlayerSpan.textContent = this.currentPlayer;
         if (actionsLeftSpan) actionsLeftSpan.textContent = this.actionsLeft;
         if (playerColorSample) {
-          playerColorSample.style.backgroundColor = this.currentPlayer === 1 ? this.player1Color : this.player2Color;
+          playerColorSample.style.backgroundColor = this.playerColors[this.currentPlayer];
         }
 
         if (endTurnBtn) {
@@ -415,18 +448,87 @@
         }
       }
 
+      handleWheel(e) {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        const newZoom = Math.min(5, Math.max(0.5, this.zoom * delta));
+        if (newZoom === this.zoom) return;
+
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / rect.width;
+        const scaleY = this.canvas.height / rect.height;
+        const mouseX = (e.clientX - rect.left) * scaleX;
+        const mouseY = (e.clientY - rect.top) * scaleY;
+
+        const oldWorldX = (mouseX - this.offsetX) / this.cellSize;
+        const oldWorldY = (mouseY - this.offsetY) / this.cellSize;
+
+        this.zoom = newZoom;
+        this.updateCellSizeAndOffsets();
+
+        const newWorldX = (mouseX - this.offsetX) / this.cellSize;
+        const newWorldY = (mouseY - this.offsetY) / this.cellSize;
+
+        this.offsetX += (newWorldX - oldWorldX) * this.cellSize;
+        this.offsetY += (newWorldY - oldWorldY) * this.cellSize;
+        this.limitOffsets();
+
+        this.draw();
+      }
+
+      handleMouseDown(e) {
+        if (e.button !== 0) return;
+        this.isDragging = true;
+        this.dragStartX = e.clientX;
+        this.dragStartY = e.clientY;
+        this.dragStartOffsetX = this.offsetX;
+        this.dragStartOffsetY = this.offsetY;
+        this.canvas.style.cursor = 'grabbing';
+      }
+
+      handleMouseMove(e) {
+        if (!this.isDragging) return;
+        const dx = e.clientX - this.dragStartX;
+        const dy = e.clientY - this.dragStartY;
+        this.offsetX = this.dragStartOffsetX + dx;
+        this.offsetY = this.dragStartOffsetY + dy;
+        this.limitOffsets();
+        this.draw();
+      }
+
+      handleMouseUp(e) {
+        if (!this.isDragging) return;
+        this.isDragging = false;
+        this.canvas.style.cursor = 'default';
+      }
+
+      updateCellSizeAndOffsets() {
+        const baseCellSize = Math.floor(Math.min(
+          this.canvas.width / this.width,
+          this.canvas.height / this.height
+        ));
+        this.cellSize = baseCellSize * this.zoom;
+      }
+
+      limitOffsets() {
+        const canvasW = this.canvas.width;
+        const canvasH = this.canvas.height;
+        const fullWidth = this.width * this.cellSize;
+        const fullHeight = this.height * this.cellSize;
+
+        const minX = canvasW - fullWidth;
+        const maxX = 0;
+        const minY = canvasH - fullHeight;
+        const maxY = 0;
+
+        this.offsetX = Math.min(maxX, Math.max(minX, this.offsetX));
+        this.offsetY = Math.min(maxY, Math.max(minY, this.offsetY));
+      }
+
       draw() {
+        this.updateCellSizeAndOffsets();
         const ctx = this.ctx;
         const canvas = this.canvas;
-
-        this.cellSize = Math.floor(Math.min(
-          canvas.width / this.width,
-          canvas.height / this.height
-        ));
-
-        this.offsetX = (canvas.width - this.width * this.cellSize) / 2;
-        this.offsetY = (canvas.height - this.height * this.cellSize) / 2;
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.strokeStyle = '#aaa';
@@ -455,10 +557,13 @@
             const y = this.offsetY + row * this.cellSize;
 
             let fillColor;
-            if (cell === 'P1' || cell === 'P1Q') fillColor = this.player1Color;
-            else if (cell === 'P2' || cell === 'P2Q') fillColor = this.player2Color;
-            else if (cell === 'C1') fillColor = this.darkenColor(this.player1Color, 0.7);
-            else if (cell === 'C2') fillColor = this.darkenColor(this.player2Color, 0.7);
+            if (cell.startsWith('P')) {
+              const player = parseInt(cell[1]);
+              fillColor = this.playerColors[player];
+            } else if (cell.startsWith('C')) {
+              const player = parseInt(cell[1]);
+              fillColor = this.darkenColor(this.playerColors[player], 0.7);
+            }
 
             ctx.fillStyle = fillColor;
             ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
@@ -468,13 +573,13 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             let symbol = '';
-            if (cell === 'P1' || cell === 'P2') symbol = '✖';
-            else if (cell === 'P1Q' || cell === 'P2Q') symbol = '♕';
-            else if (cell === 'C1' || cell === 'C2') symbol = '◆';
+            if (cell.startsWith('P') && !cell.endsWith('Q')) symbol = '✖';
+            else if (cell.endsWith('Q')) symbol = '♕';
+            else if (cell.startsWith('C')) symbol = '◆';
 
             ctx.fillText(symbol, x + this.cellSize / 2, y + this.cellSize / 2);
 
-            if (cell === 'P1Q' || cell === 'P2Q') {
+            if (cell.endsWith('Q')) {
               ctx.strokeStyle = '#ffd700';
               ctx.lineWidth = 3;
               ctx.strokeRect(x + 2, y + 2, this.cellSize - 4, this.cellSize - 4);
@@ -482,21 +587,18 @@
           }
         }
 
-        if ((this.currentPlayer === 1 && this.firstMoveP1) ||
-            (this.currentPlayer === 2 && this.firstMoveP2)) {
-          const zone = this.currentPlayer === 1 ? this.startZoneP1 : this.startZoneP2;
-          if (zone) {
-            ctx.strokeStyle = '#0f0';
-            ctx.lineWidth = 4;
-            ctx.setLineDash([8, 8]);
-            ctx.strokeRect(
-              this.offsetX + zone.x1 * this.cellSize,
-              this.offsetY + zone.y1 * this.cellSize,
-              (zone.x2 - zone.x1 + 1) * this.cellSize,
-              (zone.y2 - zone.y1 + 1) * this.cellSize
-            );
-            ctx.setLineDash([]);
-          }
+        if (this.firstMove[this.currentPlayer] && this.startZones[this.currentPlayer]) {
+          const zone = this.startZones[this.currentPlayer];
+          ctx.strokeStyle = '#0f0';
+          ctx.lineWidth = 4;
+          ctx.setLineDash([8, 8]);
+          ctx.strokeRect(
+            this.offsetX + zone.x1 * this.cellSize,
+            this.offsetY + zone.y1 * this.cellSize,
+            (zone.x2 - zone.x1 + 1) * this.cellSize,
+            (zone.y2 - zone.y1 + 1) * this.cellSize
+          );
+          ctx.setLineDash([]);
         }
       }
 
@@ -513,12 +615,19 @@
 
     const game = new BattleGame(canvas);
 
+    function getSelectedPlayers() {
+      for (let radio of playerCountRadios) {
+        if (radio.checked) return parseInt(radio.value);
+      }
+      return 2;
+    }
+
     openBtn.addEventListener('click', () => {
       gameSection.classList.toggle('hidden');
       if (!gameSection.classList.contains('hidden')) {
         const w = parseInt(widthInput.value) || 30;
         const h = parseInt(heightInput.value) || 30;
-        game.initGame(w, h);
+        game.initGame(w, h, getSelectedPlayers());
       }
     });
 
@@ -529,7 +638,7 @@
         alert('Размеры поля должны быть от 10 до 200');
         return;
       }
-      game.initGame(w, h);
+      game.initGame(w, h, getSelectedPlayers());
     });
 
     endTurnBtn.addEventListener('click', () => {
@@ -542,16 +651,15 @@
       });
     }
 
-    if (player1ColorInput) {
-      player1ColorInput.addEventListener('input', () => {
-        game.updateColors();
+    playerCountRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (!gameSection.classList.contains('hidden')) {
+          const w = parseInt(widthInput.value) || 30;
+          const h = parseInt(heightInput.value) || 30;
+          game.initGame(w, h, getSelectedPlayers());
+        }
       });
-    }
-    if (player2ColorInput) {
-      player2ColorInput.addEventListener('input', () => {
-        game.updateColors();
-      });
-    }
+    });
 
     window.battleGame = game;
     console.log('✅ КЛЕШНЯ готова');
