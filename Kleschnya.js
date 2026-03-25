@@ -2,7 +2,7 @@
   'use strict';
 
   if (window.battleGameInitialized) {
-    console.warn('⚠️ Игра уже инициализирована!');
+    console.warn('⚠️ Клешня уже инициализирована!');
     return;
   }
   window.battleGameInitialized = true;
@@ -25,10 +25,10 @@
     const player2ColorInput = document.getElementById('player2Color');
 
     if (!openBtn || !gameSection || !canvas) {
-      console.error('❌ Не найдены необходимые элементы игры');
+      console.error('❌ Не найдены необходимые элементы клешни');
       return;
     }
-
+    
     class BattleGame {
       constructor(canvas) {
         this.canvas = canvas;
@@ -55,6 +55,8 @@
         this.player1Color = '#ff4444';
         this.player2Color = '#4444ff';
 
+        this.clawComponents = { 1: [], 2: [] };
+
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
         this.canvas.addEventListener('click', this.handleCanvasClick);
       }
@@ -80,6 +82,7 @@
         this.history = [];
 
         this.generateStartZones();
+        this.updateClawComponents();
         this.updateColors();
         this.draw();
         this.updateUI();
@@ -128,6 +131,81 @@
         return false;
       }
 
+      updateClawComponents() {
+        this.clawComponents = { 1: [], 2: [] };
+        const visited = Array(this.height).fill().map(() => Array(this.width).fill(false));
+
+        for (let player of [1, 2]) {
+          const clawType = player === 1 ? 'C1' : 'C2';
+          for (let i = 0; i < this.height; i++) {
+            for (let j = 0; j < this.width; j++) {
+              if (this.grid[i][j] === clawType && !visited[i][j]) {
+                const component = [];
+                const queue = [[i, j]];
+                visited[i][j] = true;
+                while (queue.length) {
+                  const [r, c] = queue.shift();
+                  component.push([r, c]);
+                  for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                      if (dr === 0 && dc === 0) continue;
+                      const nr = r + dr;
+                      const nc = c + dc;
+                      if (nr >= 0 && nr < this.height && nc >= 0 && nc < this.width &&
+                          this.grid[nr][nc] === clawType && !visited[nr][nc]) {
+                        visited[nr][nc] = true;
+                        queue.push([nr, nc]);
+                      }
+                    }
+                  }
+                }
+                this.clawComponents[player].push(component);
+              }
+            }
+          }
+        }
+
+        for (let player of [1, 2]) {
+          const playerUnit = player === 1 ? 'P1' : 'P2';
+          const playerQueen = player === 1 ? 'P1Q' : 'P2Q';
+          for (let comp of this.clawComponents[player]) {
+            let active = false;
+            for (let [r, c] of comp) {
+              for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                  if (dr === 0 && dc === 0) continue;
+                  const nr = r + dr;
+                  const nc = c + dc;
+                  if (nr >= 0 && nr < this.height && nc >= 0 && nc < this.width) {
+                    const cell = this.grid[nr][nc];
+                    if (cell === playerUnit || cell === playerQueen) {
+                      active = true;
+                      break;
+                    }
+                  }
+                }
+                if (active) break;
+              }
+              if (active) break;
+            }
+            comp.active = active;
+          }
+        }
+      }
+
+      isAdjacentToActiveClaw(row, col, player) {
+        if (!this.clawComponents[player]) return false;
+        for (let comp of this.clawComponents[player]) {
+          if (!comp.active) continue;
+          for (let [cr, cc] of comp) {
+            if (Math.abs(cr - row) <= 1 && Math.abs(cc - col) <= 1) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
       canPlaceUnit(row, col) {
         if (this.grid[row][col] !== null) return false;
 
@@ -138,26 +216,7 @@
 
         const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
         const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
-        const playerClaw = this.currentPlayer === 1 ? 'C1' : 'C2';
 
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            if (dr === 0 && dc === 0) continue;
-            const nr = row + dr;
-            const nc = col + dc;
-            if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
-
-            const cell = this.grid[nr][nc];
-            if (cell === playerUnit || cell === playerQueen) return true;
-            if (cell === playerClaw && this.isClawActive(nr, nc, this.currentPlayer)) return true;
-          }
-        }
-        return false;
-      }
-
-      isClawActive(row, col, player) {
-        const playerUnit = player === 1 ? 'P1' : 'P2';
-        const playerQueen = player === 1 ? 'P1Q' : 'P2Q';
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
             if (dr === 0 && dc === 0) continue;
@@ -168,6 +227,9 @@
             if (cell === playerUnit || cell === playerQueen) return true;
           }
         }
+
+        if (this.isAdjacentToActiveClaw(row, col, this.currentPlayer)) return true;
+
         return false;
       }
 
@@ -180,7 +242,6 @@
 
         const playerUnit = this.currentPlayer === 1 ? 'P1' : 'P2';
         const playerQueen = this.currentPlayer === 1 ? 'P1Q' : 'P2Q';
-        const playerClaw = this.currentPlayer === 1 ? 'C1' : 'C2';
 
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
@@ -190,9 +251,11 @@
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
             const neighbor = this.grid[nr][nc];
             if (neighbor === playerUnit || neighbor === playerQueen) return true;
-            if (neighbor === playerClaw && this.isClawActive(nr, nc, this.currentPlayer)) return true;
           }
         }
+
+        if (this.isAdjacentToActiveClaw(row, col, this.currentPlayer)) return true;
+
         return false;
       }
 
@@ -215,7 +278,7 @@
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
 
         if (this.actionsLeft <= 0) {
-          alert('Больше нет действий на этом ходу. Заверши ход.');
+          alert('Закончились ОД, заверши ход.');
           return;
         }
 
@@ -240,6 +303,7 @@
             if (this.currentPlayer === 1) this.firstMoveP1 = false;
             else this.firstMoveP2 = false;
             this.actionsLeft--;
+            this.updateClawComponents();
             this.draw();
             this.updateUI();
             return;
@@ -257,6 +321,7 @@
           });
           this.grid[row][col] = playerUnit;
           this.actionsLeft--;
+          this.updateClawComponents();
           this.draw();
           this.updateUI();
           return;
@@ -275,12 +340,14 @@
           if (isQueen) {
             this.gameOver = true;
             this.winner = this.currentPlayer;
-            alert(`🎉 ${this.currentPlayer} победил, съев вражескую матку!`);
+            alert(`🎉 Игрок ${this.currentPlayer} победил, съев вражескую матку!`);
+            this.updateClawComponents();
             this.draw();
             this.updateUI();
             return;
           }
 
+          this.updateClawComponents();
           this.draw();
           this.updateUI();
           return;
@@ -312,6 +379,7 @@
           }
         }
 
+        this.updateClawComponents();
         this.draw();
         this.updateUI();
       }
@@ -320,7 +388,7 @@
         if (this.gameOver) return;
 
         if (this.actionsLeft > 0) {
-          alert('Сначала потрать все очки действий!');
+          alert('Сначала потрать все ОД!');
           return;
         }
 
