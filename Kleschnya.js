@@ -2,7 +2,7 @@
   'use strict';
 
   if (window.battleGameInitialized) {
-    console.warn('⚠️ КЛЕШНЯ инициализирована!');
+    console.warn('⚠️ Игра уже инициализирована!');
     return;
   }
   window.battleGameInitialized = true;
@@ -25,7 +25,7 @@
     const playerCountRadios = document.querySelectorAll('input[name="playerCount"]');
 
     if (!openBtn || !gameSection || !canvas) {
-      console.error('❌ Не найдены необходимые элементы');
+      console.error('❌ Не найдены необходимые элементы игры');
       return;
     }
 
@@ -35,6 +35,7 @@
         this.ctx = canvas.getContext('2d');
         this.width = 30;
         this.height = 30;
+        this.baseCellSize = 20;
         this.cellSize = 20;
         this.offsetX = 0;
         this.offsetY = 0;
@@ -58,14 +59,17 @@
         this.dragStartY = 0;
         this.dragStartOffsetX = 0;
         this.dragStartOffsetY = 0;
+        this.dragDistance = 0;
+        this.dragThreshold = 5;
 
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
-        this.canvas.addEventListener('click', this.handleCanvasClick);
         this.handleWheel = this.handleWheel.bind(this);
-        this.canvas.addEventListener('wheel', this.handleWheel, { passive: false });
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
+
+        this.canvas.addEventListener('click', this.handleCanvasClick);
+        this.canvas.addEventListener('wheel', this.handleWheel, { passive: false });
         this.canvas.addEventListener('mousedown', this.handleMouseDown);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -93,6 +97,23 @@
         });
       }
 
+      resizeCanvasToFit() {
+        const maxWidth = 800;
+        const maxHeight = 600;
+
+        const cellByWidth = maxWidth / this.width;
+        const cellByHeight = maxHeight / this.height;
+        this.baseCellSize = Math.floor(Math.min(cellByWidth, cellByHeight));
+        this.baseCellSize = Math.max(12, this.baseCellSize);
+
+        this.canvas.width = this.width * this.baseCellSize;
+        this.canvas.height = this.height * this.baseCellSize;
+        this.zoom = 1.0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.cellSize = this.baseCellSize;
+      }
+
       initGame(width, height, numPlayers = 2) {
         console.log(`🔄 Новая игра: ${width}x${height}, игроков: ${numPlayers}`);
         this.width = Math.min(200, Math.max(10, width));
@@ -107,10 +128,6 @@
         this.firstMove = Array(this.numPlayers + 1).fill(true);
         this.history = [];
 
-        this.zoom = 1.0;
-        this.offsetX = 0;
-        this.offsetY = 0;
-
         const defaultColors = ['', '#ff4444', '#4444ff', '#44ff44', '#ffaa44'];
         for (let i = 1; i <= this.numPlayers; i++) {
           if (!this.playerColors[i]) this.playerColors[i] = defaultColors[i];
@@ -118,6 +135,7 @@
         this.updateColorPickersUI();
 
         this.generateStartZones();
+        this.resizeCanvasToFit();
         this.updateClawComponents();
         this.draw();
         this.updateUI();
@@ -127,7 +145,6 @@
         const zoneSize = 5;
         const margin = 2;
         const zones = {};
-
         if (this.numPlayers === 2) {
           zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
           zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
@@ -135,16 +152,13 @@
           zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
           zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
           zones[3] = { x1: this.width-zoneSize-margin, y1: margin, x2: this.width-margin-1, y2: margin+zoneSize-1 };
-        } else { // 4 игрока
+        } else {
           zones[1] = { x1: margin, y1: margin, x2: margin+zoneSize-1, y2: margin+zoneSize-1 };
           zones[2] = { x1: this.width-zoneSize-margin, y1: this.height-zoneSize-margin, x2: this.width-margin-1, y2: this.height-margin-1 };
           zones[3] = { x1: this.width-zoneSize-margin, y1: margin, x2: this.width-margin-1, y2: margin+zoneSize-1 };
           zones[4] = { x1: margin, y1: this.height-zoneSize-margin, x2: margin+zoneSize-1, y2: this.height-margin-1 };
         }
-
-        for (let i = 1; i <= this.numPlayers; i++) {
-          this.startZones[i] = zones[i];
-        }
+        for (let i = 1; i <= this.numPlayers; i++) this.startZones[i] = zones[i];
       }
 
       isInStartZone(row, col) {
@@ -155,12 +169,8 @@
 
       updateClawComponents() {
         this.clawComponents = {};
-        for (let p = 1; p <= this.numPlayers; p++) {
-          this.clawComponents[p] = [];
-        }
-
+        for (let p = 1; p <= this.numPlayers; p++) this.clawComponents[p] = [];
         const visited = Array(this.height).fill().map(() => Array(this.width).fill(false));
-
         for (let player = 1; player <= this.numPlayers; player++) {
           const clawType = `C${player}`;
           for (let i = 0; i < this.height; i++) {
@@ -175,9 +185,8 @@
                   for (let dr = -1; dr <= 1; dr++) {
                     for (let dc = -1; dc <= 1; dc++) {
                       if (dr === 0 && dc === 0) continue;
-                      const nr = r + dr;
-                      const nc = c + dc;
-                      if (nr >= 0 && nr < this.height && nc >= 0 && nc < this.width &&
+                      const nr = r + dr, nc = c + dc;
+                      if (nr >=0 && nr < this.height && nc >=0 && nc < this.width &&
                           this.grid[nr][nc] === clawType && !visited[nr][nc]) {
                         visited[nr][nc] = true;
                         queue.push([nr, nc]);
@@ -192,17 +201,15 @@
         }
 
         for (let player = 1; player <= this.numPlayers; player++) {
-          const playerUnit = `P${player}`;
-          const playerQueen = `P${player}Q`;
+          const playerUnit = `P${player}`, playerQueen = `P${player}Q`;
           for (let comp of this.clawComponents[player]) {
             let active = false;
             for (let [r, c] of comp) {
               for (let dr = -1; dr <= 1; dr++) {
                 for (let dc = -1; dc <= 1; dc++) {
                   if (dr === 0 && dc === 0) continue;
-                  const nr = r + dr;
-                  const nc = c + dc;
-                  if (nr >= 0 && nr < this.height && nc >= 0 && nc < this.width) {
+                  const nr = r + dr, nc = c + dc;
+                  if (nr >=0 && nr < this.height && nc >=0 && nc < this.width) {
                     const cell = this.grid[nr][nc];
                     if (cell === playerUnit || cell === playerQueen) {
                       active = true;
@@ -224,9 +231,7 @@
         for (let comp of this.clawComponents[player]) {
           if (!comp.active) continue;
           for (let [cr, cc] of comp) {
-            if (Math.abs(cr - row) <= 1 && Math.abs(cc - col) <= 1) {
-              return true;
-            }
+            if (Math.abs(cr - row) <= 1 && Math.abs(cc - col) <= 1) return true;
           }
         }
         return false;
@@ -234,19 +239,14 @@
 
       canPlaceUnit(row, col) {
         if (this.grid[row][col] !== null) return false;
+        if (this.firstMove[this.currentPlayer]) return this.isInStartZone(row, col);
 
-        if (this.firstMove[this.currentPlayer]) {
-          return this.isInStartZone(row, col);
-        }
-
-        const playerUnit = `P${this.currentPlayer}`;
-        const playerQueen = `P${this.currentPlayer}Q`;
+        const playerUnit = `P${this.currentPlayer}`, playerQueen = `P${this.currentPlayer}Q`;
 
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
             if (dr === 0 && dc === 0) continue;
-            const nr = row + dr;
-            const nc = col + dc;
+            const nr = row + dr, nc = col + dc;
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
             const cell = this.grid[nr][nc];
             if (cell === playerUnit || cell === playerQueen) return true;
@@ -254,33 +254,27 @@
         }
 
         if (this.isAdjacentToActiveClaw(row, col, this.currentPlayer)) return true;
-
         return false;
       }
 
       canAttack(row, col) {
         const cell = this.grid[row][col];
         if (!cell) return false;
+        if (!cell.startsWith('P')) return false;
+        const enemyPlayer = parseInt(cell[1]);
+        if (enemyPlayer === this.currentPlayer) return false;
 
-        const isEnemy = cell.startsWith('P') && parseInt(cell[1]) !== this.currentPlayer;
-        if (!isEnemy) return false;
-
-        const playerUnit = `P${this.currentPlayer}`;
-        const playerQueen = `P${this.currentPlayer}Q`;
-
+        const playerUnit = `P${this.currentPlayer}`, playerQueen = `P${this.currentPlayer}Q`;
         for (let dr = -1; dr <= 1; dr++) {
           for (let dc = -1; dc <= 1; dc++) {
             if (dr === 0 && dc === 0) continue;
-            const nr = row + dr;
-            const nc = col + dc;
+            const nr = row + dr, nc = col + dc;
             if (nr < 0 || nr >= this.height || nc < 0 || nc >= this.width) continue;
             const neighbor = this.grid[nr][nc];
             if (neighbor === playerUnit || neighbor === playerQueen) return true;
           }
         }
-
         if (this.isAdjacentToActiveClaw(row, col, this.currentPlayer)) return true;
-
         return false;
       }
 
@@ -289,24 +283,21 @@
           alert(`Игра окончена! Победил игрок ${this.winner}`);
           return;
         }
+        if (this.dragDistance > this.dragThreshold) return;
 
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / rect.width;
         const scaleY = this.canvas.height / rect.height;
-
         const mouseX = (e.clientX - rect.left) * scaleX;
         const mouseY = (e.clientY - rect.top) * scaleY;
 
         const col = Math.floor((mouseX - this.offsetX) / this.cellSize);
         const row = Math.floor((mouseY - this.offsetY) / this.cellSize);
-
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
-
         if (this.actionsLeft <= 0) {
           alert('Больше нет ОД, заверши ход.');
           return;
         }
-
         this.processAction(row, col);
       }
 
@@ -318,12 +309,7 @@
 
         if (this.firstMove[this.currentPlayer]) {
           if (this.isInStartZone(row, col) && cell === null) {
-            this.history.push({
-              row, col,
-              previousState: null,
-              wasQueen: true,
-              player: this.currentPlayer
-            });
+            this.history.push({ row, col, previousState: null, wasQueen: true, player: this.currentPlayer });
             this.grid[row][col] = playerQueen;
             this.firstMove[this.currentPlayer] = false;
             this.actionsLeft--;
@@ -337,13 +323,9 @@
           }
         }
 
+        // Постановка крестика
         if (cell === null && this.canPlaceUnit(row, col)) {
-          this.history.push({
-            row, col,
-            previousState: null,
-            wasQueen: false,
-            player: this.currentPlayer
-          });
+          this.history.push({ row, col, previousState: null, wasQueen: false, player: this.currentPlayer });
           this.grid[row][col] = playerUnit;
           this.actionsLeft--;
           this.updateClawComponents();
@@ -352,24 +334,18 @@
           return;
         }
 
+        // Атака
         if (cell !== null && this.canAttack(row, col)) {
           const isQueen = cell.endsWith('Q');
           const enemyPlayer = parseInt(cell[1]);
-          this.history.push({
-            row, col,
-            previousState: cell,
-            wasQueen: false,
-            player: this.currentPlayer
-          });
+          this.history.push({ row, col, previousState: cell, wasQueen: false, player: this.currentPlayer });
           this.grid[row][col] = playerClaw;
           this.actionsLeft--;
 
           if (isQueen) {
             this.playersAlive[enemyPlayer] = false;
             const alive = [];
-            for (let i = 1; i <= this.numPlayers; i++) {
-              if (this.playersAlive[i]) alive.push(i);
-            }
+            for (let i = 1; i <= this.numPlayers; i++) if (this.playersAlive[i]) alive.push(i);
             if (alive.length === 1) {
               this.gameOver = true;
               this.winner = alive[0];
@@ -385,7 +361,7 @@
           return;
         }
 
-        alert('Так ходить нельзя');
+        console.log('Невозможное действие');
       }
 
       undoLastAction() {
@@ -394,19 +370,9 @@
           return;
         }
         const last = this.history.pop();
-        const row = last.row;
-        const col = last.col;
-        const previousCell = last.previousState;
-        const wasQueen = last.wasQueen;
-        const player = last.player;
-
-        this.grid[row][col] = previousCell;
+        this.grid[last.row][last.col] = last.previousState;
         this.actionsLeft++;
-
-        if (wasQueen && previousCell === null) {
-          this.firstMove[player] = true;
-        }
-
+        if (last.wasQueen && last.previousState === null) this.firstMove[last.player] = true;
         this.updateClawComponents();
         this.draw();
         this.updateUI();
@@ -414,21 +380,17 @@
 
       endTurn() {
         if (this.gameOver) return;
-
         if (this.actionsLeft > 0) {
-          alert('Сначала потрать все ОД!');
+          alert('Сначала потрать ОД!');
           return;
         }
-
         let next = this.currentPlayer;
         do {
           next = next % this.numPlayers + 1;
         } while (!this.playersAlive[next]);
-
         this.currentPlayer = next;
         this.actionsLeft = 10;
         this.history = [];
-
         this.updateUI();
         this.draw();
       }
@@ -436,22 +398,17 @@
       updateUI() {
         if (currentPlayerSpan) currentPlayerSpan.textContent = this.currentPlayer;
         if (actionsLeftSpan) actionsLeftSpan.textContent = this.actionsLeft;
-        if (playerColorSample) {
-          playerColorSample.style.backgroundColor = this.playerColors[this.currentPlayer];
-        }
+        if (playerColorSample) playerColorSample.style.backgroundColor = this.playerColors[this.currentPlayer];
 
-        if (endTurnBtn) {
-          endTurnBtn.disabled = (this.actionsLeft > 0);
-        }
-        if (undoBtn) {
-          undoBtn.disabled = (this.history.length === 0 || this.gameOver);
-        }
+        if (endTurnBtn) endTurnBtn.disabled = (this.actionsLeft > 0);
+        if (undoBtn) undoBtn.disabled = (this.history.length === 0 || this.gameOver);
       }
 
       handleWheel(e) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        const newZoom = Math.min(5, Math.max(0.5, this.zoom * delta));
+        let newZoom = this.zoom * delta;
+        newZoom = Math.min(5, Math.max(1.0, newZoom));
         if (newZoom === this.zoom) return;
 
         const rect = this.canvas.getBoundingClientRect();
@@ -464,7 +421,7 @@
         const oldWorldY = (mouseY - this.offsetY) / this.cellSize;
 
         this.zoom = newZoom;
-        this.updateCellSizeAndOffsets();
+        this.cellSize = this.baseCellSize * this.zoom;
 
         const newWorldX = (mouseX - this.offsetX) / this.cellSize;
         const newWorldY = (mouseY - this.offsetY) / this.cellSize;
@@ -472,13 +429,13 @@
         this.offsetX += (newWorldX - oldWorldX) * this.cellSize;
         this.offsetY += (newWorldY - oldWorldY) * this.cellSize;
         this.limitOffsets();
-
         this.draw();
       }
 
       handleMouseDown(e) {
         if (e.button !== 0) return;
         this.isDragging = true;
+        this.dragDistance = 0;
         this.dragStartX = e.clientX;
         this.dragStartY = e.clientY;
         this.dragStartOffsetX = this.offsetX;
@@ -490,6 +447,7 @@
         if (!this.isDragging) return;
         const dx = e.clientX - this.dragStartX;
         const dy = e.clientY - this.dragStartY;
+        this.dragDistance = Math.hypot(dx, dy);
         this.offsetX = this.dragStartOffsetX + dx;
         this.offsetY = this.dragStartOffsetY + dy;
         this.limitOffsets();
@@ -503,36 +461,31 @@
       }
 
       updateCellSizeAndOffsets() {
-        const baseCellSize = Math.floor(Math.min(
-          this.canvas.width / this.width,
-          this.canvas.height / this.height
-        ));
-        this.cellSize = baseCellSize * this.zoom;
+        this.cellSize = this.baseCellSize * this.zoom;
       }
 
       limitOffsets() {
-        const canvasW = this.canvas.width;
-        const canvasH = this.canvas.height;
         const fullWidth = this.width * this.cellSize;
         const fullHeight = this.height * this.cellSize;
-
-        const minX = canvasW - fullWidth;
+        const minX = this.canvas.width - fullWidth;
         const maxX = 0;
-        const minY = canvasH - fullHeight;
+        const minY = this.canvas.height - fullHeight;
         const maxY = 0;
-
         this.offsetX = Math.min(maxX, Math.max(minX, this.offsetX));
         this.offsetY = Math.min(maxY, Math.max(minY, this.offsetY));
       }
 
       draw() {
-        this.updateCellSizeAndOffsets();
         const ctx = this.ctx;
-        const canvas = this.canvas;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        ctx.clearRect(0, 0, w, h);
 
+        ctx.save();
+        ctx.translate(0.5, 0.5);
         ctx.strokeStyle = '#aaa';
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = 1;
+
         for (let i = 0; i <= this.width; i++) {
           const x = this.offsetX + i * this.cellSize;
           ctx.beginPath();
@@ -540,6 +493,7 @@
           ctx.lineTo(x, this.offsetY + this.height * this.cellSize);
           ctx.stroke();
         }
+
         for (let i = 0; i <= this.height; i++) {
           const y = this.offsetY + i * this.cellSize;
           ctx.beginPath();
@@ -547,6 +501,7 @@
           ctx.lineTo(this.offsetX + this.width * this.cellSize, y);
           ctx.stroke();
         }
+        ctx.restore();
 
         for (let row = 0; row < this.height; row++) {
           for (let col = 0; col < this.width; col++) {
@@ -555,7 +510,6 @@
 
             const x = this.offsetX + col * this.cellSize;
             const y = this.offsetY + row * this.cellSize;
-
             let fillColor;
             if (cell.startsWith('P')) {
               const player = parseInt(cell[1]);
@@ -564,7 +518,6 @@
               const player = parseInt(cell[1]);
               fillColor = this.darkenColor(this.playerColors[player], 0.7);
             }
-
             ctx.fillStyle = fillColor;
             ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
 
@@ -576,7 +529,6 @@
             if (cell.startsWith('P') && !cell.endsWith('Q')) symbol = '✖';
             else if (cell.endsWith('Q')) symbol = '♕';
             else if (cell.startsWith('C')) symbol = '◆';
-
             ctx.fillText(symbol, x + this.cellSize / 2, y + this.cellSize / 2);
 
             if (cell.endsWith('Q')) {
@@ -589,16 +541,17 @@
 
         if (this.firstMove[this.currentPlayer] && this.startZones[this.currentPlayer]) {
           const zone = this.startZones[this.currentPlayer];
+          ctx.save();
+          ctx.setLineDash([8, 8]);
           ctx.strokeStyle = '#0f0';
           ctx.lineWidth = 4;
-          ctx.setLineDash([8, 8]);
           ctx.strokeRect(
             this.offsetX + zone.x1 * this.cellSize,
             this.offsetY + zone.y1 * this.cellSize,
             (zone.x2 - zone.x1 + 1) * this.cellSize,
             (zone.y2 - zone.y1 + 1) * this.cellSize
           );
-          ctx.setLineDash([]);
+          ctx.restore();
         }
       }
 
@@ -616,9 +569,7 @@
     const game = new BattleGame(canvas);
 
     function getSelectedPlayers() {
-      for (let radio of playerCountRadios) {
-        if (radio.checked) return parseInt(radio.value);
-      }
+      for (let r of playerCountRadios) if (r.checked) return parseInt(r.value);
       return 2;
     }
 
