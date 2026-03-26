@@ -63,15 +63,15 @@ body {
 
 .page-header {
   position: relative;
-  margin: 0 0 80px;
-  padding: 32px 0;
+  margin: 0 0 40px;
+  padding: 20px 0;
 }
 
 .page-header .container {
   max-width: 2000px;
   text-align: right;
   padding-right: 32px;
-  padding-top: 10px;
+  padding-top: 0;
 }
 
 .page-header a {
@@ -830,6 +830,12 @@ body.dark-theme .achievements-gallery img {
   border: none;
 }
 
+body.dark-theme .color-picker-panel,
+body.dark-theme .player-count-panel {
+  background: rgba(42, 27, 61, 0.8);
+  color: #a8d0ff;
+}
+
 body.dark-theme .achievements-gallery figure:hover img {
   transform: scale(1.05);
   box-shadow: 0 10px 25px rgba(168, 208, 255, 0.6);
@@ -970,6 +976,18 @@ body.contrast-theme .my-achievements {
   border-top: 2px solid #00ff00;
 }
 
+body.contrast-theme .color-picker-panel,
+body.contrast-theme .player-count-panel {
+  background: #000000;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+}
+body.contrast-theme .rules-popup {
+  background: #000000;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+}
+
 body.contrast-theme .chat-section {
   background-color: var(--color-bg);
   border: 2px solid var(--neon-green) !important;
@@ -1103,11 +1121,11 @@ body.contrast-theme .achievements-gallery figure:hover img {
   justify-content: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
 }
 
 #newGameBtn {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .game-settings label {
@@ -1184,11 +1202,12 @@ body.contrast-theme .achievements-gallery figure:hover img {
 
 #gameCanvas {
   border: 2px solid #333;
-  background: #f0f0f0;
+  background: #dcffff;
   cursor: default;
   max-width: 100%;
   height: auto;
-  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  display: block;
 }
 
 body.dark-theme .game-section {
@@ -1290,18 +1309,20 @@ body.contrast-theme #gameCanvas {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 40px;
+  top: 0;
+  left: 100%;
   right: 0;
-  width: 350px;
+  margin-left: 10px;
+  width: 300px;
   background: rgba(0, 0, 0, 0.85);
   color: #fff;
   border-radius: 10px;
-  padding: 20px;
-  font-size: 14px;
-  line-height: 1.5;
+  padding: 15px;
+  font-size: 13px;
+  line-height: 1.4;
   box-shadow: 0 5px 20px rgba(0,0,0,0.5);
   backdrop-filter: blur(5px);
-  transition: opacity 0.3s, visibility 0.3s;
+  transition: opacity 0.2s, visibility 0.2s;
   z-index: 100;
   pointer-events: none;
   text-align: left;
