@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     try {
       const response = await puter.ai.chat(messageText, {
-        model: 'gpt-5-nano',
+        model: 'gpt-4o-mini',
         stream: false
       });
 
