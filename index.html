@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="img/FAV.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Old+Standard+TT&display=swap&subset=cyrillic" rel="stylesheet">
   <title>Портфолио Гатца, Чёрного Мечника</title>
 </head>
@@ -87,14 +88,78 @@
     </button>
   </div>
 
-  
   <div class="roulette-opener">
     <button class="button open-roulette-btn" id="openRouletteBtn">
       🎪 Открыть рулетку судьбы
     </button>
   </div>
 
+  <div class="game-opener">
+    <button class="button open-game-btn" id="openGameBtn">⚔️ Сыграть в КЛЕШНЮ</button>
+  </div>
   
+  <section class="game-section hidden" id="gameSection">
+    <div class="container">
+      <h2 class="subheading">КЛЕШНЯ</h2>
+
+      <div class="game-settings">
+        <label>Ширина: <input type="number" id="gameWidth" min="10" max="200" value="30"></label>
+        <label>Высота: <input type="number" id="gameHeight" min="10" max="200" value="30"></label>
+        <button class="button" id="newGameBtn">🔄 Новая игра</button>
+      </div>
+
+      <div class="game-info">
+        <span>Ход: <span id="currentPlayerDisplay">1</span> (<span id="playerColorSample" style="display:inline-block; width:16px; height:16px; border-radius:50%;"></span>)</span>
+        <span>ОД: <span id="actionsLeftDisplay">10</span></span>
+      </div>
+
+      <div class="game-layout">
+        <div class="game-sidebar">
+          <div class="color-picker-panel">
+            <h4>Выбери цвет</h4>
+            <div id="colorPickersContainer"></div>
+          </div>
+
+          <div class="player-count-panel">
+            <h4>Количество крабов</h4>
+            <div class="player-count-options">
+              <label><input type="radio" name="playerCount" value="2" checked> 2 игрока</label>
+              <label><input type="radio" name="playerCount" value="3"> 3 игрока</label>
+              <label><input type="radio" name="playerCount" value="4"> 4 игрока</label>
+            </div>
+          </div>
+        </div>
+  
+        <div class="game-main">
+          <div class="game-board-wrapper">
+            <div class="game-board-container">
+              <canvas id="gameCanvas"></canvas>
+            </div>
+            <div class="rules-tooltip">
+              <span class="rules-icon">?</span>
+              <div class="rules-popup">
+                <h4>Правила КЛЕШНИ</h4>
+                <ul>
+                  <li><strong>Победа:</strong> Сгрызть вражескую матку (♕).</li>
+                  <li><strong>Ход:</strong> 10 действий (поставить крестик или съесть вражеский).</li>
+                  <li><strong>Первый ход:</strong> поставить матку в подсвеченной зоне.</li>
+                  <li><strong>Постановка крестика (✖):</strong> можно в любую пустую клетку, соседнюю (8 направлений) с любым своим крестиком или активной клешнёй.</li>
+                  <li><strong>Клешня (◆):</strong> блокирует проход. Активна, если рядом есть ваш крестик. Используется для распространения крестов или продолжения атаки.</li>
+                  <li><strong>Атака:</strong> съесть вражеский крестик можно, если он находится в соседней клетке (8 направлений) от своего крестика или активной клешни. Съеденный крестик превращается в вашу клешню (◆).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="game-controls">
+            <button class="button small-button" id="undoBtn" title="Отменить последнее действие">↩ Отмена</button>
+            <button class="button small-button" id="endTurnBtn">Завершить ход</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
   <div class="roulette-opener">
     <button class="button open-roulette-btn" id="openRouletteBtn">
       🎪 Открыть рулетку судьбы
@@ -192,10 +257,13 @@
   <script src="script.js"></script>
   <script src="theme-switcher.js"></script>
   <script src="roulette.js"></script>
+  <script src="Kleschnya.js"></script>
 
   <div class="achievement-modal" id="achievementModal">
     <span class="achievement-modal-close">&times;</span>
     <img src="" alt="Увеличенное изображение" id="modalImage">
   </div>
+
+  <script src="https://js.puter.com/v2/"></script>
 </body>
 </html>
