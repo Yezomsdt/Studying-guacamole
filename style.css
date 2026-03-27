@@ -293,8 +293,34 @@ body {
 
 .wheel-sector span {
   display: block;
-  transform: rotate(90deg); /* корректировка под вашу геометрию */
+  transform: rotate(90deg);
   font-size: 24px;
+}
+
+.auth-hint {
+  text-align: center;
+  margin: 8px 0;
+  color: var(--color-secondary);
+  font-size: 13px;
+}
+
+body.dark-theme .auth-hint {
+  color: #91bbe8;
+}
+
+body.contrast-theme .auth-hint {
+  color: #00ff00 !important;
+}
+
+.bot-message.error {
+  border-left: 3px solid #ff6b6b;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 .chat-section {
