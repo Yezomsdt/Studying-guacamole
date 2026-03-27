@@ -1,177 +1,269 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Old+Standard+TT&display=swap&subset=cyrillic" rel="stylesheet">
-    <title>Портфолио Гатца, Чёрного Мечника</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="img/FAV.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700|Old+Standard+TT&display=swap&subset=cyrillic" rel="stylesheet">
+  <title>Портфолио Гатца, Чёрного Мечника</title>
+</head>
 
-  <body>
-    <header class="page-header">
-      <div class="theme-switcher">
-        <div class="theme-options">
-          <input type="radio" id="theme-light" name="theme" value="light" checked>
-          <label for="theme-light" title="Стандартная">🔆</label>
-    
-          <input type="radio" id="theme-dark" name="theme" value="dark">
-          <label for="theme-dark" title="Тёмная">🌙</label>
-    
-          <input type="radio" id="theme-contrast" name="theme" value="contrast">
-          <label for="theme-contrast" title="Контрастная">💚</label>
-        </div>
+<body>
+  <header class="page-header">
+    <div class="theme-switcher">
+      <div class="theme-options">
+        <input type="radio" id="theme-light" name="theme" value="light" checked>
+        <label for="theme-light" title="Стандартная">🔆</label>
+        <input type="radio" id="theme-dark" name="theme" value="dark">
+        <label for="theme-dark" title="Тёмная">🌙</label>
+        <input type="radio" id="theme-contrast" name="theme" value="contrast">
+        <label for="theme-contrast" title="Контрастная">💚</label>
       </div>
-      
-      <div class="container">
-        <div id="upstairs">Any questions:</div>
-        <a href="https://telegram.im/@Daaayum">@Daaayum</a> (Tg)
-        <br><a class="header-email" href="mailto:Yezomsdt@gmail.com">Yezomsdt@gmail.com</a> (Mail)
-        <br><a class="header-phone" href="tel:+7911748****">+7 (911) 748 **-**</a> (Phone)
-      </div>
-    </header>
+    </div>
+    
+    <div class="container">
+      <div id="how2catchme">Any questions:</div>
+      <a href="https://telegram.im/@Daaayum">@Daaayum</a> (Tg)
+      <br><a class="header-email" href="mailto:****@gmail.com">****@*****.com</a> (Mail)
+      <br><a class="header-phone" href="tel:+79**748****">+7 (9**) 748 **-**</a> (Phone)
+    </div>
+  </header>
 
-    <section class="hero-image">
-      <div class="matrix-overlay" id="matrixOverlay"></div>
-      <div class="container">
+  <section class="hero-image">
+    <div class="container">
       <h1 class="heading">Guts</h1>
       <p>Hundred men slayer (and QA Engineer)</p>
-      </div>
-    </section>
-
-    <section class="intro">
-      <h2 class="subheading">Это сайт или блог?</h2>
-      <div class="intro-content">
-          <figure>
-              <img src="files/user.jpg" width="882" height="509" alt="Фотография Гатса">
-          </figure>
-          <div class="intro-text">
-              <h3>Немного обо мне</h3>
-              <p>Окончил курс QA Engineer Java, знаю теорию и обучен практике разных видов тестирования, включая автоматизацию на Java (сейчас учу PyCharm и PyTester). Умею работать с API через Postman или SoapUI, предпочитаю автоматизацию везде, где это возможно, но не брезгую и ручным тестированием. В свободное время участвую в проектах CrowdTesting, люблю теории заговоров, внимателен к деталям и часто нахожу баги там, где этого от меня, в принципе, не требуют (:</p>
-              <h3>Чем могу быть полезен</h3>
-              <p>Могу сделать простой и не очень сайт с разными полезными <a href="https://rt.pornhub.com/">ссылками</a>, автоматизировать, протестировать API или создать бота в телеграмм (С КАЗИКОМ И АНИМАЦИЯМИ И РУЛЕТКОЙ И БЫСТРЫМ ЛЁГКИМ ВЫВОДОМ БАБЛА).</p>
-          </div>
-      </div>
-    </section>
-
-    <section class="chat-section">
-      <div class="container">
-        <h2 class="subheading">Поговори с бо*ом</h2>
-        <div class="chat-container">
-          <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message">
-              Бо*: Привет, продолжим? 😊
-            </div>
-            <div class="message user-message">
-              Стоп, не припомню, чтобы мы ранее уже общались...
-            </div>
-          </div>
-          
-          <form class="chat-input-form" id="chatForm">
-            <input 
-              type="text" 
-              class="chat-input" 
-              id="messageInput"
-              placeholder="Напиши же..."
-              autocomplete="off"
-              required
-            >
-            <button type="button" class="send-button button">
-              Отправить
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <div class="roulette-opener">
-      <button class="button open-roulette-btn" id="openRouletteBtn">
-        🎪 Открыть рулетку судьбы
-      </button>
     </div>
+  </section>
 
-    <section class="roulette-section hidden" id="rouletteSection">
-      <div class="container">
-        <h2 class="subheading">Рулетка судьбы</h2>
-      
-        <div class="roulette-container">
-          <div class="wheel-container">
-            <div class="wheel" id="rouletteWheel">
-            </div>
-            <div class="ball" id="rouletteBall"></div>
-            <div class="pointer"></div>
+  <section class="intro">
+    <h2 class="subheading" id="intro-heading">Это сайт или блог?↡</h2>
+    <div class="intro-content">
+      <figure class="intro-figure">
+        <img src="files/user.jpg" width="882" height="509" alt="Фотография Гатса">
+      </figure>
+      <div class="intro-text">
+        <h3>Немного обо мне</h3>
+        <p>Окончил курс QA Engineer Java, разбираюсь в теории различных видов тестирования и применяю её на практике, люблю автоматизацию WEB на Java (сейчас учу PyCharm и PyTester). Умею работать с API через Postman или SoapUI, предпочитаю автотесты везде, где это возможно, но не брезгую и мануальным тестированием. В свободное время участвую в проектах CrowdTesting, люблю теории заговоров, внимателен к деталям и часто нахожу баги там, где этого от меня, в принципе, не требуют (:</p>
+        <h3>Чем могу быть полезен</h3>
+        <p>Могу сделать простой и не очень сайт с разными полезными <a href="https://rt.pornhub.com/">ссылками</a>, автоматизировать, протестировать API или создать бота в телеграмм с кучей кастомных функций на любой вкус!</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="chat-section">
+    <div class="container">
+      <h2 class="subheading">Поговори с бо*ом</h2>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot-message">
+            Бо*: Привет, продолжим? 😊
+          </div>
+          <div class="message user-message">
+            Стоп, не припомню, чтобы мы ранее уже общались...
+          </div>
+        </div>
+        
+        <form class="chat-input-form" id="chatForm">
+          <input 
+            type="text" 
+            class="chat-input" 
+            id="messageInput"
+            placeholder="Напиши же..."
+            autocomplete="off"
+            required
+          >
+          <button type="button" class="send-button button">
+            Отправить
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="roulette-opener">
+    <button class="button open-roulette-btn" id="openRouletteBtn">
+      🎪 Открыть рулетку судьбы
+    </button>
+  </div>
+
+  <div class="roulette-opener">
+    <button class="button open-roulette-btn" id="openRouletteBtn">
+      🎪 Открыть рулетку судьбы
+    </button>
+  </div>
+
+  <div class="game-opener">
+    <button class="button open-game-btn" id="openGameBtn">⚔️ Сыграть в КЛЕШНЮ</button>
+  </div>
+  
+  <section class="game-section hidden" id="gameSection">
+    <div class="container">
+      <h2 class="subheading">КЛЕШНЯ</h2>
+
+      <div class="game-settings">
+        <label>Ширина: <input type="number" id="gameWidth" min="10" max="200" value="30"></label>
+        <label>Высота: <input type="number" id="gameHeight" min="10" max="200" value="30"></label>
+        <button class="button" id="newGameBtn">🔄 Новая игра</button>
+      </div>
+
+      <div class="game-info">
+        <span>Ход: <span id="currentPlayerDisplay">1</span> (<span id="playerColorSample" style="display:inline-block; width:16px; height:16px; border-radius:50%;"></span>)</span>
+        <span>ОД: <span id="actionsLeftDisplay">10</span></span>
+      </div>
+
+      <div class="game-layout">
+        <div class="game-sidebar">
+          <div class="color-picker-panel">
+            <h4>Выбери цвет</h4>
+            <div id="colorPickersContainer"></div>
           </div>
 
-          <div class="roulette-controls">
-            <button class="button spin-button" id="spinButton">
-              🎰 Крутить колесо!
-            </button>
-            <div class="control-buttons">
-              <button class="button small-button" id="resetStatsButton">
-                🔄 Обнулить стату
-              </button>
-            </div>
-            <div class="result-display" id="resultDisplay">
-              <div class="result-label">Последний результат:</div>
-              <div class="result-value">-</div>
-            </div>
-          </div>
-
-          <div class="roulette-stats">
-            <div class="stat-item">
-              <span class="stat-label">Попыток:</span>
-              <span class="stat-value" id="attemptsCount">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Побед:</span>
-              <span class="stat-value" id="winsCount">0</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Удача:</span>
-              <span class="stat-value" id="luckPercentage">0%</span>
+          <div class="player-count-panel">
+            <h4>Количество крабов</h4>
+            <div class="player-count-options">
+              <label><input type="radio" name="playerCount" value="2" checked> 2 игрока</label>
+              <label><input type="radio" name="playerCount" value="3"> 3 игрока</label>
+              <label><input type="radio" name="playerCount" value="4"> 4 игрока</label>
             </div>
           </div>
         </div>
+  
+        <div class="game-main">
+          <div class="game-board-wrapper">
+            <div class="game-board-container">
+              <canvas id="gameCanvas"></canvas>
+            </div>
+            <div class="rules-tooltip">
+              <span class="rules-icon">?</span>
+              <div class="rules-popup">
+                <h4>Правила КЛЕШНИ</h4>
+                <ul>
+                  <li><strong>Победа:</strong> Сгрызть вражескую матку (♕).</li>
+                  <li><strong>Ход:</strong> 10 действий (поставить крестик или съесть вражеский).</li>
+                  <li><strong>Первый ход:</strong> поставить матку в подсвеченной зоне.</li>
+                  <li><strong>Постановка крестика (✖):</strong> можно в любую пустую клетку, соседнюю (8 направлений) с любым своим крестиком или активной клешнёй.</li>
+                  <li><strong>Клешня (◆):</strong> блокирует проход. Активна, если рядом есть ваш крестик. Используется для распространения крестов или продолжения атаки.</li>
+                  <li><strong>Атака:</strong> съесть вражеский крестик можно, если он находится в соседней клетке (8 направлений) от своего крестика или активной клешни. Съеденный крестик превращается в вашу клешню (◆).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="game-controls">
+            <button class="button small-button" id="undoBtn" title="Отменить последнее действие">↩ Отмена</button>
+            <button class="button small-button" id="endTurnBtn">Завершить ход</button>
+          </div>
+        </div>
+        
       </div>
-    </section>
+    </div>
+  </section>
 
+  <div class="roulette-opener">
+    <button class="button open-roulette-btn" id="openRouletteBtn">
+      🎪 Открыть рулетку судьбы
+    </button>
+  </div>
+
+  <div class="roulette-opener">
+    <button class="button open-roulette-btn" id="openRouletteBtn">
+      🎪 Открыть рулетку судьбы
+    </button>
+  </div>
+
+  <section class="roulette-section hidden" id="rouletteSection">
+    <div class="container">
+      <h2 class="subheading">Рулетка судьбы</h2>
+      
+      <div class="roulette-container">
+        <div class="wheel-container">
+          <div class="wheel" id="rouletteWheel">
+          </div>
+          <div class="ball" id="rouletteBall"></div>
+          <div class="pointer"></div>
+        </div>
+
+        <div class="roulette-controls">
+          <button class="button spin-button" id="spinButton">
+            🎰 Крутить колесо!
+          </button>
+          <div class="control-buttons">
+            <button class="button small-button" id="resetStatsButton">
+              🔄 Обнулить стату
+            </button>
+          </div>
+          <div class="result-display" id="resultDisplay">
+            <div class="result-label">Последний результат:</div>
+            <div class="result-value">-</div>
+          </div>
+        </div>
+
+        <div class="roulette-stats">
+          <div class="stat-item">
+            <span class="stat-label">Попыток:</span>
+            <span class="stat-value" id="attemptsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Побед:</span>
+            <span class="stat-value" id="winsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Удача:</span>
+            <span class="stat-value" id="luckPercentage">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="works-achievements-wrapper">
     <section class="portfolio">
       <h2 class="subheading">Мои работы</h2>
-        <figure class="project-image">
-          <img src="img/project1.png" width="882" height="509">
-        </figure>
       <h3>Тут можно посмотреть разное</h3>
-      <a class="button" href="source/index.html">Мой первый сайт</a>
-      <a class="button" href="img/CV.pdf">CV</a>
+      <div class="portfolio-buttons">
+        <a class="button" href="source/index.html">Мой первый сайт</a>
+        <a class="button" href="img/404.pdf">Тут ошибка 404</a>
+        <a class="button" href="img/CV.pdf">CV</a>
+      </div>
       <h3>Блог верстальщика тестировщика</h3>
       <p>Тут будет разное про вёрстку и автоматизацию и ботов и всякое другое</p>
     </section>
-
+  
     <section id="achievements" class="my-achievements">
       <h2 class="subheading">Мои ачивки</h2>
       <div class="achievements-gallery">
-          <figure>
-              <img src="img/aston1.png" alt="Achievement 1">
-              <figcaption>Сертификат об окончании курса QA Engineer Java</figcaption>
-          </figure>
-          <figure>
-              <img src="img/crowd1.png" alt="Achievement 2">
-              <figcaption>Сертификат об участии в тестировании Mir Pay</figcaption>
-          </figure>
+        <figure data-image="img/aston1.png">
+          <img src="img/aston1.png" alt="Achievement 1">
+          <figcaption>Сертификат об окончании курса QA Engineer Java</figcaption>
+        </figure>
+        <figure data-image="img/crowd1.png">
+          <img src="img/crowd1.png" alt="Achievement 2">
+          <figcaption>Сертификат об участии в тестировании MPay</figcaption>
+        </figure>
       </div>
     </section>
+  </div>
 
-    <footer class="page-footer">
-      <div class="container">
-        <a href="#upstairs">наверх</a>
-        <a class="footer-email" href="mailto:Yezomsdt@gmail.com">Yezomsdt@gmail.com</a>
-        <a class="footer-phone" href="tel:+7911748****">+7 (911) 748 **-**</a>
-      </div>
-    </footer>
-    
-    <script src="script.js"></script>
-    <script src="enterthematrix.js"></script>
-    <script src="theme-switcher.js"></script>
-    <script src="roulette.js"></script>
-    
-  </body>
+  <footer class="page-footer">
+    <div class="container">
+      <iframe src="https://store.steampowered.com/widget/3660710/" frameborder="0" width="646" height="190"></iframe>
+      <a href="#">наверх</a>
+      <a class="footer-email" href="mailto:****@*****.com">****@*****.com</a>
+      <a class="footer-phone" href="tel:+79**748****">+7 (9**) 748 **-**</a>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
+  <script src="theme-switcher.js"></script>
+  <script src="roulette.js"></script>
+  <script src="Kleschnya.js"></script>
+
+  <div class="achievement-modal" id="achievementModal">
+    <span class="achievement-modal-close">&times;</span>
+    <img src="" alt="Увеличенное изображение" id="modalImage">
+  </div>
+
+  <script src="https://js.puter.com/v2/"></script>
+</body>
 </html>
