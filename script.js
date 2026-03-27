@@ -4,10 +4,32 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatMessages = document.getElementById('chatMessages');
   const sendButton = document.querySelector('.send-button');
 
+  let chatHistory = [
+    { role: 'assistant', content: 'Привет, продолжим? 😊' }
+  ];
+
   if (!chatForm || !messageInput || !chatMessages || !sendButton) {
     console.error('❌ Не найдены элементы чата');
     return;
   }
+
+  async function checkPuterAuth() {
+    try {
+      const user = await puter.auth.getUser();
+      if (!user) {
+        console.log('Путник не авторизован в Puter');
+        const hint = document.createElement('div');
+        hint.className = 'auth-hint';
+        hint.innerHTML = '<small>💡 Для работы ИИ нужно войти в аккаунт Puter</small>';
+        const chatForm = document.getElementById('chatForm');
+        chatForm.parentNode.insertBefore(hint, chatForm);
+      }
+    } catch(e) {
+      console.warn('Не удалось проверить статус Puter:', e);
+    }
+  }
+
+  checkPuterAuth();
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
@@ -58,7 +80,15 @@ document.addEventListener('DOMContentLoaded', function() {
     addMessage(messageText, 'user');
     messageInput.value = '';
 
+    chatHistory.push({ role: 'user', content: messageText });
     const typingDiv = addTypingIndicator();
+
+    if (messageText.toLowerCase() === '/clear' || messageText.toLowerCase() === '/очистить') {
+      chatHistory = [{ role: 'assistant', content: 'Привет, продолжим? 😊' }];
+      chatMessages.innerHTML = '<div class="message bot-message">История очищена. Привет, продолжим? 😊</div>';
+      messageInput.value = '';
+      return;
+    }
 
     try {
       const response = await puter.ai.chat(messageText, {
@@ -69,13 +99,26 @@ document.addEventListener('DOMContentLoaded', function() {
       typingDiv.remove();
 
       const botAnswer = response?.text || 'Не могу ответить...';
-      addMessage(botAnswer, 'bo*');
+      chatHistory.push({ role: 'assistant', content: botAnswer });
+      addMessage(botAnswer, 'bot');
 
-    } catch (error) {
-      console.error('Ошибка AI:', error);
-      typingDiv.remove();
-      addMessage('Ошибка связи с нейросетью. Попробуй позже!', 'bo*');
-    }
+    } catch(error){
+        console.error('Ошибка AI:', error);
+        typingDiv.remove();
+        chatHistory.pop();
+    
+        let errorMsg = 'Ошибка связи с нейросетью. Попробуй позже!';
+        if (error.message?.includes('auth')) {
+          errorMsg = 'Идентифицируй себя в Puter, путник. Пожалуйста, авторизуйся.';
+        } else if (error.message?.includes('rate limit')) {
+          errorMsg = 'Кто много запросов отправляет - ответа не получит. Подожди немного и попробуй снова.';
+        } удыу
+        
+        addMessage(errorMsg, 'bot');
+        if (location.hostname === 'localhost') {
+          addMessage(`[DEBUG] ${error.name}: ${error.message}`, 'bot');
+        }
+      }
   }
 
   sendButton.addEventListener('click', sendMessage);
