@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Тест Puter</title>
+</head>
+<body>
+  <h1>Тест Puter.js</h1>
+  <button onclick="testChat()">Чек ИИ</button>
+  <div id="output"></div>
+
+  <script src="https://js.puter.com/v2/"></script>
+  <script>
+    async function testChat(){
+      const output = document.getElementById('output');
+      output.innerHTML = '🔄 Загрузка...';
+      
+      console.log('🔍 puter:', typeof puter);
+      
+      try {
+        const response = await puter.ai.chat('Скажи "Привет, всё работает!"', {
+          model: 'gpt-4o-mini'
+        });
+        output.innerHTML = '✅ Ответ: ' + response.text;
+        console.log('✅ Успех:', response);
+      } catch (err) {
+        output.innerHTML = '❌ Ошибка: ' + err.message;
+        console.error('❌ Ошибка:', err);
+      }
+    }
+  </script>
+</body>
+</html>
