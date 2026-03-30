@@ -112,7 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
           errorMsg = 'Идентифицируй себя в Puter, путник. Пожалуйста, авторизуйся.';
         } else if (error.message?.includes('rate limit')) {
           errorMsg = 'Кто много запросов отправляет - ответа не получит. Подожди немного и попробуй снова.';
-        } удыу
+        } else if (error.message?.includes('401') || error.message?.includes('auth')) {
+          errorMsg = '🔐 Требуется авторизация в Puter. Пожалуйста, войдите в аккаунт.';
+        } else if (error.message?.includes('429') || error.message?.includes('rate limit')) {
+          errorMsg = '⏳ Превышен лимит запросов. Подождите ~1 минуту.';
+        } else if (error.message?.includes('network') || error.name === 'TypeError') {
+          errorMsg = '🌐 Проблема с соединением. Проверьте интернет.';
+        }
         
         addMessage(errorMsg, 'bot');
         if (location.hostname === 'localhost') {
