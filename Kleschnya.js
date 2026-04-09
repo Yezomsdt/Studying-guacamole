@@ -67,30 +67,38 @@
             name: 'Острова',
             generate: (w, h) => {
               const terrain = Array(h).fill().map(() => Array(w).fill('water'));
-              const zoneSize = 5;
+              const zoneSize = Math.max(5, Math.floor(Math.min(w, h) / 8));
               const margin = 2;
-
-              for (let r = margin; r < margin + zoneSize + 2; r++) {
-                for (let c = margin; c < margin + zoneSize + 2; c++) {
+              for (let r = margin; r < margin + zoneSize + 4; r++) {
+                for (let c = margin; c < margin + zoneSize + 4; c++) {
                   if (r < h && c < w) terrain[r][c] = 'land';
                 }
               }
-
-              for (let r = h - zoneSize - margin - 2; r < h - margin; r++) {
-                for (let c = w - zoneSize - margin - 2; c < w - margin; c++) {
+              for (let r = h - zoneSize - margin - 4; r < h - margin; r++) {
+                for (let c = w - zoneSize - margin - 4; c < w - margin; c++) {
                   if (r >= 0 && c >= 0) terrain[r][c] = 'land';
                 }
               }
-
-              const numIslands = Math.floor(Math.min(w, h) / 5);
+              for (let r = margin; r < margin + zoneSize + 4; r++) {
+                for (let c = w - zoneSize - margin - 4; c < w - margin; c++) {
+                  if (r < h && c >= 0) terrain[r][c] = 'land';
+                }
+              }
+              for (let r = h - zoneSize - margin - 4; r < h - margin; r++) {
+                for (let c = margin; c < margin + zoneSize + 4; c++) {
+                  if (r >= 0 && c < w) terrain[r][c] = 'land';
+                }
+              }
+              const numIslands = Math.floor(Math.min(w, h) / 3);
               for (let i = 0; i < numIslands; i++) {
                 const cx = Math.floor(Math.random() * w);
                 const cy = Math.floor(Math.random() * h);
-                const radius = Math.floor(Math.random() * 3) + 2;
+                const radius = Math.floor(Math.random() * 4) + 3;
                 for (let r = cy - radius; r <= cy + radius; r++) {
                   for (let c = cx - radius; c <= cx + radius; c++) {
                     if (r >= 0 && r < h && c >= 0 && c < w) {
-                      if (Math.random() > 0.3) terrain[r][c] = 'land';
+                      const dist = Math.sqrt((r - cy) ** 2 + (c - cx) ** 2);
+                      if (dist <= radius && Math.random() > 0.25) terrain[r][c] = 'land';
                     }
                   }
                 }
@@ -102,15 +110,13 @@
             name: 'Река',
             generate: (w, h) => {
               const terrain = Array(h).fill().map(() => Array(w).fill('land'));
-
-              const riverWidth = Math.max(2, Math.floor(w / 10));
-              const centerStart = Math.floor(w / 2);
+              const riverWidth = Math.max(3, Math.floor(w / 12));
+              const centerStart = Math.floor(w * (0.3 + Math.random() * 0.4));
               let riverX = centerStart;
               for (let r = 0; r < h; r++) {
-
                 if (r > 5 && r < h - 5) {
-                  riverX += Math.floor(Math.sin(r / 5) * 3);
-                  riverX = Math.max(riverWidth + 1, Math.min(w - riverWidth - 1, riverX));
+                  riverX += Math.floor(Math.sin(r / 5) * 4) + Math.floor((Math.random() - 0.5) * 3);
+                  riverX = Math.max(riverWidth + 2, Math.min(w - riverWidth - 2, riverX));
                 }
                 for (let c = riverX - riverWidth; c <= riverX + riverWidth; c++) {
                   if (c >= 0 && c < w) terrain[r][c] = 'water';
@@ -123,7 +129,7 @@
             name: 'Шахматка',
             generate: (w, h) => {
               const terrain = Array(h).fill().map(() => Array(w).fill('land'));
-              const blockSize = Math.max(2, Math.floor(Math.min(w, h) / 8));
+              const blockSize = Math.max(3, Math.floor(Math.min(w, h) / 8));
               for (let r = 0; r < h; r++) {
                 for (let c = 0; c < w; c++) {
                   const blockRow = Math.floor(r / blockSize);
@@ -133,17 +139,26 @@
                   }
                 }
               }
-
               const margin = 2;
-              const zoneSize = 5;
-              for (let r = margin; r < margin + zoneSize + 2; r++) {
-                for (let c = margin; c < margin + zoneSize + 2; c++) {
+              const zoneSize = Math.max(5, Math.floor(Math.min(w, h) / 8));
+              for (let r = margin; r < margin + zoneSize + 4; r++) {
+                for (let c = margin; c < margin + zoneSize + 4; c++) {
                   if (r < h && c < w) terrain[r][c] = 'land';
                 }
               }
-              for (let r = h - zoneSize - margin - 2; r < h - margin; r++) {
-                for (let c = w - zoneSize - margin - 2; c < w - margin; c++) {
+              for (let r = h - zoneSize - margin - 4; r < h - margin; r++) {
+                for (let c = w - zoneSize - margin - 4; c < w - margin; c++) {
                   if (r >= 0 && c >= 0) terrain[r][c] = 'land';
+                }
+              }
+              for (let r = margin; r < margin + zoneSize + 4; r++) {
+                for (let c = w - zoneSize - margin - 4; c < w - margin; c++) {
+                  if (r < h && c >= 0) terrain[r][c] = 'land';
+                }
+              }
+              for (let r = h - zoneSize - margin - 4; r < h - margin; r++) {
+                for (let c = margin; c < margin + zoneSize + 4; c++) {
+                  if (r >= 0 && c < w) terrain[r][c] = 'land';
                 }
               }
               return terrain;
@@ -153,13 +168,18 @@
             name: 'Ров',
             generate: (w, h) => {
               const terrain = Array(h).fill().map(() => Array(w).fill('land'));
+              const minDimension = Math.min(w, h);
+              const moatWidth = minDimension > 100 ? 6 : (minDimension > 50 ? 4 : 2);
+              const numMoats = minDimension > 150 ? 3 : (minDimension > 80 ? 2 : 1);
 
-              const moatWidth = 2;
               for (let r = 0; r < h; r++) {
                 for (let c = 0; c < w; c++) {
-                  if (r === Math.floor(h/2) || c === Math.floor(w/2)) {
-                    if (Math.abs(r - h/2) <= moatWidth || Math.abs(c - w/2) <= moatWidth) {
+                  for (let m = 0; m < numMoats; m++) {
+                    const moatPosH = Math.floor((h / (numMoats + 1)) * (m + 1));
+                    const moatPosV = Math.floor((w / (numMoats + 1)) * (m + 1));
+                    if (Math.abs(r - moatPosH) <= moatWidth || Math.abs(c - moatPosV) <= moatWidth) {
                       terrain[r][c] = 'water';
+                      break;
                     }
                   }
                 }
@@ -220,7 +240,7 @@
         const cellByWidth = maxWidth / this.width;
         const cellByHeight = maxHeight / this.height;
         this.baseCellSize = Math.floor(Math.min(cellByWidth, cellByHeight));
-        this.baseCellSize = Math.max(12, this.baseCellSize);
+        this.baseCellSize = Math.max(8, this.baseCellSize);
 
         this.canvas.width = this.width * this.baseCellSize;
         this.canvas.height = this.height * this.baseCellSize;
@@ -416,8 +436,10 @@
         const col = Math.floor((mouseX - this.offsetX) / this.cellSize);
         const row = Math.floor((mouseY - this.offsetY) / this.cellSize);
         if (row < 0 || row >= this.height || col < 0 || col >= this.width) return;
-        if (this.actionsLeft <= 0) {
-          alert('Больше нет ОД, заверши ход.');
+        const actionCost = this.getActionCost(row, col);
+        if (this.actionsLeft < actionCost) {
+          const terrain = this.terrainGrid[row][col];
+          alert(`Недостаточно ОД для действия на ${terrain === 'water' ? 'воде' : 'суше'}! Нужно ${actionCost} ОД, а у вас ${this.actionsLeft}.`);
           return;
         }
         this.processAction(row, col);
@@ -502,8 +524,10 @@
         }
         const last = this.history.pop();
         this.grid[last.row][last.col] = last.previousState;
-        this.actionsLeft++;
-        if (last.wasQueen && last.previousState === null) this.firstMove[last.player] = true;
+        const actionCost = this.getActionCost(last.row, last.col);
+        this.actionsLeft += actionCost;
+        if (last.wasQueen && last.previousState === null) 
+        this.firstMove[last.player] = true;
         this.updateClawComponents();
         this.draw();
         this.updateUI();
@@ -539,7 +563,8 @@
         e.preventDefault();
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
         let newZoom = this.zoom * delta;
-        newZoom = Math.min(5, Math.max(1.0, newZoom));
+        const maxZoom = (this.width >= 150 || this.height >= 150) ? 8 : 5;
+        newZoom = Math.min(maxZoom, Math.max(1.0, newZoom));
         if (newZoom === this.zoom) return;
 
         const rect = this.canvas.getBoundingClientRect();
@@ -660,19 +685,17 @@
 
             const x = this.offsetX + col * this.cellSize;
             const y = this.offsetY + row * this.cellSize;
-            let fillColor;
+            let symbolColor;
             if (cell.startsWith('P')) {
               const player = parseInt(cell[1]);
-              fillColor = this.playerColors[player];
+              symbolColor = this.playerColors[player];
             } else if (cell.startsWith('C')) {
               const player = parseInt(cell[1]);
-              fillColor = this.darkenColor(this.playerColors[player], 0.7);
+              symbolColor = this.darkenColor(this.playerColors[player], 0.7);
             }
-            ctx.fillStyle = fillColor;
-            ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
 
-            ctx.font = `bold ${Math.floor(this.cellSize * 0.6)}px monospace`;
-            ctx.fillStyle = '#fff';
+            ctx.font = `bold ${Math.floor(this.cellSize * 0.7)}px monospace`;
+            ctx.fillStyle = symbolColor;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             let symbol = '';
@@ -782,11 +805,15 @@
         ctx.fillStyle = '#fff';
         ctx.fillRect(0, 0, 80, 60);
 
-        const cellW = 80 / this.width;
-        const cellH = 60 / this.height;
-        for (let r = 0; r < this.height; r++) {
-          for (let c = 0; c < this.width; c++) {
-            if (this.terrainGrid[r][c] === 'water') {
+        // Generate terrain preview for THIS specific map type
+        const previewTerrain = template.generate(40, 30);
+
+        // Draw mini terrain preview
+        const cellW = 80 / 40;
+        const cellH = 60 / 30;
+        for (let r = 0; r < 30; r++) {
+          for (let c = 0; c < 40; c++) {
+            if (previewTerrain[r][c] === 'water') {
               ctx.fillStyle = '#4da6ff';
               ctx.fillRect(c * cellW, r * cellH, cellW + 0.5, cellH + 0.5);
             }
