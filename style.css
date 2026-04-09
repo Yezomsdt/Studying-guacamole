@@ -1275,6 +1275,10 @@ body.contrast-theme #gameCanvas {
   flex: 0 0 180px;
 }
 
+.game-sidebar-right {
+  flex: 0 0 180px;
+}
+
 .game-main {
   display: flex;
   flex-direction: column;
@@ -1323,6 +1327,50 @@ body.contrast-theme #gameCanvas {
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.map-selector-panel {
+  background: rgba(255,255,255,0.8);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.map-selector-panel h4 {
+  margin: 0 0 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.map-preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.map-preview-item:hover {
+  transform: scale(1.05);
+}
+
+.map-preview-canvas {
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.map-preview-name {
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.map-preview-item.active .map-preview-canvas {
+  border-color: #085faf;
+  box-shadow: 0 0 10px rgba(8, 95, 175, 0.5);
 }
 
 .rules-tooltip {
