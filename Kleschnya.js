@@ -41,6 +41,7 @@
         this.offsetY = 0;
         this.zoom = 1.0;
         this.grid = [];
+        this.terrainGrid = [];
         this.numPlayers = 2;
         this.currentPlayer = 1;
         this.actionsLeft = 10;
@@ -53,6 +54,121 @@
         this.playerColors = ['', '#ff4444', '#4444ff', '#44ff44', '#ffaa44'];
 
         this.clawComponents = {};
+
+        this.mapTemplates = {
+          'empty': {
+            name: 'Пустошь',
+            generate: (w, h) => {
+              const terrain = Array(h).fill().map(() => Array(w).fill('land'));
+              return terrain;
+            }
+          },
+          'islands': {
+            name: 'Острова',
+            generate: (w, h) => {
+              const terrain = Array(h).fill().map(() => Array(w).fill('water'));
+              const zoneSize = 5;
+              const margin = 2;
+
+              for (let r = margin; r < margin + zoneSize + 2; r++) {
+                for (let c = margin; c < margin + zoneSize + 2; c++) {
+                  if (r < h && c < w) terrain[r][c] = 'land';
+                }
+              }
+
+              for (let r = h - zoneSize - margin - 2; r < h - margin; r++) {
+                for (let c = w - zoneSize - margin - 2; c < w - margin; c++) {
+                  if (r >= 0 && c >= 0) terrain[r][c] = 'land';
+                }
+              }
+
+              const numIslands = Math.floor(Math.min(w, h) / 5);
+              for (let i = 0; i < numIslands; i++) {
+                const cx = Math.floor(Math.random() * w);
+                const cy = Math.floor(Math.random() * h);
+                const radius = Math.floor(Math.random() * 3) + 2;
+                for (let r = cy - radius; r <= cy + radius; r++) {
+                  for (let c = cx - radius; c <= cx + radius; c++) {
+                    if (r >= 0 && r < h && c >= 0 && c < w) {
+                      if (Math.random() > 0.3) terrain[r][c] = 'land';
+                    }
+                  }
+                }
+              }
+              return terrain;
+            }
+          },
+          'river': {
+            name: 'Река',
+            generate: (w, h) => {
+              const terrain = Array(h).fill().map(() => Array(w).fill('land'));
+
+              const riverWidth = Math.max(2, Math.floor(w / 10));
+              const centerStart = Math.floor(w / 2);
+              let riverX = centerStart;
+              for (let r = 0; r < h; r++) {
+
+                if (r > 5 && r < h - 5) {
+                  riverX += Math.floor(Math.sin(r / 5) * 3);
+                  riverX = Math.max(riverWidth + 1, Math.min(w - riverWidth - 1, riverX));
+                }
+                for (let c = riverX - riverWidth; c <= riverX + riverWidth; c++) {
+                  if (c >= 0 && c < w) terrain[r][c] = 'water';
+                }
+              }
+              return terrain;
+            }
+          },
+          'checkerboard': {
+            name: 'Шахматка',
+            generate: (w, h) => {
+              const terrain = Array(h).fill().map(() => Array(w).fill('land'));
+              const blockSize = Math.max(2, Math.floor(Math.min(w, h) / 8));
+              for (let r = 0; r < h; r++) {
+                for (let c = 0; c < w; c++) {
+                  const blockRow = Math.floor(r / blockSize);
+                  const blockCol = Math.floor(c / blockSize);
+                  if ((blockRow + blockCol) % 2 === 1) {
+                    terrain[r][c] = 'water';
+                  }
+                }
+              }
+
+              const margin = 2;
+              const zoneSize = 5;
+              for (let r = margin; r < margin + zoneSize + 2; r++) {
+                for (let c = margin; c < margin + zoneSize + 2; c++) {
+                  if (r < h && c < w) terrain[r][c] = 'land';
+                }
+              }
+              for (let r = h - zoneSize - margin - 2; r < h - margin; r++) {
+                for (let c = w - zoneSize - margin - 2; c < w - margin; c++) {
+                  if (r >= 0 && c >= 0) terrain[r][c] = 'land';
+                }
+              }
+              return terrain;
+            }
+          },
+          'moat': {
+            name: 'Ров',
+            generate: (w, h) => {
+              const terrain = Array(h).fill().map(() => Array(w).fill('land'));
+
+              const moatWidth = 2;
+              for (let r = 0; r < h; r++) {
+                for (let c = 0; c < w; c++) {
+                  if (r === Math.floor(h/2) || c === Math.floor(w/2)) {
+                    if (Math.abs(r - h/2) <= moatWidth || Math.abs(c - w/2) <= moatWidth) {
+                      terrain[r][c] = 'water';
+                    }
+                  }
+                }
+              }
+              return terrain;
+            }
+          }
+        };
+        this.currentMapTemplate = 'empty';
 
         this.isDragging = false;
         this.dragStartX = 0;
@@ -114,11 +230,16 @@
         this.cellSize = this.baseCellSize;
       }
 
-      initGame(width, height, numPlayers = 2) {
+      initGame(width, height, numPlayers = 2, mapTemplate = null) {
         console.log(`🔄 Новая игра: ${width}x${height}, игроков: ${numPlayers}`);
         this.width = Math.min(200, Math.max(10, width));
         this.height = Math.min(200, Math.max(10, height));
         this.grid = Array(this.height).fill().map(() => Array(this.width).fill(null));
+        if (mapTemplate && this.mapTemplates[mapTemplate]) {
+          this.currentMapTemplate = mapTemplate;
+        }
+        const template = this.mapTemplates[this.currentMapTemplate];
+        this.terrainGrid = template.generate(this.width, this.height);
         this.numPlayers = Math.min(4, Math.max(2, numPlayers));
         this.currentPlayer = 1;
         this.actionsLeft = 10;
@@ -139,6 +260,7 @@
         this.updateClawComponents();
         this.draw();
         this.updateUI();
+        this.renderMapPreviews();
       }
 
       generateStartZones() {
@@ -301,18 +423,27 @@
         this.processAction(row, col);
       }
 
+      getActionCost(row, col) {
+        // Returns 2 for water terrain, 1 for land
+        if (this.terrainGrid && this.terrainGrid[row] && this.terrainGrid[row][col] === 'water') {
+          return 2;
+        }
+        return 1;
+      }
+
       processAction(row, col) {
         const cell = this.grid[row][col];
         const playerUnit = `P${this.currentPlayer}`;
         const playerQueen = `P${this.currentPlayer}Q`;
         const playerClaw = `C${this.currentPlayer}`;
+        const actionCost = this.getActionCost(row, col);
 
         if (this.firstMove[this.currentPlayer]) {
           if (this.isInStartZone(row, col) && cell === null) {
             this.history.push({ row, col, previousState: null, wasQueen: true, player: this.currentPlayer });
             this.grid[row][col] = playerQueen;
             this.firstMove[this.currentPlayer] = false;
-            this.actionsLeft--;
+            this.actionsLeft -= actionCost;
             this.updateClawComponents();
             this.draw();
             this.updateUI();
@@ -327,7 +458,7 @@
         if (cell === null && this.canPlaceUnit(row, col)) {
           this.history.push({ row, col, previousState: null, wasQueen: false, player: this.currentPlayer });
           this.grid[row][col] = playerUnit;
-          this.actionsLeft--;
+          this.actionsLeft -= actionCost;
           this.updateClawComponents();
           this.draw();
           this.updateUI();
@@ -340,7 +471,7 @@
           const enemyPlayer = parseInt(cell[1]);
           this.history.push({ row, col, previousState: cell, wasQueen: false, player: this.currentPlayer });
           this.grid[row][col] = playerClaw;
-          this.actionsLeft--;
+          this.actionsLeft -= actionCost;
 
           if (isQueen) {
             this.playersAlive[enemyPlayer] = false;
@@ -481,6 +612,25 @@
         const h = this.canvas.height;
         ctx.clearRect(0, 0, w, h);
 
+        for (let row = 0; row < this.height; row++) {
+          for (let col = 0; col < this.width; col++) {
+            const terrain = this.terrainGrid[row][col];
+            const x = this.offsetX + col * this.cellSize;
+            const y = this.offsetY + row * this.cellSize;
+
+            if (terrain === 'water') {
+              ctx.fillStyle = '#4da6ff';
+              ctx.fillRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2);
+
+              ctx.font = `${Math.floor(this.cellSize * 0.5)}px monospace`;
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText('~', x + this.cellSize / 2, y + this.cellSize / 2);
+            }
+          }
+        }
+
         ctx.save();
         ctx.translate(0.5, 0.5);
         ctx.strokeStyle = '#aaa';
@@ -611,6 +761,55 @@
         }
       });
     });
+
+    game.renderMapPreviews = function() {
+      const container = document.getElementById('mapPreviewsContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      for (const [key, template] of Object.entries(this.mapTemplates)) {
+        const div = document.createElement('div');
+        div.className = 'map-preview-item' + (key === this.currentMapTemplate ? ' active' : '');
+        div.dataset.mapKey = key;
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'map-preview-canvas';
+        canvas.width = 80;
+        canvas.height = 60;
+
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, 80, 60);
+
+        const cellW = 80 / this.width;
+        const cellH = 60 / this.height;
+        for (let r = 0; r < this.height; r++) {
+          for (let c = 0; c < this.width; c++) {
+            if (this.terrainGrid[r][c] === 'water') {
+              ctx.fillStyle = '#4da6ff';
+              ctx.fillRect(c * cellW, r * cellH, cellW + 0.5, cellH + 0.5);
+            }
+          }
+        }
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'map-preview-name';
+        nameSpan.textContent = template.name;
+
+        div.appendChild(canvas);
+        div.appendChild(nameSpan);
+
+        div.addEventListener('click', () => {
+          this.currentMapTemplate = key;
+          const w = parseInt(widthInput.value) || 30;
+          const h = parseInt(heightInput.value) || 30;
+          this.initGame(w, h, getSelectedPlayers(), key);
+        });
+
+        container.appendChild(div);
+      }
+    };
 
     window.battleGame = game;
     console.log('✅ КЛЕШНЯ готова');
