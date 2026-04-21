@@ -843,14 +843,14 @@ body.dark-theme {
   --color-primary-dark: #0d0915;
   --color-secondary: #1a1128;
   --color-secondary-dark: #2a1d42;
-  --color-bg: #1a1128;
+  --color-bg: transparent;
   --color-text: #a8d0ff;
   --color-white: #a8d0ff;
   --color-chat-user: #2a1d42;
   --color-chat-bot: #3a2d52;
   
   background-image: none;
-  background-color: var(--color-bg);
+  background-color: transparent;
   transition: background-color var(--transition), color var(--transition);
 }
 
