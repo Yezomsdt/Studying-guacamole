@@ -98,7 +98,7 @@ body {
 }
 
 .theme-switcher {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   z-index: 1000;
@@ -107,10 +107,18 @@ body {
   padding: 6px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
-  transition: all var(--transition);
+  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
   border: 2px solid transparent;
   transform: scale(0.80);
   transform-origin: left top;
+  cursor: grab;
+  user-select: none;
+}
+
+.theme-switcher.dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+  transition: none;
 }
 
 .theme-switcher:hover {
@@ -841,12 +849,28 @@ body.dark-theme {
   --color-chat-user: #2a1d42;
   --color-chat-bot: #3a2d52;
   
-  background-image: url("img/DTP.png");
+  background-image: none;
   background-color: var(--color-bg);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
   transition: background-color var(--transition), color var(--transition);
+}
+
+body.dark-theme .heading {
+  background: linear-gradient(90deg, #ff6b6b, #f1c40f, #2ecc71, #3498db, #9b59b6, #e74c3c, #ff6b6b);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rainbowText 10s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(168, 208, 255, 0.7)) drop-shadow(0 0 40px rgba(168, 208, 255, 0.5));
+}
+
+@keyframes rainbowText {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 body.dark-theme .chat-section .subheading {
