@@ -13,6 +13,7 @@
     
     const themeRadios = document.querySelectorAll('input[name="theme"]');
     const body = document.body;
+    const themeSwitcher = document.querySelector('.theme-switcher');
 
     const availableThemes = ['light', 'dark', 'contrast'];
 
@@ -81,23 +82,19 @@
     }
 
     function updateWidgetBackgrounds(theme) {
-      const themeSwitcher = document.querySelector('.theme-switcher');
       const chatContainer = document.querySelector('.chat-container');
       const chatSection = document.querySelector('.chat-section');
       const rouletteSection = document.querySelector('.roulette-section');
       
       if (theme === 'dark') {
-        if (themeSwitcher) themeSwitcher.style.backgroundColor = '#3a2b5b';
         if (chatContainer) chatContainer.style.backgroundColor = '#3a2b5b';
         if (chatSection) chatSection.style.backgroundColor = '#3a2b5b';
         if (rouletteSection) rouletteSection.style.backgroundColor = '#3a2b5b';
       } else if (theme === 'contrast') {
-        if (themeSwitcher) themeSwitcher.style.backgroundColor = '#003300';
         if (chatContainer) chatContainer.style.backgroundColor = '#001a00';
         if (chatSection) chatSection.style.backgroundColor = '#001a00';
         if (rouletteSection) rouletteSection.style.backgroundColor = '#001a00';
       } else {
-        if (themeSwitcher) themeSwitcher.style.backgroundColor = '';
         if (chatContainer) chatContainer.style.backgroundColor = '';
         if (chatSection) chatSection.style.backgroundColor = '';
         if (rouletteSection) rouletteSection.style.backgroundColor = '';
@@ -150,6 +147,52 @@
     });
 
     loadTheme();
+
+    let isDragging = false;
+    let startX, startY, initialLeft, initialTop;
+
+    themeSwitcher.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return;
+
+      isDragging = true;
+      themeSwitcher.classList.add('dragging');
+
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = themeSwitcher.getBoundingClientRect();
+      initialLeft = rect.left;
+      initialTop = rect.top;
+
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      let newLeft = initialLeft + deltaX;
+      let newTop = initialTop + deltaY;
+
+      const switcherRect = themeSwitcher.getBoundingClientRect();
+      const maxX = window.innerWidth - switcherRect.width;
+      const maxY = window.innerHeight - switcherRect.height;
+
+      newLeft = Math.max(0, Math.min(newLeft, maxX));
+      newTop = Math.max(0, Math.min(newTop, maxY));
+
+      themeSwitcher.style.left = newLeft + 'px';
+      themeSwitcher.style.top = newTop + 'px';
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (isDragging) {
+        isDragging = false;
+        themeSwitcher.classList.remove('dragging');
+      }
+    });
 
     window.themeSwitcher = {
       getCurrentTheme: function() {
