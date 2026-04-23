@@ -850,8 +850,11 @@ body.dark-theme {
   --color-chat-bot: #3a2d52;
   
   background-image: none;
-  background-color: transparent;
-  transition: background-color var(--transition), color var(--transition);
+  background-color: #0f0518;
+  background: radial-gradient(circle at 20% 20%, rgba(15, 25, 60, 0.4) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(20, 60, 50, 0.25) 0%, transparent 50%),
+              linear-gradient(135deg, rgba(30, 50, 90, 0.3) 0%, rgba(15, 5, 24, 0) 40%, rgba(15, 5, 24, 0) 60%, rgba(25, 60, 50, 0.2) 100%);
+  transition: background var(--transition), color var(--transition);
 }
 
 body.dark-theme .heading {
