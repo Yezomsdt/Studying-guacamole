@@ -52,6 +52,7 @@
         this.radius = Math.random() * 3 + 2;
         this.color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
         this.opacity = Math.random() * 0.5 + 0.5;
+        this.glowIntensity = Math.random() * 15 + 10;
       }
 
       update() {
@@ -66,10 +67,14 @@
       }
 
       draw() {
+        ctx.save();
+        ctx.shadowBlur = this.glowIntensity;
+        ctx.shadowColor = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgb($1, $2, $3)');
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color + this.opacity + ')';
         ctx.fill();
+        ctx.restore();
       }
     }
 
@@ -95,7 +100,11 @@
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = 'rgba(168, 208, 255, ' + opacity + ')';
             ctx.lineWidth = 0.5;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(168, 208, 255, 0.5)';
             ctx.stroke();
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'transparent';
           }
         }
       }
@@ -107,8 +116,7 @@
         return;
       }
 
-      ctx.fillStyle = '#1a0a2e';
-      ctx.fillRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
       drawConnections();
 
@@ -147,7 +155,5 @@
     } else {
       hide();
     }
-
-    console.log('✅ Анимация нейронной сети готова!');
   });
 })();
