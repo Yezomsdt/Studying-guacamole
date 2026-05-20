@@ -209,14 +209,14 @@ body {
 }
 
 .intro {
-  margin: 0 0 80px;
+  margin: -320px 0 80px;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
 }
 
 .subheading {
-  margin: 0 0 56px;
+  margin: 0 0 32px;
   font-family: var(--font-heading);
   font-size: 64px;
   line-height: 80px;
@@ -227,7 +227,7 @@ body {
 .intro-content {
   display: flex;
   align-items: flex-start;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .intro-content figure {
@@ -248,7 +248,7 @@ body {
 }
 
 .intro h3 {
-  margin: 30px 0 20px;
+  margin: 20px 0 12px;
   font-size: 28px;
   line-height: 40px;
   font-weight: 500;
@@ -257,7 +257,7 @@ body {
 }
 
 .intro p {
-  margin: 0 0 32px;
+  margin: 0 0 16px;
   padding: 0 20px;
   text-align: justify;
 }
@@ -332,7 +332,7 @@ body.contrast-theme .auth-hint {
 }
 
 .chat-section {
-  margin: 60px 0 !important;
+  margin: 0 0 60px !important;
   padding: 40px 0;
   background-color: var(--color-bg);
   border-radius: 22px;
@@ -692,6 +692,10 @@ body.contrast-theme .auth-hint {
 
 .portfolio {
   margin: 0 0 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -719,7 +723,9 @@ body.contrast-theme .auth-hint {
 
 .my-achievements {
   padding: 20px;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-top: none;
 }
 
