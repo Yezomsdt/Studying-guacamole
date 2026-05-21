@@ -185,7 +185,7 @@ body {
 }
 
 .hero-image {
-  margin-bottom: 520px !important;
+  margin-bottom: 600px !important;
   position: relative;
 }
 
@@ -209,10 +209,10 @@ body {
 }
 
 .intro {
-  margin: -420px 0 80px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  margin: -460px 0 80px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .subheading {
@@ -239,9 +239,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: -1;
 }
 
@@ -347,7 +347,7 @@ body.contrast-theme .auth-hint {
 }
 
 .chat-section {
-  margin: -70px 0 0 !important;
+  margin: -1px 0 0 !important;
   padding: 40px 0;
   background-color: var(--color-bg);
   border-radius: 22px;
@@ -708,9 +708,9 @@ body.contrast-theme .auth-hint {
 .portfolio {
   margin: 0 0 10px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -738,9 +738,9 @@ body.contrast-theme .auth-hint {
 
 .my-achievements {
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: none;
 }
 
@@ -918,9 +918,9 @@ body.dark-theme .intro,
 body.dark-theme .portfolio,
 body.dark-theme .my-achievements,
 body.dark-theme .chat-section {
-  background-color: rgba(42, 29, 66, 0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(42, 29, 66, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--color-chat-bot);
   border-radius: 15px;
   border-top: 2px solid var(--color-chat-bot);
