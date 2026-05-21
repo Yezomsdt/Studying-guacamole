@@ -52,7 +52,7 @@
         this.radius = Math.random() * 3 + 2;
         this.color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
         this.opacity = Math.random() * 0.5 + 0.5;
-        this.glowIntensity = this.radius * 4 + 8;
+        this.glowIntensity = this.radius * 4 + 8; // от 16 до 28
       }
 
       update() {
@@ -68,15 +68,17 @@
 
       draw() {
         ctx.save();
-        ctx.shadowBlur = this.glowIntensity * 2;
-        ctx.shadowColor = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgb($1, $2, $3)');
-        
+        const glowColor = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgb($1, $2, $3)');
+
+        ctx.shadowBlur = this.glowIntensity * 2.5;
+        ctx.shadowColor = glowColor;
+
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
-        ctx.fillStyle = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgba($1, $2, $3, 0.25)');
+        ctx.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgba($1, $2, $3, 0.15)');
         ctx.fill();
 
-        ctx.shadowBlur = this.glowIntensity;
+        ctx.shadowBlur = this.glowIntensity * 1.5;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color + this.opacity + ')';
