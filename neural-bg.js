@@ -68,21 +68,24 @@
 
       draw() {
         ctx.save();
-        const glowColor = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgb($1, $2, $3)');
-
+        const rgb = this.color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (!rgb) return;
+        const glowColor = `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, 0.7)`;
+      
         ctx.shadowBlur = this.glowIntensity * 2.5;
         ctx.shadowColor = glowColor;
-
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = this.color.replace(/rgba?\((\d+),\s*(\d+),\s*(\d+)/, 'rgba($1, $2, $3, 0.15)');
+        ctx.fillStyle = `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, 0.15)`;
         ctx.fill();
-
+      
         ctx.shadowBlur = this.glowIntensity * 1.5;
+        ctx.shadowColor = glowColor;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color + this.opacity + ')';
         ctx.fill();
+        
         ctx.restore();
       }
     }
