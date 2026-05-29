@@ -185,7 +185,6 @@ body {
 }
 
 .hero-image {
-  margin-bottom: 600px !important;
   position: relative;
 }
 
@@ -208,11 +207,26 @@ body {
   line-height: 48px;
 }
 
+#intro-heading {
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
+#intro-heading:hover {
+  color: var(--color-primary-dark);
+  transform: scale(1.02);
+}
+
 .intro {
-  margin: -460px 0 80px;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0;
+  padding-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .subheading {
