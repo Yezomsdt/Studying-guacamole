@@ -176,4 +176,12 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = 'auto';
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+  const introHeading = document.getElementById('intro-heading');
+  if (introHeading) {
+    introHeading.addEventListener('click', function() {
+      introHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 });
