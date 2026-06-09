@@ -184,8 +184,15 @@ body {
   transform: scale(1.15);
 }
 
+.hero-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .hero-image {
   position: relative;
+  flex-shrink: 0;
 }
 
 .hero-image .container {
@@ -217,10 +224,10 @@ body {
 }
 
 .intro {
+  flex: 1;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
