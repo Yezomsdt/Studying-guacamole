@@ -43,27 +43,27 @@
       constructor() {
         this.reset();
       }
-
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 3 + 2;
+        this.baseRadius = Math.random() * 3 + 2;   // базовый радиус
+        this.radius = this.baseRadius;
         this.color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
         this.opacity = Math.random() * 0.5 + 0.5;
-        this.glowIntensity = this.radius * 4 + 8; // от 16 до 28
+        this.phase = Math.random() * Math.PI * 2; // случайная фаза для мерцания
       }
 
       update() {
         this.x += this.vx;
         this.y += this.vy;
-
         if (this.x < 0 || this.x > width) this.vx *= -1;
         if (this.y < 0 || this.y > height) this.vy *= -1;
-
         this.x = Math.max(0, Math.min(width, this.x));
         this.y = Math.max(0, Math.min(height, this.y));
+
+        this.radius = this.baseRadius + Math.sin(Date.now() * 0.002 + this.phase) * 0.4;
       }
 
       draw() {
