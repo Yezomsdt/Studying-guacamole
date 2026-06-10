@@ -67,26 +67,22 @@
       }
 
       draw() {
-        ctx.save();
         const rgb = this.color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
         if (!rgb) return;
-        const glowColor = `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, 0.7)`;
+        const r = parseInt(rgb[1]), g = parseInt(rgb[2]), b = parseInt(rgb[3]);
+  
+        for (let i = 4; i >= 1; i--) {
+          ctx.beginPath();
+          const layerRadius = this.radius * (1 + i * 1.2);
+          ctx.arc(this.x, this.y, layerRadius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.06 * (5 - i)})`;
+          ctx.fill();
+        }
       
-        ctx.shadowBlur = this.glowIntensity * 2.5;
-        ctx.shadowColor = glowColor;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, 0.15)`;
-        ctx.fill();
-      
-        ctx.shadowBlur = this.glowIntensity * 1.5;
-        ctx.shadowColor = glowColor;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color + this.opacity + ')';
         ctx.fill();
-        
-        ctx.restore();
       }
     }
 
