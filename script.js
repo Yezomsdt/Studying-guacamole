@@ -177,10 +177,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  const introHeading = document.getElementById('intro-heading');
-    if (introHeading) {
+    const introHeading = document.getElementById('intro-heading');
+    const introContentSection = document.getElementById('intro-content-section');
+    if (introHeading && introContentSection) {
       introHeading.addEventListener('click', function() {
-        introHeading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        introContentSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
   });
