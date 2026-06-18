@@ -63,7 +63,7 @@ body {
 
 .page-header {
   position: relative;
-  margin: 0 0 40px;
+  margin: 0;
   padding: 20px 0;
 }
 
@@ -188,6 +188,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 40px;
 }
 
 .hero-image {
